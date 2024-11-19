@@ -10,3 +10,12 @@ interface NavMenuItem {
   path: string;
   icon: React.ElementType;
 }
+
+interface StatsData {
+  icon: React.ComponentElement;
+  title: string;
+  data: {
+    total: number;
+    change: string;
+  };
+}
