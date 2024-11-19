@@ -5,5 +5,6 @@ export const loginUser = async (
   password: string
 ): Promise<any> => {
   const response = await request.post("/user/login", { email, password });
+
   return response.data;
 };
