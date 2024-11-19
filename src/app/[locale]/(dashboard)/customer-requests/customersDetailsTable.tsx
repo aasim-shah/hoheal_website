@@ -26,7 +26,10 @@ export default function CustomerDetailsTable() {
             <TableCell className="font-medium">INV001</TableCell>
             <TableCell>Paid</TableCell>
             <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
+            <TableCell className="text-right">
+              <button>Accept</button>
+              <button>reject</button>
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>
