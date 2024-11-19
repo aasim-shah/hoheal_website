@@ -14,11 +14,7 @@ request.interceptors.request.use(
       (typeof window !== "undefined" ? localStorage.getItem("token") : null);
 
     if (token) {
-<<<<<<< HEAD
       config.headers["Authorization"] = `Bearer ${token}`; 
-=======
-      config.headers["Authorization"] = `Bearer ${token}`;
->>>>>>> e72ae288a02cc5d02773d2a9d51df97d4c220365
     }
 
     return config;
