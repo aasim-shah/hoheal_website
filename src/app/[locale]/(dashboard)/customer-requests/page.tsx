@@ -1,5 +1,9 @@
+import CustomerDetailsTable from "./customersDetailsTable";
+
 export default function CustomerRequestsPage() {
   return (
-    <div>CustomerRequestsPage</div>
+    <div>
+      <CustomerDetailsTable />
+    </div>
   );
 }
