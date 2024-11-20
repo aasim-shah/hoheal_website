@@ -10,7 +10,7 @@ import {
 
 export default function CustomerDetailsTable() {
   return (
-    <div className="">
+    <div className=" shadow-lg rounded-xl">
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>

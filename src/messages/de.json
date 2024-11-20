@@ -95,7 +95,8 @@
       "hotel": "Hotel",
       "employeeId": "Mitarbeiter-ID",
       "department": "Abteilung",
-      "address": "Adresse"
+      "address": "Adresse",
+      "submit": "Einreichen"
     },
     "placeholders": {
       "email": "E-Mail eingeben",

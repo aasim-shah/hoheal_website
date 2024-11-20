@@ -95,7 +95,8 @@
       "hotel": "Hotel",
       "employeeId": "Employee ID",
       "department": "Department",
-      "address": "Address"
+      "address": "Address",
+      "submit": "Submit"
     },
     "placeholders": {
       "email": "Enter email",
