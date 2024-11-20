@@ -27,7 +27,7 @@ const Container = ({
       )}
     >
       {title && (
-        <H size="h4" className="capitalize text-start w-full">
+        <H size="3xl" className="capitalize text-start w-full">
           {title}
         </H>
       )}

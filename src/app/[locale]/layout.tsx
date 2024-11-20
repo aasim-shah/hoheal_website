@@ -131,10 +131,10 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir="">
       <body
-        className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col w-full min-h-screen`}
+        className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <main className="flex-1 h-full">{children}</main>
+          <main className="">{children}</main>
         </Providers>
       </body>
     </html>

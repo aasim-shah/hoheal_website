@@ -93,9 +93,13 @@
       "suits": "Suiten",
       "fullName": "Vollständiger Name",
       "hotel": "Hotel",
+      "serivce": "Dienstleistung",
+      "category": "Kategorie",
+      "subcategory": "Unterkategorie",
       "employeeId": "Mitarbeiter-ID",
       "department": "Abteilung",
-      "address": "Adresse"
+      "address": "Adresse",
+      "addNew": "Neues {title}"
     },
     "placeholders": {
       "email": "E-Mail eingeben",

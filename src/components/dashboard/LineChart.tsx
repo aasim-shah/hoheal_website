@@ -1,101 +1,82 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import {
   CartesianGrid,
   Line,
   LineChart as RechartsLineChart,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from "recharts";
-
+import { Card, CardContent } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { time: "20:15", value: 5 },
+  { time: "20:16", value: 12 },
+  { time: "20:17", value: 25 },
+  { time: "20:18", value: 18 },
+  { time: "20:19", value: 22 },
+  { time: "20:20", value: 30 },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+  value: {
+    label: "Value",
+    color: "#ffffff",
   },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+};
 
 export default function LineChart() {
   return (
-    <Card className="bg-signature">
-      <CardHeader>
-        <CardTitle>Line Chart - Dots</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Card className="bg-gradient-to-b from-teal-500 to-teal-700 rounded-lg shadow-lg p-4">
+      <CardContent className="">
+        {" "}
+        {/* Reduced the height here */}
         <ChartContainer config={chartConfig}>
-          <RechartsLineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <YAxis tickLine={false} axisLine={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Line
-              dataKey="desktop"
-              type="natural"
-              stroke="var(--color-desktop)"
-              strokeWidth={4}
-              dot={{
-                fill: "var(--color-desktop)",
-              }}
-              activeDot={{
-                r: 6,
-              }}
-            />
-          </RechartsLineChart>
+          <ResponsiveContainer width="100%" height="100%">
+            <RechartsLineChart
+              data={chartData}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            >
+              <CartesianGrid
+                stroke="#e0e0e0"
+                strokeDasharray="3 3"
+                vertical={false}
+              />
+              <XAxis
+                dataKey="time"
+                tick={{ fill: "#fff", fontSize: 12 }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                tick={{ fill: "#fff", fontSize: 12 }}
+                tickLine={false}
+                axisLine={false}
+                domain={[0, 3]} // Adjusted domain for a smaller gap between grid lines
+                ticks={[0, 10, 20, 30]} // Custom tick values to reduce gap
+              />
+              <ChartTooltip
+                cursor={{ stroke: "#ccc", strokeWidth: 1 }}
+                content={<ChartTooltipContent />}
+              />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#ffffff"
+                strokeWidth={3}
+                dot={{ fill: "#ffffff", stroke: "#ffffff", r: 4 }}
+                activeDot={{ r: 6, fill: "#ffffff" }}
+              />
+            </RechartsLineChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }

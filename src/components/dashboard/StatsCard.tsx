@@ -1,4 +1,4 @@
-import isLessChange from "@/utils/changeInData";
+import { isLessChange } from "@/utils/reuseableMethods";
 
 const StatsCard: React.FC<StatsData> = ({ title, icon: Icon, data }) => {
   let { total, change } = data;
