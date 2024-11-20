@@ -99,7 +99,10 @@
       "employeeId": "Employee ID",
       "department": "Department",
       "address": "Address",
+
+      "submit": "Submit"
       "addNew": "Add New {title}"
+
     },
     "placeholders": {
       "email": "Enter email",
