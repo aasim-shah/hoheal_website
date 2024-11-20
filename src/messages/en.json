@@ -99,8 +99,7 @@
       "employeeId": "Employee ID",
       "department": "Department",
       "address": "Address",
-
-      "submit": "Submit"
+      "submit": "Submit",
       "addNew": "Add New {title}"
 
     },
