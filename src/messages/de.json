@@ -99,6 +99,7 @@
       "employeeId": "Mitarbeiter-ID",
       "department": "Abteilung",
       "address": "Adresse",
+      "submit": "Einreichen",
       "addNew": "Neues {title}"
     },
     "placeholders": {
