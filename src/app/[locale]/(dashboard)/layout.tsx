@@ -11,13 +11,16 @@ export default async function DashboardLayout({
 }>) {
   return (
     <SidebarProvider>
-    <div className="w-full flex flex-row-revers min-h-screen"> {/* Added flex-row-reverse */}
-      <AppSidebar side="left"/>
-      <div className="w-full flex flex-col min-h-screen">
-        <Navbar />
-        <div className="flex-1 p-4">{children}</div>
+      <div className="w-full flex h-screen">
+        <AppSidebar side="left" />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Navbar />
+          {/* <div className="flex-1 p-4">{children}</div> */}
+          <div className="h-full p-4 flex-1 overflow-hidden">
+            <main className="h-full w-full overflow-y-auto">{children}</main>
+          </div>
+        </div>
       </div>
-    </div>
-  </SidebarProvider>
+    </SidebarProvider>
   );
 }

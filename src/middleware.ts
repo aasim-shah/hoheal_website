@@ -1,13 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
+import { NextRequest } from "next/server";
 import { routing } from "./i18n/routing";
-import * as jose from "jose";
-import getNavMenuByRole from "./utils/navMenu";
 
 const intlMiddleware = createMiddleware(routing);
-const { decodeJwt } = jose;
 
 export function middleware(req: NextRequest) {
+  console.log("Middleware locale:", req.nextUrl.locale);
+
   // const loginPage = req.nextUrl.pathname.includes("login");
   // const locale = req.nextUrl.locale || "en";
 
