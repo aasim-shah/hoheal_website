@@ -82,6 +82,7 @@
       "hotelCategory": "Hotel Category",
       "hotelLocation": "Hotel Location",
       "roomType": "Room Type",
+      "hotelType": "Hotel Type",
       "phoneNumber": "Phone Number",
       "ownerName": "Owner Name",
       "registrationNumber": "Registration Number",
@@ -99,10 +100,16 @@
       "employeeId": "Employee ID",
       "department": "Department",
       "address": "Address",
-
-      "submit": "Submit"
-      "addNew": "Add New {title}"
-
+      "submit": "Submit",
+      "addNew": "Add New {title}",
+      "country": "Country",
+      "city": "City",
+      "periodOfContract": "Period of Contract",
+      "startingDate": "Service Starting Date",
+      "description": "Description",
+      "businessDocs": "Business Documents",
+      "servicesRequested": "Services Requested",
+      "images": "Images"
     },
     "placeholders": {
       "email": "Enter email",
@@ -125,7 +132,13 @@
       "searchHotel": "Search hotel",
       "searchDepartment": "Search department",
       "employeeId": "Enter employee ID",
-      "address": "Enter address"
+      "address": "Enter address",
+      "country": "Country",
+      "city": "City",
+      "hotelType": "Select a Hotel Type",
+      "description": "Write Some Description",
+
+      "periodOfContract": "Period of Contract"
     },
     "errors": {
       "emailRequired": "Email is required",

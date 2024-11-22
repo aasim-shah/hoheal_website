@@ -43,6 +43,7 @@ const LoginForm = () => {
   const loading = status === "pending";
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log({ values });
     mutate(values);
   }
 

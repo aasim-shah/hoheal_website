@@ -10,7 +10,7 @@ export default function MyImage({
   alt = "image",
 }) {
   return (
-    <div className={`rounded-full  bg-blue-300 ${containerClasses}`}>
+    <div className={`bg-gray-50 ${containerClasses}`}>
       <Image
         width={w}
         height={h}

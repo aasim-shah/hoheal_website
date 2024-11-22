@@ -23,7 +23,7 @@ const DataTable = ({ headers, data, hasAction }: Props) => {
       {data && data.length > 0 ? (
         <Table className="overflow-auto text-start h-full">
           <TableHeader>
-            <TableRow className="sticky top-0 z-40 bg-secondary capitalize hover:bg-muted">
+            <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
               {headers.map((header: string) => (
                 <TableHead key={header} className="font-bold">
                   {formatTableHeader(header)}

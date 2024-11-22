@@ -1,5 +1,7 @@
 export default function AllHotelsPage() {
   return (
-    <div>AllHotelsPage</div>
+    <div>
+      <h1>All Hotels</h1>
+    </div>
   );
 }
