@@ -1,5 +1,9 @@
+import CustomerFeedbacks from "./customersFeedbacks";
+
 export default function FeedbackPage() {
   return (
-    <div>FeedbackPage</div>
+    <div>
+      <CustomerFeedbacks />
+    </div>
   );
 }
