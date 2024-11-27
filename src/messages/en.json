@@ -103,13 +103,20 @@
       "submit": "Submit",
       "addNew": "Add New {title}",
       "country": "Country",
+      "name": "Name",
       "city": "City",
       "periodOfContract": "Period of Contract",
       "startingDate": "Service Starting Date",
       "description": "Description",
       "businessDocs": "Business Documents",
       "servicesRequested": "Services Requested",
-      "images": "Images"
+      "images": "Images",
+      "idCardNumber": "ID Card Number",
+      "roomNumber": "Room Number",
+      "date": "Date",
+      "attachments": "Attachments",
+      "checkIn": "Check In",
+      "checkOut": "Check Out"
     },
     "placeholders": {
       "email": "Enter email",
@@ -135,9 +142,13 @@
       "address": "Enter address",
       "country": "Country",
       "city": "City",
+      "roomNumber": "Enter Room Number",
+
+      "name": "Write Your Name ",
+      "date": "Date ",
       "hotelType": "Select a Hotel Type",
       "description": "Write Some Description",
-
+      "idCardNumber": "Enter ID Card Number",
       "periodOfContract": "Period of Contract"
     },
     "errors": {
@@ -165,6 +176,7 @@
       "employeeIdRequired": "Employee ID is required",
       "departmentRequired": "Department is required",
       "mobileNumberRequired": "Mobile Number is required",
+      "roomNumber": "Enter Room Number",
       "addressRequired": "Address is required",
       "roleRequired": "Role is required"
     }

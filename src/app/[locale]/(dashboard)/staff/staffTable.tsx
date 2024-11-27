@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -11,45 +12,31 @@ import { H } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import MyImage from "@/components/MyImage";
 import { IoMdTrash } from "react-icons/io";
+import useApi from "@/hooks/useApi";
+import { getStaffList } from "@/lib/api/department";
+import { useEffect } from "react";
 
 export default function StaffTable() {
   const headers = ["Profile", "Name", "Email", "Department"];
-  const data = [
-    {
-      profile: "/images/user.png",
-      name: "Ali Ahmed",
-      email: "aliahmed@hoheal.com",
-      department: "Front Desk",
-    },
-    {
-      profile: "/images/user.png",
-      name: "Sara Khan",
-      email: "sarakhan@hoheal.com",
-      department: "Housekeeping",
-    },
-    {
-      profile: "/images/user.png",
-      name: "Usman Malik",
-      email: "usmanmalik@hoheal.com",
-      department: "Kitchen",
-    },
-    {
-      profile: "/images/user.png",
-      name: "Aisha Raza",
-      email: "aisharaza@hoheal.com",
-      department: "Spa",
-    },
-    {
-      profile: "/images/user.png",
-      name: "Hamza Sheikh",
-      email: "hamzasheikh@hoheal.com",
-      department: "Security",
-    },
-  ];
+
+  const { data, loading, error, execute } = useApi(getStaffList);
+
+  console.log({ data });
+
+  useEffect(() => {
+    execute("6729bd3e5a9f963581db7890");
+  }, []);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log({ data });
+  //     setChats(data.body.chats);
+  //   }
+  // }, [data]);
 
   return (
     <div className=" border-2 shadow-sm border-gray-100   p-5 rounded-lg">
-      {data && data.length > 0 ? (
+      {data && data.employees && data.employees.length > 0 ? (
         <Table className="overflow-auto text-start h-full">
           <TableHeader>
             <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
@@ -63,20 +50,20 @@ export default function StaffTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((doc: (typeof data)[0]) => (
-              <TableRow key={doc.profile}>
+            {data.employees.map((doc: (typeof data)[0]) => (
+              <TableRow key={doc._id}>
                 <TableCell>
                   <MyImage
                     classNames={"rounded-full"}
                     containerClasses={"w-12 rounded-full h-12"}
-                    src={doc.profile}
+                    src={doc.user.profilePicture}
                     w={50}
                     h={50}
                   />
                 </TableCell>
-                <TableCell>{doc.name}</TableCell>
-                <TableCell>{doc.email}</TableCell>
-                <TableCell>{doc.department}</TableCell>
+                <TableCell>{doc.user.name}</TableCell>
+                <TableCell>{doc.user.email}</TableCell>
+                <TableCell>{doc.role.title}</TableCell>
 
                 <TableCell className="text-center">
                   <Button size="sm" variant={"outline"}>

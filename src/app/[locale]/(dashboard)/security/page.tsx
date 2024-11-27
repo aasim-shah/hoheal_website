@@ -1,4 +1,4 @@
-import CustomerDetailsTable from "../customer-requests/customersDetailsTable";
+import CustomerDetailsTable from "../customer-requests/customerRequestsTable";
 
 export default function SecurityPage() {
   return (
