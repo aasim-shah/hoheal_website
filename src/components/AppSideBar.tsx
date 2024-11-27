@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import { NavUser } from "@/components/NavUser";
 import {
   Sidebar,
@@ -18,17 +17,25 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import getNavMenuByRole from "@/utils/navMenu";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const t = useTranslations("pages");
 
   const role: Role = useSelector((state: any) => state.auth.role);
-  // const role: Role = "hotelManager";
   const menu = getNavMenuByRole(role);
+
+  const locale = useLocale();
+  let pathname = usePathname();
+  pathname = pathname.split("/")[pathname.split("/").length - 1];
+
+  const isMenuActive = (path: string) => {
+    return path === "/" ? pathname === locale : path === `/${pathname}`;
+  };
 
   return (
     <Sidebar collapsible="icon" variant="sidebar" {...props}>
@@ -54,7 +61,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <Link href={item.path}>
-                      <SidebarMenuButton tooltip={t(item.title)}>
+                      <SidebarMenuButton
+                        tooltip={t(item.title)}
+                        isActive={isMenuActive(item.path)}
+                      >
                         {item.icon && <item.icon />}
                         <span>{t(item.title)}</span>
                       </SidebarMenuButton>

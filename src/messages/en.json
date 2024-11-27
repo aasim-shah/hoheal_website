@@ -101,6 +101,7 @@
       "department": "Department",
       "address": "Address",
       "submit": "Submit",
+
       "addNew": "Add New {title}",
       "country": "Country",
       "name": "Name",
@@ -117,6 +118,7 @@
       "attachments": "Attachments",
       "checkIn": "Check In",
       "checkOut": "Check Out"
+
     },
     "placeholders": {
       "email": "Enter email",

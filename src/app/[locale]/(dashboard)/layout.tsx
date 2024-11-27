@@ -1,16 +1,17 @@
 import { AppSidebar } from "@/components/AppSideBar";
-import LocaleSwitcher from "@/components/LocaleSwitcher";
 import Navbar from "@/components/Navbar";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { cookies } from "next/headers";
 
 export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <div className="w-full flex h-screen">
         <AppSidebar side="left" />
         <div className="flex-1 flex flex-col overflow-hidden">
