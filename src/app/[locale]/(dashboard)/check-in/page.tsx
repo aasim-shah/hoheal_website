@@ -34,6 +34,8 @@ export default function CheckIn() {
       name: "",
       reservationNumber: "",
       roomNumber: "",
+      date: "",
+
       roomType: "",
     },
   });

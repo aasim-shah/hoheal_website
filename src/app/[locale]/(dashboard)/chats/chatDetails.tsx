@@ -203,7 +203,7 @@ export default function ChatDetail({
               {msg.images?.length > 0 && (
                 <div className="mt-2 flex gap-2 flex-wrap">
                   {msg.images?.map((image, index) => (
-                    <div className="w-40 h-40">
+                    <div className="w-40 h-40" key={index}>
                       <Image
                         width={200}
                         height={200}

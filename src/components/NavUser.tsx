@@ -73,7 +73,7 @@ export function NavUser() {
               className="w-[--radix-popper-anchor-width]"
             >
               {options.map((option) => (
-                <DropdownMenuItem>
+                <DropdownMenuItem key={option.path}>
                   <Link
                     href={option.path}
                     className="w-full flex items-center gap-2"
