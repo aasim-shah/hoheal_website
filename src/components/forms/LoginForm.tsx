@@ -5,18 +5,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { useTranslations } from "next-intl";
 import { H } from "@/components/ui/typography";
 import { useLogin } from "@/hooks/useLogin";
+import FormInput from "@/components/forms/fields/FormInput"; // Import the reusable input component
 
 const LoginForm = () => {
   const labelsT = useTranslations("form.labels");
@@ -53,43 +46,20 @@ const LoginForm = () => {
           {authT("login")}
         </H>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="space-y-2">
-              <div>
-                <FormLabel>{labelsT("email")}</FormLabel>
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input placeholder={placeholderT("email")} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <FormLabel>{labelsT("password")}</FormLabel>
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder={placeholderT("password")}
-                          type="password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormInput
+              name="email"
+              control={form.control}
+              label={labelsT("email")}
+              placeholder={placeholderT("email")}
+            />
+            <FormInput
+              name="password"
+              control={form.control}
+              label={labelsT("password")}
+              placeholder={placeholderT("password")}
+              type="password"
+            />
             <Button
               variant={"signature"}
               type="submit"

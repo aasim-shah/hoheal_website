@@ -8,11 +8,11 @@ interface CommonProps {
 }
 
 interface HeadingProps extends CommonProps {
-  size?: "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
+  size?: "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
 }
 
 interface TextProps extends CommonProps {
-  size?: "xs" | "sm" | "base" | "lg" | "xl";
+  size?: "xxs" | "xs" | "sm" | "base" | "lg" | "xl";
 }
 
 export const H = ({
@@ -24,6 +24,8 @@ export const H = ({
 }: HeadingProps) => {
   const textSizeClass = () => {
     switch (size) {
+      case "lg":
+        return "text-lg";
       case "xl":
         return "text-xl";
       case "2xl":
@@ -57,6 +59,8 @@ export const P = ({
 }: TextProps) => {
   const textSizeClass = () => {
     switch (size) {
+      case "xxs":
+        return "text-[10px]";
       case "xs":
         return "text-xs";
       case "sm":

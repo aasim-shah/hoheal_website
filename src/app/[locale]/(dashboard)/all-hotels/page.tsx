@@ -1,5 +1,5 @@
+import AllHotels from "./AllHotels";
+
 export default function AllHotelsPage() {
-  return (
-    <div>AllHotelsPage</div>
-  );
+  return <AllHotels />;
 }

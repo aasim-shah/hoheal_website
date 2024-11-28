@@ -6,7 +6,6 @@ import {
   FaServicestack,
   FaUsers,
   FaUserShield,
-  FaWallet,
 } from "react-icons/fa";
 import { MdFeedback } from "react-icons/md";
 import { RiDashboard3Line } from "react-icons/ri";
@@ -18,7 +17,6 @@ const menus = {
     { title: "services", path: "/services", icon: FaServicestack },
     { title: "chats", path: "/chats", icon: FaComments },
     { title: "feedback", path: "/feedback", icon: MdFeedback },
-    { title: "wallet", path: "/wallet", icon: FaWallet },
     { title: "vendor", path: "/vendor", icon: FaUsers },
     { title: "staff", path: "/staff", icon: AiOutlineTeam },
     {

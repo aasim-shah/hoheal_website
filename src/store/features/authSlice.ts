@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, Slice } from "@reduxjs/toolkit";
 
 const initialState = {
   token: null,
   role: null,
 };
 
-const authSlice = createSlice({
+const authSlice: Slice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -16,7 +16,7 @@ const authSlice = createSlice({
       state.role = action.payload;
     },
     handleLogout: (state) => {
-        console.log("logout");
+      console.log("logout");
       state.token = null;
       state.role = null;
       localStorage.removeItem("token");

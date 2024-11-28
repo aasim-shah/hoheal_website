@@ -6,8 +6,15 @@ export function value(input: any) {
   return input !== undefined && input !== null ? input : "-";
 }
 
-export const formatTableHeader = (header: string) => {
-  return header
+export const camelCaseToNormalCase = (key: string) => {
+  return key
     .replace(/([a-z])([A-Z])/g, "$1 $2")
     .replace(/^./, (str) => str.toUpperCase());
+};
+
+export const normalCaseToCamelCase = (key: string) => {
+  return key
+    .toLowerCase()
+    .replace(/ (\w)/g, (_, letter) => letter.toUpperCase())
+    .replace(/^./, (str) => str.toLowerCase());
 };

@@ -131,7 +131,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir="">
       <body
-        className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden`}
       >
         <Providers>
           <main className="">{children}</main>

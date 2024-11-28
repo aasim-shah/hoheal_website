@@ -35,12 +35,14 @@ const MyDialog = ({
     handleClick();
   };
   return (
-    <DialogContent className="sm:max-w-md">
+    <DialogContent>
       <DialogHeader>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
+        <DialogTitle className="capitalize text-start">{title}</DialogTitle>
+        <DialogDescription className="text-start">
+          {description}
+        </DialogDescription>
       </DialogHeader>
-      <DialogFooter>
+      <DialogFooter className="flex flex-col gap-2 sm:flex-auto">
         <DialogClose asChild>
           <Button variant="outline">{t("cancel")}</Button>
         </DialogClose>

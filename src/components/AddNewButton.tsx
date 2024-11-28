@@ -3,12 +3,17 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { SquarePlus } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
-type Title = "hotel" | "service" | "category" | "subcategory";
-
-const AddNewButton = ({ title }: { title: Title }) => {
+const AddNewButton = ({
+  title,
+  className,
+}: {
+  title: AddButtonTitle;
+  className?: string;
+}) => {
   const t = useTranslations("form.labels");
-  const routes: Record<Title, string> = {
+  const routes: Record<AddButtonTitle, string> = {
     hotel: "all-hotels",
     service: "services",
     category: "categories",
@@ -16,9 +21,9 @@ const AddNewButton = ({ title }: { title: Title }) => {
   };
 
   return (
-    <Link href={`/${routes[title]}/add`}>
-      <Button variant="signature" className="flex items-center gap-2">
-        <SquarePlus /> <span>{t("addNew", {title})}</span>
+    <Link href={`/${routes[title]}/add`} className={className}>
+      <Button variant="signature" className="flex items-center gap-2 w-full">
+        <SquarePlus /> <span>{t("addNew", { title })}</span>
       </Button>
     </Link>
   );

@@ -1,10 +1,12 @@
-import { ThemeProvider } from "@/providers/ThemeProvider";
+import AuthGuard from "@/components/AuthGuard";
 import TopLoader from "@/components/TopLoader";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
+import StoreProvider from "@/providers/StoreProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import StoreProvider from "@/providers/StoreProvider";
-import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
-import AuthGuard from "@/components/AuthGuard";
 
 const Providers = async ({ children }: { children: React.ReactNode }) => {
   const messages = await getMessages();
@@ -14,7 +16,12 @@ const Providers = async ({ children }: { children: React.ReactNode }) => {
       <StoreProvider>
         <NextIntlClientProvider messages={messages}>
           <ReactQueryClientProvider>
-            <AuthGuard>{children}</AuthGuard>
+            <TooltipProvider>
+              <AuthGuard>
+                {children}
+              </AuthGuard>
+              <Toaster />
+            </TooltipProvider>
           </ReactQueryClientProvider>
         </NextIntlClientProvider>
       </StoreProvider>

@@ -1,4 +1,5 @@
 "use client";
+
 import { NavUser } from "@/components/NavUser";
 import {
   Sidebar,
@@ -7,6 +8,7 @@ import {
   SidebarHeader,
   SidebarRail,
   SidebarSeparator,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -20,8 +22,9 @@ import getNavMenuByRole from "@/utils/navMenu";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const t = useTranslations("pages");
@@ -30,12 +33,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const menu = getNavMenuByRole(role);
 
   const locale = useLocale();
-  let pathname = usePathname();
-  pathname = pathname.split("/")[pathname.split("/").length - 1];
+  const pathname = usePathname();
+  const [currentPath, setCurrentPath] = useState(pathname);
+
+  const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
   const isMenuActive = (path: string) => {
-    return path === "/" ? pathname === locale : path === `/${pathname}`;
+    return path === "/" ? pathname === `/${locale}` : pathname.includes(path);
   };
+
+  useEffect(() => {
+    if (pathname !== currentPath) {
+      if (isMobile && openMobile) {
+        setOpenMobile(false);
+      }
+    }
+  }, [pathname, currentPath, isMobile, openMobile, setOpenMobile]);
 
   return (
     <Sidebar collapsible="icon" variant="sidebar" {...props}>

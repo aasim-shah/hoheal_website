@@ -5,8 +5,6 @@ import { routing } from "./i18n/routing";
 const intlMiddleware = createMiddleware(routing);
 
 export function middleware(req: NextRequest) {
-  console.log("Middleware locale:", req.nextUrl.locale);
-
   // const loginPage = req.nextUrl.pathname.includes("login");
   // const locale = req.nextUrl.locale || "en";
 
