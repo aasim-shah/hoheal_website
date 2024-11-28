@@ -51,6 +51,36 @@ export function NavUser() {
   };
 
   return (
+
+    <Dialog>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">{user.name}</span>
+                  <span className="truncate text-xs">{user.email}</span>
+                </div>
+                <ChevronUp className="ml-auto" />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              side="top"
+              className="w-[--radix-popper-anchor-width]"
+            >
+              {options.map((option) => (
+                <DropdownMenuItem key={option.path}>
+                  <Link
+                    href={option.path}
+                    className="w-full flex items-center gap-2"
     <>
       {auth?.userProfile && (
         <Dialog>
@@ -61,6 +91,7 @@ export function NavUser() {
                   <SidebarMenuButton
                     size="lg"
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage src={user.avatar} alt={user.name} />

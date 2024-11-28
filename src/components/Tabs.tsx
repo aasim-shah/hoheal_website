@@ -34,6 +34,7 @@ const Tabs = ({ tabData, selectedTab, handleTabClick }: Props) => {
           </div>
         ))}
       </div>
+
       <div className="md:hidden w-full">
         <Select>
           <SelectTrigger className="w-full">

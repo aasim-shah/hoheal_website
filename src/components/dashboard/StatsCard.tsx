@@ -1,7 +1,7 @@
 import { isLessChange } from "@/utils/reuseableMethods";
 
 const StatsCard: React.FC<StatsData> = ({ title, icon: Icon, data }) => {
-  let { total, change } = data;
+  const { total, change } = data;
 
   return (
     <div className="flex items-center bg-background rounded-lg p-4 shadow-md">

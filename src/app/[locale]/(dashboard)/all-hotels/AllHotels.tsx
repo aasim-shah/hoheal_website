@@ -21,7 +21,7 @@ const AllHotels = () => {
         {Array(10)
           .fill(0)
           .map((_, index) => (
-            <HotelCard />
+            <HotelCard key={index} />
           ))}
       </div>
     </div>

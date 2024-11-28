@@ -53,6 +53,7 @@ export default function ShowDetails({
                 <p>
                   <strong>Message:</strong> {selectedItem?.message}
                 </p>
+                s
                 <p>
                   <strong>Date:</strong>{" "}
                   {new Date(selectedItem?.date || "").toLocaleDateString()}

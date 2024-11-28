@@ -15,10 +15,15 @@ import useApi from "@/hooks/useApi";
 import { getReservationRequests } from "@/lib/api/department";
 import { useEffect, useState } from "react";
 import ShowDetails from "./showDetails";
+import TopBar from "@/components/TopBar";
+import Tabs from "@/components/Tabs";
 
 export default function CustomerDetailsTable() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const tabData = ["All", "pending", "completed", "assigned"];
+  const [selectedTab, setSelectedTab] = useState(tabData[0] || "");
 
   const handleOpenDialog = (item: any) => {
     setSelectedItem(item);
@@ -35,11 +40,21 @@ export default function CustomerDetailsTable() {
   const { data, loading, error, execute } = useApi(getReservationRequests);
 
   useEffect(() => {
-    execute("assigned");
-  }, []);
+    console.log({ selectedTab });
+    execute(selectedTab);
+  }, [selectedTab]);
 
   return (
     <>
+      {/* <TopBar addButtonTitle="hotel"> */}
+      <div className="my-5">
+        <Tabs
+          tabData={tabData}
+          selectedTab={selectedTab}
+          handleTabClick={setSelectedTab}
+        />
+      </div>
+      {/* </TopBar> */}
       <div className=" shadow-md  p-5 rounded-lg">
         {!data && error && (
           <div className="w-full text-red-500 flex justify-center items-center">
