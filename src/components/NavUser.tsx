@@ -1,5 +1,4 @@
 "use client";
-
 import { ChevronUp, CircleUserRound, Power, Settings } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -20,7 +19,6 @@ import { Dialog, DialogTrigger } from "./ui/dialog";
 import { handleLogout } from "@/store/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-
 export function NavUser() {
   const auth = useSelector((state: RootState) => state.auth);
   const { name, email, profilePicture } = auth?.userProfile || {};
@@ -31,7 +29,6 @@ export function NavUser() {
     email,
     avatar: profilePicture || "",
   };
-
   const options = [
     {
       title: t("account"),
@@ -44,43 +41,11 @@ export function NavUser() {
       icon: Settings,
     },
   ];
-
   const dispatch = useDispatch();
   const handleLogoutClick = () => {
     dispatch(handleLogout(auth));
   };
-
   return (
-
-    <Dialog>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton
-                size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              >
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
-                <ChevronUp className="ml-auto" />
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              side="top"
-              className="w-[--radix-popper-anchor-width]"
-            >
-              {options.map((option) => (
-                <DropdownMenuItem key={option.path}>
-                  <Link
-                    href={option.path}
-                    className="w-full flex items-center gap-2"
     <>
       {auth?.userProfile && (
         <Dialog>
@@ -91,7 +56,6 @@ export function NavUser() {
                   <SidebarMenuButton
                     size="lg"
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage src={user.avatar} alt={user.name} />
