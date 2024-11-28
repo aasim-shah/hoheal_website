@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaRegPaperPlane } from "react-icons/fa6";
 
 import { GrAttachment } from "react-icons/gr";
+import StartNewChat from "./newChatModel";
 
 interface User {
   _id: string;
@@ -49,6 +50,7 @@ export default function ChatDetail({
   const [inputMessage, setInputMessage] = useState<string>("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [chatDetails, setChatDetails] = useState<ChatDetails>({
     chatPartnerName: "",
@@ -146,11 +148,10 @@ export default function ChatDetail({
       } md:col-span-9 col-span-11 w-full  flex flex-col`}
     >
       {!data && error && (
-        <div className="w-full h-full flex justify-center items-center">
+        <div className="w-full  flex justify-center items-center">
           Something went wrong
         </div>
       )}
-
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-2">
           <Image
@@ -174,8 +175,7 @@ export default function ChatDetail({
           x
         </button>
       </div>
-
-      <div className="flex-1 h-[68vh] overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 h-[60vh] overflow-y-auto p-4 space-y-4">
         {messages.map((msg) => (
           <div
             key={msg._id}
@@ -221,7 +221,6 @@ export default function ChatDetail({
         ))}
         <div ref={messagesEndRef} />
       </div>
-
       {selectedImages.length > 0 && (
         <div className="flex gap-2 mb-2 flex-wrap">
           {selectedImages.map((file, index) => {
@@ -246,7 +245,6 @@ export default function ChatDetail({
           })}
         </div>
       )}
-
       {/* Input */}
       <div className=" p-2 rounded-md mx-auto w-11/12 dark:bg-gray-800 bg-gray-100 flex items-center">
         <form
