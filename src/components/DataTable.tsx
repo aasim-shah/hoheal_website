@@ -21,8 +21,10 @@ const DataTable = <T,>({ headers, data, renderRow }: DataTableProps<T>) => {
       {data && (
         <Table className="overflow-auto text-start h-full">
           <TableHeader>
-            <TableRow className="sticky top-0 z-40 bg-secondary capitalize hover:bg-muted">
-              {headers.map((header) => (
+
+            <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
+              {headers.map((header: string) => (
+
                 <TableHead key={header} className="font-bold">
                   {header}
                 </TableHead>

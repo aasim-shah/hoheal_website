@@ -4,7 +4,9 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: false
+  images: {
+    domains: ["upload.wikimedia.org", "192.168.18.121", "aeroin.net"],
+  },
 };
 
 export default withNextIntl(nextConfig);
