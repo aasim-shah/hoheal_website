@@ -2,9 +2,10 @@ import { ComboboxDemo } from "@/components/Combobox";
 import FormFileDropzone from "./FormFileDropzone";
 import FormInput from "./FormInput";
 import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export const CommonFields = ({ control }: { control: any }) => {
-  const { role } = useSelector((state: any) => state.auth);
+  const { role } = useSelector((state: RootState) => state.auth);
   return (
     <>
       {role === "superAdmin" && (

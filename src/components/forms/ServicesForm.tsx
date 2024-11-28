@@ -14,19 +14,42 @@ import RestaurantForm from "./RestaurantForm";
 import RoomServiceForm from "./RoomServiceForm";
 import RoomUpgradeForm from "./RoomUpgradeForm";
 import TechnicalServiceForm from "./TechnicalServiceForm";
-
-// items [{title, price, timing, availability}]
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const ServicesForm = () => {
   const { selectedService } = useSelector((state: RootState) => state.services);
+  const { userProfile } = useSelector((state: RootState) => state.auth);
+  const hotelId = userProfile?.hotel?._id;
   const category = selectedService?.category._id;
   const subCategory = selectedService?.subCategory?._id;
 
   const router = useRouter();
 
-  const formSchema = z.object({});
+  const formSchema = z.object({
+    hotel: z.string().min(1, "Hotel ID is required"),
+    title: z.string().min(1, "Title is required"),
+    description: z.string().min(1, "Description is required"),
+    roomType: z.string(),
+    features: z.array(z.string()),
+    checklist: z.array(z.string()),
+    menu: z.string().nullable(),
+    menuTitle: z.string().nullable(),
+    timing: z.array(z.string()),
+    menuItems: z.array(z.string()),
+    images: z.string().optional(),
+    icon: z.string().nullable(),
+    openingHours: z.array(z.string()),
+    menuType: z.string(),
+    reservation: z.string(),
+    schedule: z.object({
+      date: z.string(),
+      from: z.string(),
+      to: z.string(),
+    }),
+  });
+
   const defaultValues = {
-    hotel: "",
+    hotel: "", // default value for hotel
     title: "",
     description: "",
     roomType: "",
@@ -49,11 +72,14 @@ const ServicesForm = () => {
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
-    // resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  const { control, handleSubmit, reset, watch } = form;
+  const { control, setValue, handleSubmit, reset, watch } = form;
+
+  // Set the hotel field value
+  hotelId && setValue("hotel", hotelId);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log("Form Data: ", { ...data, category, subCategory });

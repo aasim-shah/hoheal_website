@@ -1,8 +1,14 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface AuthState {
+  token: string | null;
+  role: string | null;
+  userProfile: any;
+}
+const initialState: AuthState = {
   token: null,
   role: null,
+  userProfile: null,
 };
 
 const authSlice: Slice = createSlice({
@@ -15,14 +21,18 @@ const authSlice: Slice = createSlice({
     setRole: (state, action) => {
       state.role = action.payload;
     },
+    setUserProfile: (state, action) => {
+      state.userProfile = action.payload;
+    },
     handleLogout: (state) => {
-      console.log("logout");
       state.token = null;
       state.role = null;
+      state.userProfile = null;
       localStorage.removeItem("token");
     },
   },
 });
 
-export const { setToken, setRole, handleLogout } = authSlice.actions;
+export const { setToken, setRole, setUserProfile, handleLogout } =
+  authSlice.actions;
 export default authSlice.reducer;
