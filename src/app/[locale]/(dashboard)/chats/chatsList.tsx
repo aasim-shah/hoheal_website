@@ -6,9 +6,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { format, formatDistanceToNow } from "date-fns";
+import StartNewChat from "./newChatModel";
 interface ChatsListProps {
   setChatId: (id: string) => void;
   chatId: string;
+  role: string;
 }
 
 interface ChatList {
@@ -20,14 +22,20 @@ interface ChatList {
   lastMessageTime: "";
 }
 
-export default function ChatsList({ setChatId, chatId }: ChatsListProps) {
+export default function ChatsList({ setChatId, chatId, role }: ChatsListProps) {
   const [chats, setChats] = useState<ChatList[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { data, loading, error, execute } = useApi(getChatsList);
 
   useEffect(() => {
-    execute();
-  }, []);
+    if (role && role !== "") {
+      execute(role);
+    } else {
+      execute(role);
+    }
+    setChatId("");
+  }, [role]);
 
   useEffect(() => {
     if (data) {
@@ -38,7 +46,7 @@ export default function ChatsList({ setChatId, chatId }: ChatsListProps) {
 
   return (
     <div
-      className={`col-span-11 md:col-span-3  shadow-sm border-2 dark:border-gray-800 border-gray-100 rounded-lg p-4 ${
+      className={`col-span-11 md:col-span-3 h-[78vh]  shadow-sm border-2 dark:border-gray-800 border-gray-100 rounded-lg p-4 ${
         chatId === "" || chatId === null ? "block md:block" : "hidden md:block"
       }`}
     >
@@ -49,7 +57,10 @@ export default function ChatsList({ setChatId, chatId }: ChatsListProps) {
             12
           </span>
         </h2>
-        <button className="w-8 h-8  rounded-full flex items-center justify-center text-gray-600">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-8 h-8 bg-gray-200 dark:bg-gray-800   rounded-full flex items-center justify-center text-gray-600"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -66,7 +77,6 @@ export default function ChatsList({ setChatId, chatId }: ChatsListProps) {
           </svg>
         </button>
       </div>
-
       <div className="mb-4">
         <input
           type="text"
@@ -74,7 +84,6 @@ export default function ChatsList({ setChatId, chatId }: ChatsListProps) {
           className="w-full  border dark:border-gray-800 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
         />
       </div>
-
       <div className="space-y-2">
         {chats.map((chat) => (
           <div
@@ -109,6 +118,7 @@ export default function ChatsList({ setChatId, chatId }: ChatsListProps) {
           </div>
         ))}
       </div>
+      <StartNewChat isOpen={isOpen} setIsOpen={setIsOpen} />{" "}
     </div>
   );
 }
