@@ -31,7 +31,6 @@ const MyDialog = ({
 }) => {
   const t = useTranslations("common");
   const handleButton = () => {
-    console.log("clicked");
     handleClick();
   };
   return (

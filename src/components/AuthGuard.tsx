@@ -5,9 +5,12 @@ import { usePathname, useRouter } from "next/navigation";
 import getNavMenuByRole from "@/utils/navMenu";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
-import { setRole, setToken } from "@/store/features/authSlice";
+import { setRole, setToken, setUserProfile } from "@/store/features/authSlice";
+import useApi from "@/hooks/useApi";
+import { getUserData } from "@/lib/api/auth";
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+  const { data, error, loading, execute } = useApi(getUserData);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -75,6 +78,18 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     handleNavigation();
     setIsLoading(false);
   }, [dispatch, router, token, role]);
+
+  useEffect(() => {
+    if (token) {
+      execute();
+    }
+  }, [token, execute]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setUserProfile(data?.body?.user));
+    }
+  }, [data, dispatch]);
 
   return isLoading ? null : children;
 };
