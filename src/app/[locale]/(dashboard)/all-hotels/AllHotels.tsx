@@ -13,6 +13,7 @@ const AllHotels = () => {
   const { hotels, page, pagination, loading, error, status } = useSelector(
     (state: RootState) => state.hotels
   );
+  
   const dispatch = useDispatch();
   if (loading) {
     return <Loading />;

@@ -21,6 +21,8 @@ const Services = () => {
   const { services, page, pagination } = useSelector(
     (state: RootState) => state.services
   );
+  const { selectedService } = useSelector((state: RootState) => state.services);
+  const { category, subCategory } = selectedService || {};
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -25,6 +25,8 @@ const CategoryDropdown = () => {
     (state: RootState) => state.services
   );
 
+  console.log(selectedService);
+
   const [categories, setCategories] = useState<Category[] | []>([]);
 
   useEffect(() => {

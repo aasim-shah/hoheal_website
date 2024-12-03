@@ -59,7 +59,7 @@ export default function MyImage(props: Props) {
         }`}
         alt={alt}
         src={imageSrc}
-        onLoadingComplete={handleLoadingComplete}
+        onLoad={handleLoadingComplete}
         onError={handleError}
         {...rest}
       />

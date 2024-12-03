@@ -1,9 +1,10 @@
-import { createSlice, current, Slice } from "@reduxjs/toolkit";
+import { createSlice, Slice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
   error: null,
   hotels: [],
+  hotelId: null,
   status: "",
   page: 1,
   pagination: {
@@ -20,6 +21,9 @@ const hotelSlice: Slice = createSlice({
   reducers: {
     setHotels: (state, action) => {
       state.hotels = action.payload;
+    },
+    setHotelId: (state, action) => {
+      state.hotelId = action.payload;
     },
     changeStatus: (state, action) => {
       state.status = action.payload === "all" ? "" : action.payload;
@@ -41,6 +45,7 @@ const hotelSlice: Slice = createSlice({
 
 export const {
   setHotels,
+  setHotelId,
   changeStatus,
   setLoading,
   setError,

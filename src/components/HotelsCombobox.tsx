@@ -17,24 +17,32 @@ import {
 import useApi from "@/hooks/useApi";
 import { getAllHotels } from "@/lib/api/hotel";
 import { cn } from "@/lib/utils";
+import { setHotelId } from "@/store/features/hotelSlice";
+import { RootState } from "@/store/store";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import MyImage from "./MyImage";
 
 export function HotelsCombobox() {
   const { data, loading, error, execute } = useApi(getAllHotels);
+  const { hotelId } = useSelector((state: RootState) => state.hotels);
+  console.log(hotelId);
   const [hotels, setHotels] = useState<any[]>([]);
 
   const [open, setOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<any>({});
+  const dispatch = useDispatch();
 
   const { setValue } = useFormContext();
 
   const handleSelect = (id: string) => {
     setOpen(false);
     const selected = hotels.find((hotel: any) => hotel._id === id);
-    setSelectedHotel(selected || {});
+    setSelectedHotel(selected);
+    dispatch(setHotelId(id));
     setValue("hotel", id);
   };
 
@@ -50,6 +58,15 @@ export function HotelsCombobox() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (hotelId && hotels.length) {
+      const selected = hotels.find((hotel: any) => hotel._id === hotelId);
+      setSelectedHotel(selected || null);
+    }
+  }, [hotelId, hotels]);
+
+  console.log(selectedHotel);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="w-full" asChild>
@@ -60,12 +77,22 @@ export function HotelsCombobox() {
           className=" justify-between"
           disabled={loading}
         >
-          {loading
-            ? "Loading..."
-            : selectedHotel.email
-            ? hotels.find((hotel: any) => hotel.email === selectedHotel.email)
-                ?.name
-            : "Select hotel..."}
+          {loading ? (
+            "Loading..."
+          ) : selectedHotel ? (
+            <div className="flex items-center gap-2">
+              <MyImage
+                src={selectedHotel.logo}
+                alt={selectedHotel.name}
+                width={40}
+                height={40}
+                className="w-6 h-6 rounded-full object-cover"
+              />
+              <p className="font-semibold">{selectedHotel.name}</p>
+            </div>
+          ) : (
+            "Select Hotel"
+          )}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -84,8 +111,8 @@ export function HotelsCombobox() {
                   onSelect={handleSelect}
                   className="flex items-center justify-between gap-2"
                 >
-                  <Image
-                    src={hotel.logo || "/images/placeholder.png"}
+                  <MyImage
+                    src={hotel.logo}
                     alt={hotel.name}
                     width={40}
                     height={40}
