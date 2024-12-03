@@ -7,12 +7,13 @@ export default function StaffPage() {
     <div className="flex flex-col ">
       <div className=" my-10 flex items-center justify-center">
         <MyImage
-          classNames={"rounded-full"}
+          classNames="rounded-full"
           src={image}
           w={500}
           h={500}
-          containerClasses={"h-[18rem] rounded-full w-[18rem]"}
+          containerClasses="h-[18rem] rounded-full w-[18rem]"
         />
+        ;
       </div>
       <AddStaff />
     </div>

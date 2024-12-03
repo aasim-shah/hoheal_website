@@ -49,7 +49,7 @@ export default function CheckOut() {
       {/* Form */}
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          // onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 border rounded-lg p-4"
         >
           <div className="flex flex-wrap gap-5 justify-evenly">

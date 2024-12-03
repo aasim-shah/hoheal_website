@@ -22,7 +22,7 @@ const HotelCard = ({ hotel }: any) => {
   };
 
   return (
-    <Card className="p-4 flex flex-col gap-4">
+    <Card key={_id} className="p-4 flex flex-col gap-4">
       {/* Image and View Button */}
       <div className="flex justify-between items-start">
         <MyImage

@@ -1,7 +1,9 @@
 import request from "./request";
 
-export const getChatsList = async (): Promise<any> => {
-  const response = await request.get("/user/chats");
+export const getChatsList = async (role: string): Promise<any> => {
+  const response = await request.get(
+    `/user/chats${role && role !== "" ? `?role=${role}` : ""}`
+  );
   return response.data;
 };
 

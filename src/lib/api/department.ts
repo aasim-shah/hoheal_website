@@ -7,7 +7,7 @@ export const getStaffList = async (departmentId: string): Promise<any> => {
 export const getReservationRequests = async (status: string): Promise<any> => {
   const response = await request.get(
     `/department/reservations/list${
-      status && status !== "" ? `?status=${status}` : ""
+      status && status !== "All" ? `?status=${status}` : ""
     }`
   );
   return response.data.body;

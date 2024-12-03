@@ -1,5 +1,4 @@
 "use client";
-
 import { ChevronUp, CircleUserRound, Power, Settings } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -20,7 +19,6 @@ import { Dialog, DialogTrigger } from "./ui/dialog";
 import { handleLogout } from "@/store/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-
 export function NavUser() {
   const auth = useSelector((state: RootState) => state.auth);
   const { name, email, profilePicture } = auth?.userProfile || {};
@@ -31,7 +29,6 @@ export function NavUser() {
     email,
     avatar: profilePicture || "",
   };
-
   const options = [
     {
       title: t("account"),
@@ -44,12 +41,10 @@ export function NavUser() {
       icon: Settings,
     },
   ];
-
   const dispatch = useDispatch();
   const handleLogoutClick = () => {
     dispatch(handleLogout(auth));
   };
-
   return (
     <>
       {auth?.userProfile && (

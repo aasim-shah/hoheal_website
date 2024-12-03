@@ -35,19 +35,16 @@ const Tabs = ({ tabData, selectedTab, handleTabClick }: Props) => {
           </div>
         ))}
       </div>
+
       <div className="md:hidden w-full">
-        <Select>
+        <Select onValueChange={(value) => handleTabClick(value)}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder={selectedTab} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               {tabData.map((tab) => (
-                <SelectItem
-                  key={tab}
-                  value={tab}
-                  onClick={() => handleTabClick(tab)}
-                >
+                <SelectItem key={tab} value={tab}>
                   {tab}
                 </SelectItem>
               ))}

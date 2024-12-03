@@ -43,16 +43,16 @@ export default function AddStaff() {
     },
   });
 
-  function onSubmit(values) {
-    // Do something with the form values.
-    console.log(values); // Type-safe and validated
-  }
+  // function onSubmit(values) {
+  //   // Do something with the form values.
+  //   console.log(values); // Type-safe and validated
+  // }
 
   return (
     <div className="w-10/12 mx-auto">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          // onSubmit={form.handleSubmit(onSubmit)}
           className=" flex flex-col lg:flex-row  flex-wrap  my-10 items-center justify-between gap-5"
         >
           <div className="w-10/12  lg:w-5/12">

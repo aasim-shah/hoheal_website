@@ -7,7 +7,7 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { formatTableHeader } from "@/utils/reuseableMethods";
+import { camelCaseToNormalCase } from "@/utils/reuseableMethods";
 import { H } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import MyImage from "@/components/MyImage";
@@ -42,7 +42,7 @@ export default function StaffTable() {
             <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
               {headers.map((header: string) => (
                 <TableHead key={header} className="font-bold">
-                  {formatTableHeader(header)}
+                  {camelCaseToNormalCase(header)}
                 </TableHead>
               ))}
 
