@@ -28,8 +28,8 @@ const AllHotels = () => {
       </TopBar>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {hotels?.length > 0 &&
-          hotels.map((hotel: any, index: number) => (
-            <HotelCard hotel={hotel} />
+          hotels.map((hotel: any) => (
+            <HotelCard key={hotel._id} hotel={hotel} />
           ))}
       </div>
     </div>
