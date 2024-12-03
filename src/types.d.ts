@@ -23,9 +23,9 @@ interface StatsData {
 type AddButtonTitle = "hotel" | "service" | "category" | "subcategory";
 
 interface HotelStatsCard {
-  payment: string;
-  hotelType: string;
-  totalRooms: string | number;
+  type: string;
+  rooms: string;
+  suits: string;
   contractDuration: string;
 }
 

@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/authSlice";
-import serviceCategoryReducer from "./features/serviceCategorySlice";
+import serviceReducer from "./features/serviceSlice";
+import hotelReducer from "./features/hotelSlice";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    services: serviceCategoryReducer,
+    services: serviceReducer,
+    hotels: hotelReducer,
   },
 });
 

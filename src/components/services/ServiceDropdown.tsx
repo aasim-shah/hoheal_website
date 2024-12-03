@@ -12,7 +12,7 @@ import { getCategories } from "@/lib/api/formData";
 import {
   selectOption,
   toggleCategory,
-} from "@/store/features/serviceCategorySlice";
+} from "@/store/features/serviceSlice";
 import { RootState } from "@/store/store";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";

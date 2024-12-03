@@ -1,6 +1,14 @@
+import useApi from "@/hooks/useApi";
+import { getRoomTypes } from "@/lib/api/formData";
+import { useEffect, useState } from "react";
+import { useWatch } from "react-hook-form";
 import FormSelect from "./fields/FormSelect";
 import MultiSelect from "./fields/MultiSelect";
-import { CommonFields, ImageFields } from "./fields/SharedFields";
+import {
+  CommonFields,
+  ImageFields,
+  RoomServicesCommonFields,
+} from "./fields/SharedFields";
 
 const RoomUpgradeForm = ({ control }: { control: any }) => {
   const features = [
@@ -12,10 +20,26 @@ const RoomUpgradeForm = ({ control }: { control: any }) => {
     "Spa",
   ];
 
-  const options = [
-    { value: "room", label: "Room" },
-    { value: "suite", label: "Suite" },
-  ];
+  const fields = useWatch({ control });
+  const { hotel } = fields || {};
+
+  const { data, loading, error, execute } = useApi(getRoomTypes);
+
+  const [roomTypes, setRoomTypes] = useState([]);
+
+  useEffect(() => {
+    if (hotel) {
+      execute(hotel);
+    }
+  }, [execute, hotel]);
+
+  useEffect(() => {
+    if (data) {
+      if (data?.body) {
+        setRoomTypes(data.body);
+      }
+    }
+  }, [data]);
 
   return (
     <>
@@ -26,8 +50,11 @@ const RoomUpgradeForm = ({ control }: { control: any }) => {
         name="roomType"
         placeholder="Room Type"
         label="Room Type"
-        options={options}
+        options={roomTypes}
+        valueKey="_id"
+        labelKey="title"
       />
+      <RoomServicesCommonFields control={control} />
       <ImageFields control={control} />
     </>
   );

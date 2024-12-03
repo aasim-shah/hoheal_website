@@ -1,7 +1,5 @@
 "use client";
 
-import { Check, ChevronsUpDown } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -19,21 +17,24 @@ import {
 import useApi from "@/hooks/useApi";
 import { getAllHotels } from "@/lib/api/hotel";
 import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-export function ComboboxDemo() {
+export function HotelsCombobox() {
   const { data, loading, error, execute } = useApi(getAllHotels);
+  const [hotels, setHotels] = useState<any[]>([]);
+
   const [open, setOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<any>({});
-  const [hotels, setHotels] = useState<any>([]);
 
   const { setValue } = useFormContext();
 
-  const handleSelect = (id: any) => {
+  const handleSelect = (id: string) => {
     setOpen(false);
-    setSelectedHotel(hotels.find((hotel: any) => hotel._id === id));
+    const selected = hotels.find((hotel: any) => hotel._id === id);
+    setSelectedHotel(selected || {});
     setValue("hotel", id);
   };
 
@@ -43,7 +44,9 @@ export function ComboboxDemo() {
 
   useEffect(() => {
     if (data) {
-      setHotels(data.body?.hotels);
+      if (data?.body?.hotels) {
+        setHotels(data.body.hotels);
+      }
     }
   }, [data]);
 
@@ -82,7 +85,7 @@ export function ComboboxDemo() {
                   className="flex items-center justify-between gap-2"
                 >
                   <Image
-                    src={hotel.logo}
+                    src={hotel.logo || "/images/placeholder.png"}
                     alt={hotel.name}
                     width={40}
                     height={40}
@@ -97,7 +100,9 @@ export function ComboboxDemo() {
                   <Check
                     className={cn(
                       "ml-auto",
-                      hotel.email === hotel.email ? "opacity-100" : "opacity-0"
+                      hotel._id === selectedHotel._id
+                        ? "opacity-100"
+                        : "opacity-0"
                     )}
                   />
                 </CommandItem>

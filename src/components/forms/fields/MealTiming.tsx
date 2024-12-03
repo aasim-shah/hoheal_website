@@ -40,6 +40,11 @@ const MealTiming = ({ control }: { control: any }) => {
     remove(index);
     toast.success("Meal timing removed!");
   };
+
+  const menuTimingButtonTitle =
+    fields?.length > 0
+      ? `${fields?.length} Meal Timing/s Added`
+      : "Add Meal Timing";
   return (
     <Dialog>
       <div className="space-y-2">
@@ -48,7 +53,7 @@ const MealTiming = ({ control }: { control: any }) => {
         </Label>
         <DialogTrigger asChild>
           <Button variant={"secondary"} className="w-full">
-            Add Meal Timing
+            {menuTimingButtonTitle}
           </Button>
         </DialogTrigger>
         <DialogContent>

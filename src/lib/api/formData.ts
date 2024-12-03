@@ -22,7 +22,7 @@ export const getFeatures = async (page: number) => {
   }
 };
 
-export const getChecklist  = async () => {
+export const getChecklist = async () => {
   try {
     const response = await request.get("/admin/checklist", {
       headers: { requiresAuth: true },
@@ -31,4 +31,18 @@ export const getChecklist  = async () => {
   } catch (error) {
     throw error;
   }
-}
+};
+
+export const getRoomTypes = async (hotelId?: string) => {
+  try {
+    const response = await request.get(
+      `/hotel/accommodation/types/${hotelId}`,
+      {
+        headers: { requiresAuth: true },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

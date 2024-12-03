@@ -1,11 +1,21 @@
 import request from "./request";
 
-export const getAllHotels = async () => {
+export const getAllHotels = async (params: {
+  page?: number;
+  limit?: number;
+  status?: string;
+}) => {
   try {
-    const response = await request.get(`/admin/hotel`, {
-      headers: { requiresAuth: true },
-    });
-    return response.data;
+    // Destructure parameters and set defaults at the bottom
+    const { page = 1, limit = 20, status = "" } = params || {};
+
+    const response = await request.get(
+      `/admin/hotel?page=${page}&pageSize=${limit}&status=${status}`,
+      {
+        headers: { requiresAuth: true },
+      }
+    );
+    return response.data; // Ensure the structure of this is as expected.
   } catch (error) {
     throw error;
   }

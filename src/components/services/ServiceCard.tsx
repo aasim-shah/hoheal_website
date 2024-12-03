@@ -1,70 +1,36 @@
 "use client";
 
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ChevronRight, Edit, Trash } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import { H, P } from "../ui/typography";
-import { Dialog, DialogTrigger } from "../ui/dialog";
 import MyDialog from "../MyDialog";
+import MyImage from "../MyImage";
+import { Dialog, DialogTrigger } from "../ui/dialog";
+import { H } from "../ui/typography";
 
-const ServiceCard = () => {
-  const dummyServiceData: CommonServiceData = {
-    _id: "1",
-    title: "Technical Service",
-    description: "This is a description for the technical service.",
-    logo: "/images/dummy.png",
-    hotel: {
-      _id: "hotel1",
-      name: "Grand Hyatt Dubai",
-    },
-    category: {
-      _id: "cat1",
-      title: "Room",
-      hotel: "hotel1",
-      subCategories: [
-        {
-          _id: "subcat1",
-          title: "Room Upgrade",
-          image: "/images/dummy.png",
-          category: "cat1",
-          hotel: "hotel1",
-        },
-        {
-          _id: "subcat2",
-          title: "Room Service",
-          image: "/images/dummy.png",
-          category: "cat1",
-          hotel: "hotel1",
-        },
-      ],
-    },
-    subCategory: {
-      _id: "subcat1",
-      title: "Room Upgrade",
-      image: "/images/dummy.png",
-      category: "cat1",
-      hotel: "hotel1",
-    },
-  };
+const ServiceCard = ({ service }: any) => {
+  const { _id, title, description, logo, hotel, category, subCategory } =
+    service || {};
+
+  const { _id: hotelId, name: hotelName } = hotel || {};
+  const { _id: categoryId, title: categoryName } = category || {};
+  const { _id: subCategoryId, title: subCategoryName } = subCategory || {};
 
   return (
     <Dialog>
       <Card>
-        {/* Header Image */}
         <CardHeader className="relative p-0">
-          <Image
-            src={dummyServiceData.logo}
-            alt={dummyServiceData.title}
-            className="w-full h-48 object-cover rounded-t-lg"
+          <MyImage
+            src={logo}
+            alt={title}
+            containerClasses="w-full h-48 object-cover rounded-t-lg"
             width={400}
             height={200}
           />
-          {/* Action Icons */}
+
           <div className="absolute top-3 right-3 flex gap-2">
             <Link
-              href={`/services/${dummyServiceData._id}/edit`}
+              href={`/services/${_id}/edit`}
               passHref
               className="bg-white p-2 rounded-full shadow hover:bg-gray-200 transition"
             >
@@ -77,14 +43,12 @@ const ServiceCard = () => {
             </DialogTrigger>
           </div>
         </CardHeader>
-        {/* Content */}
+
         <CardContent className="text-xs p-4 space-y-2">
           <div className="flex justify-between items-center">
-            <p className="text-sm text-signature truncate">
-              {dummyServiceData.hotel.name}
-            </p>
+            <p className="text-sm text-signature truncate">{hotelName}</p>
             <Link
-              href={`/services/${dummyServiceData._id}`}
+              href={`/services/${_id}`}
               className="bg-signature text-white px-6 py-2 rounded-full hover:bg-signature-light text-sm"
             >
               View
@@ -93,15 +57,13 @@ const ServiceCard = () => {
 
           <div>
             <H size="lg" className="font-semibold truncate">
-              {dummyServiceData.title}
+              {title}
             </H>
-            <p className="text-muted-foreground">
-              {dummyServiceData.description}
-            </p>
+            <p className="text-muted-foreground">{description}</p>
           </div>
           <p className="flex items-center text-muted-foreground">
-            {dummyServiceData.category.title} <ChevronRight size={18} />
-            {dummyServiceData.subCategory.title}
+            {subCategoryName} <ChevronRight size={18} />
+            {categoryName}
           </p>
         </CardContent>
       </Card>

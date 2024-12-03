@@ -1,15 +1,16 @@
-import { useFieldArray, useWatch } from "react-hook-form";
 import {
   Dialog,
-  DialogTrigger,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
+import { useFieldArray, useWatch } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -17,13 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
 import { X } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import FormInput from "./FormInput";
 
 const MenuItems = ({ control }: { control: any }) => {
   const { menuTitle } = useWatch({ control });
@@ -31,12 +28,13 @@ const MenuItems = ({ control }: { control: any }) => {
     control,
     name: "menuItems",
   });
-  const { fields: timingFields } = useFieldArray({
+  const timingFields = useWatch({
     control,
     name: "timing",
   });
+
   const timingOptions = timingFields
-    ? timingFields.map((field: any) => field.timing)
+    ? timingFields.map((field: any) => field.title)
     : [];
 
   const initialValues = {
@@ -68,9 +66,14 @@ const MenuItems = ({ control }: { control: any }) => {
     toast.success("Menu item removed!");
   };
 
+  const menuItemButtonTitle =
+    fields?.length > 0
+      ? `${fields?.length} Meal Items/s Added`
+      : "Add Meal Items";
+
   return (
     <>
-      {(menuTitle !== "meals" || menuItem.timing) && (
+      {(menuTitle !== "meals" || timingOptions?.length > 0) && (
         <Dialog>
           <div className="space-y-2">
             <Label className="block text-sm font-medium text-muted-foreground">
@@ -78,7 +81,7 @@ const MenuItems = ({ control }: { control: any }) => {
             </Label>
             <DialogTrigger asChild>
               <Button variant={"secondary"} className="w-full">
-                Add Menu Items
+                {menuItemButtonTitle}
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -113,7 +116,7 @@ const MenuItems = ({ control }: { control: any }) => {
                         <SelectValue placeholder="Timing" />
                       </SelectTrigger>
                       <SelectContent>
-                        {timingOptions.map((item, index) => (
+                        {timingOptions.map((item: any, index: number) => (
                           <SelectItem key={index} value={item}>
                             {item}
                           </SelectItem>

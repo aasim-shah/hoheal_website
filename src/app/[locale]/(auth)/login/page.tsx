@@ -1,7 +1,6 @@
 import Image from "next/image";
 import LoginForm from "../../../../components/forms/LoginForm";
 import image from "/public/images/auth.png";
-import { H } from "@/components/ui/typography";
 
 const page = () => {
   return (
@@ -12,12 +11,7 @@ const page = () => {
       </div>
       {/* Image part */}
       <div className="hidden lg:block relative">
-        <Image
-          src={image}
-          alt="login"
-          priority
-          fill
-        />
+        <Image src={image} alt="login" priority fill />
       </div>
     </div>
   );

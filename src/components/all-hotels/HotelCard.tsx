@@ -1,28 +1,37 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import { Button } from "../ui/button";
-import HotelStatsCard from "./HotelStatsCard";
 import Link from "next/link";
+import HotelStatsCard from "./HotelStatsCard";
+import MyImage from "../MyImage";
 
 // HotelCard Component
-const HotelCard = () => {
+const HotelCard = ({ hotel }: any) => {
+  const { _id, name, description, logo, type, rooms, suits, periodOfContract } =
+    hotel;
+  const { from, to } = periodOfContract;
+  const contractDuration =
+    from && to
+      ? `${new Date(from).getFullYear()} - ${new Date(to).getFullYear()}`
+      : "-";
+
   const statsCardData: HotelStatsCard = {
-    payment: "$568 / Year",
-    hotelType: "5 stars",
-    totalRooms: "120",
-    contractDuration: "2025-2030",
+    type: type ? `${type} stars` : "-",
+    suits: suits ? suits : "-",
+    rooms: rooms ? rooms : "-",
+    contractDuration,
   };
-  const _id = 33;
+
   return (
     <Card className="p-4 flex flex-col gap-4">
       {/* Image and View Button */}
       <div className="flex justify-between items-start">
-        <Image
-          src="/images/dummy.png"
+        <MyImage
+          src={logo}
           alt="Beachfront Bliss"
-          width={200}
-          height={200}
-          className="h-20 w-20 object-cover rounded-full"
+          width={100}
+          height={100}
+          className="h-20 w-20"
+          containerClasses="h-20 w-20 rounded-full"
         />
         <Link
           href={`/all-hotels/${_id}`}
@@ -34,11 +43,9 @@ const HotelCard = () => {
 
       {/* Hotel Details */}
       <div>
-        <CardTitle className="text-lg font-semibold">
-          Beachfront Bliss
-        </CardTitle>
+        <CardTitle className="text-lg font-semibold">{name}</CardTitle>
         <CardDescription className="text-xs text-muted-foreground">
-          Discussion for management dashboard UI design
+          {description}
         </CardDescription>
       </div>
 

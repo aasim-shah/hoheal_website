@@ -16,7 +16,11 @@ const useApi = <T,>(apiFunction: ApiFunction<T>) => {
         setError(null);
       } catch (error: any) {
         console.log(error);
-        setError(error?.response?.data?.message || error.message);
+        setError(
+          error?.response?.data?.message || error?.response?.data?.error ||
+            error.message ||
+            "Something went wrong!"
+        );
       } finally {
         setLoading(false);
       }

@@ -3,25 +3,33 @@
 import HotelCard from "@/components/all-hotels/HotelCard";
 import Tabs from "@/components/Tabs";
 import TopBar from "@/components/TopBar";
-import { useState } from "react";
+import { changeStatus } from "@/store/features/hotelSlice";
+import { RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../../loading";
 
 const AllHotels = () => {
-  const tabData = ["active", "pending", "rejected"];
-  const [selectedTab, setSelectedTab] = useState(tabData[0] || "");
+  const tabData = ["all", "active", "pending", "rejected"];
+  const { hotels, page, pagination, loading, error, status } = useSelector(
+    (state: RootState) => state.hotels
+  );
+  const dispatch = useDispatch();
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="space-y-8">
       <TopBar addButtonTitle="hotel">
         <Tabs
           tabData={tabData}
-          selectedTab={selectedTab}
-          handleTabClick={setSelectedTab}
+          selectedTab={status}
+          handleTabClick={(status) => dispatch(changeStatus(status))}
         />
       </TopBar>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        {Array(10)
-          .fill(0)
-          .map((_, index) => (
-            <HotelCard />
+        {hotels?.length > 0 &&
+          hotels.map((hotel: any, index: number) => (
+            <HotelCard hotel={hotel} />
           ))}
       </div>
     </div>

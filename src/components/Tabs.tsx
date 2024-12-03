@@ -14,8 +14,9 @@ interface Props {
 }
 
 const Tabs = ({ tabData, selectedTab, handleTabClick }: Props) => {
+  const active = selectedTab === "" ? tabData[0] : selectedTab;
   const activeTab = (tab: string) => {
-    return tab === selectedTab
+    return tab === active
       ? "bg-signature text-white"
       : "hover:bg-signature hover:text-white text-signature";
   };

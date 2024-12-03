@@ -13,7 +13,9 @@ interface FormSelectProps {
   control: Control<any>;
   label: string;
   placeholder: string;
-  options: { value: string; label: string }[];
+  options: any[];
+  valueKey: string;
+  labelKey: string;
 }
 
 const FormSelect: React.FC<FormSelectProps> = ({
@@ -22,6 +24,8 @@ const FormSelect: React.FC<FormSelectProps> = ({
   label,
   placeholder,
   options,
+  valueKey,
+  labelKey,
 }) => {
   const {
     field,
@@ -39,8 +43,8 @@ const FormSelect: React.FC<FormSelectProps> = ({
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
+            <SelectItem key={option[valueKey]} value={option[valueKey]}>
+              {option[labelKey]}
             </SelectItem>
           ))}
         </SelectContent>
