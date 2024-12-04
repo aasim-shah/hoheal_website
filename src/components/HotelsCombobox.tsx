@@ -63,8 +63,6 @@ export function HotelsCombobox() {
     }
   }, [hotelId, hotels]);
 
-  console.log(selectedHotel);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="w-full" asChild>
@@ -77,14 +75,15 @@ export function HotelsCombobox() {
         >
           {loading ? (
             "Loading..."
-          ) : selectedHotel ? (
+          ) : selectedHotel?.name ? (
             <div className="flex items-center gap-2">
               <MyImage
                 src={selectedHotel.logo}
                 alt={selectedHotel.name}
                 width={40}
                 height={40}
-                className="w-6 h-6 rounded-full object-cover"
+                className="w-6 h-6 object-cover"
+                containerClasses="w-full h-full rounded-full"
               />
               <p className="font-semibold">{selectedHotel.name}</p>
             </div>
@@ -114,7 +113,8 @@ export function HotelsCombobox() {
                     alt={hotel.name}
                     width={40}
                     height={40}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-full h-full object-cover"
+                    containerClasses="w-6 h-6 rounded-full"
                   />
                   <div>
                     <p className="text-sm font-semibold">{hotel.name}</p>

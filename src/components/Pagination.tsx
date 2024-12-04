@@ -48,7 +48,7 @@ export default function Pagination({ pagination, page, changePage }: Props) {
   const maxPageNum = 5;
   const pageNumLimit = Math.floor(maxPageNum / 2);
 
-  let activePages = pageNumbers.slice(
+  const activePages = pageNumbers.slice(
     Math.max(0, page - 1 - pageNumLimit),
     Math.min(page - 1 + pageNumLimit + 1, pageNumbers.length)
   );
