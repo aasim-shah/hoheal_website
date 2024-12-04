@@ -5,13 +5,13 @@ import { FaUser } from "react-icons/fa";
 const HotelStatsCard = ({
   type,
   rooms,
-  suits,
+  suites,
   contractDuration,
 }: HotelStatsCard) => {
   const heading = [
     { key: "hotelType", value: type, icon: BiSolidBriefcase },
     { key: "totalRooms", value: rooms, icon: FaUser },
-    { key: "totalSuits", value: suits, icon: FaUser },
+    { key: "totalSuites", value: suites, icon: FaUser },
     { key: "contractDuration", value: contractDuration, icon: FaUser },
   ];
 

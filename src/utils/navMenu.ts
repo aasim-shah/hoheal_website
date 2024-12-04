@@ -29,7 +29,6 @@ const menus = {
   hotelAdmin: [
     { title: "dashboard", path: "/", icon: RiDashboard3Line },
     { title: "services", path: "/services", icon: FaServicestack },
-    { title: "activities", path: "/activities", icon: Grid2x2 },
     { title: "chats", path: "/chats", icon: FaComments },
     { title: "feedback", path: "/feedback", icon: MdFeedback },
     { title: "vendor", path: "/vendor", icon: FaUsers },
@@ -44,7 +43,6 @@ const menus = {
   hotelManager: [
     { title: "dashboard", path: "/", icon: RiDashboard3Line },
     { title: "services", path: "/services", icon: FaServicestack },
-    { title: "activities", path: "/activities", icon: Grid2x2 },
     { title: "chats", path: "/chats", icon: FaComments },
     { title: "feedback", path: "/feedback", icon: MdFeedback },
     { title: "vendor", path: "/vendor", icon: FaUsers },

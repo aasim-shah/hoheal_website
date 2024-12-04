@@ -21,6 +21,21 @@ export const getAllHotels = async (params: {
   }
 };
 
+export const getHotelById = async (id: string) => {
+  try {
+    if (!id) {
+      throw new Error("Invalid hotel id");
+    }
+
+    const response = await request.get(`/admin/hotel/details/${id}`, {
+      headers: { requiresAuth: true },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addHotel = async (hotelData: any): Promise<any> => {
   try {
     const response = await request.post("/admin/hotel/new", hotelData, {

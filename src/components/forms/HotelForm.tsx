@@ -46,14 +46,15 @@ const HotelForm = () => {
     ownerProfilePicture: undefined,
   };
 
-  const form = useForm<z.infer<typeof hotelSchema>>({
-    resolver: zodResolver(hotelSchema),
+  const form = useForm({
+    // resolver: zodResolver(hotelSchema),
     defaultValues,
   });
 
   const { control, handleSubmit, reset } = form;
 
   const onSubmit = async (values: any) => {
+    console.log(values)
     try {
       const formData = new FormData();
       appendFormData(formData, values);
@@ -67,8 +68,8 @@ const HotelForm = () => {
     if (data) {
       if (data.success) {
         toast.success(data.body || "Hotel added successfully.");
-        reset();
-        router.push("/all-hotels");
+        // reset();
+        // router.push("/all-hotels");
       } else {
         toast.error(data.error || "An error occurred while adding the hotel.");
       }

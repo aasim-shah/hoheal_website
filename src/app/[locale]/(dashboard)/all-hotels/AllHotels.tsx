@@ -9,13 +9,55 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../loading";
 import Pagination from "@/components/Pagination";
 
+import useApi from "@/hooks/useApi";
+import { getAllHotels } from "@/lib/api/hotel";
+import {
+  changePagination,
+  setError,
+  setHotels,
+  setLoading,
+} from "@/store/features/hotelSlice";
+import { useEffect } from "react";
+
+const tabData = ["all", "active", "pending", "rejected"];
+
 const AllHotels = () => {
-  const tabData = ["all", "active", "pending", "rejected"];
-  const { hotels, page, pagination, loading, error, status } = useSelector(
+  const dispatch = useDispatch();
+  const { data, loading, error, execute } = useApi(getAllHotels);
+  const { hotels, page, pagination, status } = useSelector(
     (state: RootState) => state.hotels
   );
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    execute({ page, status });
+  }, [execute, page, status]);
+
+  useEffect(() => {
+    dispatch(setLoading(loading));
+  }, [loading, dispatch]);
+
+  useEffect(() => {
+    if (data?.success) {
+      dispatch(setHotels(data?.body?.hotels || []));
+      dispatch(
+        changePagination({
+          totalPages: data?.body?.totalPages,
+          currentPage: data?.body?.currentPage,
+          pageSize: data?.body?.pageSize,
+          totalCount: data?.body?.totalCount,
+        })
+      );
+      dispatch(setError(null));
+      dispatch(setLoading(false));
+    }
+  }, [data, dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setError(error));
+    }
+  }, [error, dispatch]);
+
   const handlePageChange = (page: number) => {
     dispatch(changePage(page));
   };

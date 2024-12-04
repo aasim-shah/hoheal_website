@@ -1,13 +1,19 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
 import Link from "next/link";
-import HotelStatsCard from "./HotelStatsCard";
 import MyImage from "../MyImage";
+import HotelStatsCard from "./HotelStatsCard";
 
-// HotelCard Component
 const HotelCard = ({ hotel }: any) => {
-  const { _id, name, description, logo, type, rooms, suits, periodOfContract } =
-    hotel;
+  const {
+    _id,
+    name,
+    description,
+    logo,
+    type,
+    rooms,
+    suites,
+    periodOfContract,
+  } = hotel;
   const { from, to } = periodOfContract;
   const contractDuration =
     from && to
@@ -16,7 +22,7 @@ const HotelCard = ({ hotel }: any) => {
 
   const statsCardData: HotelStatsCard = {
     type: type ? `${type} stars` : "-",
-    suits: suits ? suits : "-",
+    suites: suites ? suites : "-",
     rooms: rooms ? rooms : "-",
     contractDuration,
   };
