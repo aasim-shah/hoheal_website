@@ -69,3 +69,9 @@ interface Item {
   timing?: string;
   availability: string;
 }
+
+interface Pagination {
+  totalPages: number;
+  currentPage: number;
+  total: number;
+}

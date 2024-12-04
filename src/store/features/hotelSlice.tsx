@@ -1,6 +1,20 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface InitialState {
+  loading: boolean;
+  error: string | null;
+  hotels: [];
+  hotelId: string | null;
+  status: string;
+  page: number;
+  pagination: {
+    currentPage: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+const initialState: InitialState = {
   loading: false,
   error: null,
   hotels: [],
@@ -9,7 +23,6 @@ const initialState = {
   page: 1,
   pagination: {
     currentPage: 1,
-    limit: 10,
     total: 0,
     totalPages: 1,
   },
@@ -40,6 +53,7 @@ const hotelSlice: Slice = createSlice({
     changePagination: (state, action) => {
       state.pagination = action.payload;
     },
+    resetHotels: (state) => {return initialState},
   },
 });
 
@@ -51,5 +65,6 @@ export const {
   setError,
   changePage,
   changePagination,
+  resetHotels,
 } = hotelSlice.actions;
 export default hotelSlice.reducer;

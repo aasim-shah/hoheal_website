@@ -15,6 +15,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 export default function MyImage(props: Props) {
+  const placeHolderImage = "/images/placeholder.png";
   const {
     containerClasses = "",
     w = 200,
@@ -26,39 +27,38 @@ export default function MyImage(props: Props) {
   } = props;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  const imageSrc =
-    error || !src
-      ? "/images/placeholder.png"
-      : src.startsWith("http")
-      ? src
-      : baseUrl + src;
+  const imageSrc = !src
+    ? placeHolderImage
+    : src.startsWith("http")
+    ? src
+    : baseUrl + src;
+
+  const [image, setImage] = useState(imageSrc);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
   };
 
   const handleError = () => {
-    setError(true);
+    setImage(placeHolderImage);
   };
 
   return (
     <div className={cn("overflow-hidden", containerClasses)}>
-      {isLoading && !error && (
+      {isLoading && (
         <div className="w-full h-full flex justify-center items-center bg-secondary rounded-md">
           <div className="w-5 h-5 border-4 border-t-transparent border-signature-light border-solid rounded-full animate-spin"></div>
         </div>
       )}
 
       <Image
+        key={image}
         width={w as any}
         height={h as any}
-        className={`w-full h-full object-cover ${classNames} ${
-          isLoading ? "hidden" : ""
-        }`}
+        className={`w-full h-full object-cover ${classNames}`}
+        src={image}
         alt={alt}
-        src={imageSrc}
         onLoad={handleLoadingComplete}
         onError={handleError}
         {...rest}

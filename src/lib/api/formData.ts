@@ -1,8 +1,10 @@
 import request from "./request";
 
-export const getCategories = async () => {
+export const getCategories = async (hotel?: string) => {
+  let endpoint = `/admin/categoriesList`;
+  if (hotel) endpoint += `?hotel=${hotel}`;
   try {
-    const response = await request.get("/admin/categoriesList", {
+    const response = await request.get(endpoint, {
       headers: { requiresAuth: true },
     });
     return response.data;

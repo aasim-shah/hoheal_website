@@ -1,11 +1,13 @@
 "use client";
 
+import Pagination from "@/components/Pagination";
 import TopBar from "@/components/TopBar";
 import ServiceCard from "@/components/services/ServiceCard";
 import CategoryDropdown from "@/components/services/ServiceDropdown";
 import useApi from "@/hooks/useApi";
 import { getAllServices } from "@/lib/api/service";
 import {
+  changePage,
   changePagination,
   setError,
   setLoading,
@@ -17,17 +19,25 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../loading";
 
 const Services = () => {
+  const dispatch = useDispatch();
   const { data, loading, error, execute } = useApi(getAllServices);
   const { services, page, pagination } = useSelector(
     (state: RootState) => state.services
   );
+
+  const handlePageChange = (page: number) => {
+    dispatch(changePage(page));
+  };
+
   const { selectedService } = useSelector((state: RootState) => state.services);
-  const { category, subCategory } = selectedService || {};
-  const dispatch = useDispatch();
+
+  const category = selectedService?.category?._id;
+  const subCategory = selectedService?.subCategory?._id;
+  const hotel = useSelector((state: RootState) => state?.hotels?.hotelId);
 
   useEffect(() => {
-    execute({ page });
-  }, [execute, page]);
+    execute({ page, category, subCategory, hotel });
+  }, [execute, page, category, subCategory, hotel]);
 
   useEffect(() => {
     dispatch(setLoading(loading));
@@ -69,6 +79,11 @@ const Services = () => {
             <ServiceCard service={service} key={service?._id} />
           ))}
       </div>
+      <Pagination
+        page={page}
+        pagination={pagination}
+        changePage={handlePageChange}
+      />
     </div>
   );
 };

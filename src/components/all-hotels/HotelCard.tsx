@@ -42,14 +42,15 @@ const HotelCard = ({ hotel }: any) => {
       </div>
 
       {/* Hotel Details */}
-      <div>
-        <CardTitle className="text-lg font-semibold">{name}</CardTitle>
-        <CardDescription className="text-xs text-muted-foreground">
-          {description}
-        </CardDescription>
+      <div className="flex flex-col justify-between h-full">
+        <div>
+          <CardTitle className="text-lg font-semibold">{name}</CardTitle>
+          <CardDescription className="text-xs text-muted-foreground">
+            {description}
+          </CardDescription>
+        </div>
+        <HotelStatsCard {...statsCardData} />
       </div>
-
-      <HotelStatsCard {...statsCardData} />
     </Card>
   );
 };

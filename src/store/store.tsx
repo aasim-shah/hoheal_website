@@ -11,6 +11,8 @@ const store = configureStore({
   },
 });
 
+export const resetStore = () => store.dispatch({ type: "RESET" });
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

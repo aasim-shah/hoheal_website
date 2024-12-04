@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRole, setToken, setUserProfile } from "@/store/features/authSlice";
 import useApi from "@/hooks/useApi";
 import { getUserData } from "@/lib/api/auth";
+import { setHotelId } from "@/store/features/hotelSlice";
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { data, error, loading, execute } = useApi(getUserData);
@@ -88,6 +89,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (data) {
       dispatch(setUserProfile(data?.body?.user));
+      dispatch(setHotelId(data?.body?.user?.hotel?._id));
     }
   }, [data, dispatch]);
 

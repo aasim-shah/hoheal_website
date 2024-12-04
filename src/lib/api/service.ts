@@ -1,14 +1,15 @@
+import { requestDataLimit } from "@/constants";
 import request from "./request";
 
 export const getAllServices = async (params: {
   page?: number;
-  limit?: number;
   hotel?: string;
   category?: string;
   subCategory?: string;
 }) => {
   try {
-    const { page = 1, limit = 20, hotel, category, subCategory } = params || {};
+    const { page = 1, hotel, category, subCategory } = params || {};
+    const limit = requestDataLimit;
     let endpoint = `/admin/service/list?page=${page}&pageSize=${limit}`;
     if (hotel) endpoint += `&hotel=${hotel}`;
     if (category) endpoint += `&category=${category}`;

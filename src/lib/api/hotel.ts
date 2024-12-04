@@ -1,13 +1,13 @@
+import { requestDataLimit } from "@/constants";
 import request from "./request";
 
 export const getAllHotels = async (params: {
   page?: number;
-  limit?: number;
   status?: string;
 }) => {
   try {
-    // Destructure parameters and set defaults at the bottom
-    const { page = 1, limit = 20, status = "" } = params || {};
+    const { page = 1, status = "" } = params || {};
+    const limit = requestDataLimit;
 
     const response = await request.get(
       `/admin/hotel?page=${page}&pageSize=${limit}&status=${status}`,
@@ -15,7 +15,7 @@ export const getAllHotels = async (params: {
         headers: { requiresAuth: true },
       }
     );
-    return response.data; // Ensure the structure of this is as expected.
+    return response.data;
   } catch (error) {
     throw error;
   }

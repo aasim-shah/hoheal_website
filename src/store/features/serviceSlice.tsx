@@ -6,7 +6,7 @@ interface SelectedService {
   subCategory?: SubCategory;
 }
 
-interface CategoryState {
+interface InitialState {
   expandedCategory: string | null;
   selectedService: SelectedService | null;
   loading: boolean;
@@ -15,13 +15,12 @@ interface CategoryState {
   page: number;
   pagination: {
     currentPage: number;
-    limit: number;
     total: number;
     totalPages: number;
   };
 }
 
-const initialState: CategoryState = {
+const initialState: InitialState = {
   expandedCategory: null,
   selectedService: null,
   loading: false,
@@ -30,7 +29,6 @@ const initialState: CategoryState = {
   page: 1,
   pagination: {
     currentPage: 1,
-    limit: 10,
     total: 0,
     totalPages: 1,
   },
@@ -75,6 +73,7 @@ const serviceSlice = createSlice({
     changePagination: (state, action) => {
       state.pagination = action.payload;
     },
+    resetServices: () => initialState,
   },
 });
 
@@ -86,6 +85,7 @@ export const {
   setError,
   changePage,
   changePagination,
+  resetServices,
 } = serviceSlice.actions;
 
 export default serviceSlice.reducer;

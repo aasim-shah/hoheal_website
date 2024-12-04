@@ -31,11 +31,9 @@ export function HotelsCombobox() {
   const { hotelId } = useSelector((state: RootState) => state.hotels);
   console.log(hotelId);
   const [hotels, setHotels] = useState<any[]>([]);
-
   const [open, setOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<any>({});
   const dispatch = useDispatch();
-
   const { setValue } = useFormContext();
 
   const handleSelect = (id: string) => {
