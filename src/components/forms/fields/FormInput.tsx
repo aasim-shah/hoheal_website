@@ -8,6 +8,7 @@ interface FormInputProps {
   label?: string;
   placeholder?: string;
   type?: string;
+  disabled?: boolean;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -15,6 +16,7 @@ const FormInput: React.FC<FormInputProps> = ({
   control,
   label,
   placeholder,
+  disabled,
   type = "text",
 }) => {
   const {
@@ -32,6 +34,7 @@ const FormInput: React.FC<FormInputProps> = ({
       <Input
         {...field}
         type={type}
+        disabled={disabled}
         placeholder={placeholder}
         className={`bg-secondary/50 ${
           error ? "border-red-500 focus:ring-red-500" : ""

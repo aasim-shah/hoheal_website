@@ -1,29 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+import { checkOut } from "@/lib/api/hotel";
+import useApi from "@/hooks/useApi";
+import { toast } from "sonner";
+import FormInput from "@/components/forms/fields/FormInput";
 
+// Define the validation schema
 const formSchema = z.object({
   idCardNumber: z
     .string()
-    .min(2, { message: "ID card number must be at least 2 characters." }),
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  roomNumber: z.string(),
-  roomType: z.string().min(1, { message: "Please select a room type." }),
+    .min(10, { message: "ID card number must be at least 2 characters." }),
+  email: z.string().min(2, { message: "Email must be at least 2 characters." }),
 });
 
 export default function CheckOut() {
@@ -31,67 +26,54 @@ export default function CheckOut() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       idCardNumber: "",
-      name: "",
-
-      roomNumber: "",
+      email: "",
     },
   });
 
   const labelsT = useTranslations("form.labels");
   const placeholderT = useTranslations("form.placeholders");
 
+  const { data, loading, error, execute } = useApi(checkOut);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
+    execute({
+      idCardNumber: values.idCardNumber,
+      email: values.email,
+    });
   }
+
+  useEffect(() => {
+    if (data && data.success) {
+      toast.success("User Checkout !");
+    }
+  }, [data]);
 
   return (
     <div className="w-10/12 mx-auto">
       {/* Form */}
       <Form {...form}>
         <form
-          // onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 border rounded-lg p-4"
         >
           <div className="flex flex-wrap gap-5 justify-evenly">
-            {/* ID Card Number */}
+            {/* Name Field */}
             <div className="w-full lg:w-5/12">
-              <FormField
+              <FormInput
+                name="email"
                 control={form.control}
-                name="idCardNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{labelsT("idCardNumber")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="bg-gray-100 dark:bg-gray-800 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                        placeholder={placeholderT("idCardNumber")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label={labelsT("email")}
+                placeholder={placeholderT("email")}
               />
             </div>
 
-            {/* Room Number */}
+            {/* ID Card Number */}
             <div className="w-full lg:w-5/12">
-              <FormField
+              <FormInput
+                name="idCardNumber"
                 control={form.control}
-                name="roomNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{labelsT("roomNumber")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="bg-gray-100 dark:bg-gray-800 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                        placeholder={placeholderT("roomNumber")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label={labelsT("idCardNumber")}
+                placeholder={placeholderT("idCardNumber")}
               />
             </div>
           </div>

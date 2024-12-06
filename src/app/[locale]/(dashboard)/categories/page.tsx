@@ -1,9 +1,9 @@
-import CustomersTable from "./customersTable";
+import CategoriesTable from "./categoriesTable";
 
 export default function CustomersPage() {
   return (
     <div className="w-11/12 mx-auto">
-      <CustomersTable />
+      <CategoriesTable />
     </div>
   );
 }

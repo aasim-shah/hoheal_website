@@ -12,72 +12,92 @@ import { H } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import MyImage from "@/components/MyImage";
 import { IoMdTrash } from "react-icons/io";
+import { useState, useEffect } from "react";
 import useApi from "@/hooks/useApi";
 import { getStaffList } from "@/lib/api/department";
-import { useEffect } from "react";
+import ViewStaff from "./viewStaff";
 
 export default function StaffTable() {
-  const headers = ["Profile", "Name", "Email", "Department"];
+  const headers = ["Profile", "Name", "Email", "Role"];
 
   const { data, loading, error, execute } = useApi(getStaffList);
-
-  console.log({ data });
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState(null);
 
   useEffect(() => {
     execute("6729bd3e5a9f963581db7890");
   }, []);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log({ data });
-  //     setChats(data.body.chats);
-  //   }
-  // }, [data]);
+  const handleView = (staff: any) => {
+    console.log({ staff });
+    setSelectedStaff(staff);
+    setModalOpen(true);
+  };
+
+  // const handleUpdate = (updatedStaff: any) => {
+  //   console.log("Updated Staff:", updatedStaff);
+  //   setModalOpen(false);
+  //   // execute("6729bd3e5a9f963581db7890");
+  // };
 
   return (
-    <div className=" border-2 shadow-sm border-gray-100   p-5 rounded-lg">
+    <div className="border-2 shadow-sm border-gray-100 p-5 rounded-lg">
       {data && data.employees && data.employees.length > 0 ? (
-        <Table className="overflow-auto text-start h-full">
-          <TableHeader>
-            <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
-              {headers.map((header: string) => (
-                <TableHead key={header} className="font-bold">
-                  {camelCaseToNormalCase(header)}
-                </TableHead>
-              ))}
-
-              <TableHead className="text-center">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.employees.map((doc: (typeof data)[0]) => (
-              <TableRow key={doc._id}>
-                <TableCell>
-                  <MyImage
-                    classNames={"rounded-full"}
-                    containerClasses={"w-12 rounded-full h-12"}
-                    src={doc.user.profilePicture}
-                    w={50}
-                    h={50}
-                  />
-                </TableCell>
-                <TableCell>{doc.user.name}</TableCell>
-                <TableCell>{doc.user.email}</TableCell>
-                <TableCell>{doc.role.title}</TableCell>
-
-                <TableCell className="text-center">
-                  <Button size="sm" variant={"outline"}>
-                    <IoMdTrash color="red" size={20} />
-                  </Button>
-                </TableCell>
+        <>
+          <Table className="overflow-auto text-start h-full">
+            <TableHeader>
+              <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
+                {headers.map((header: string) => (
+                  <TableHead key={header} className="font-bold">
+                    {camelCaseToNormalCase(header)}
+                  </TableHead>
+                ))}
+                <TableHead className="text-center">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.employees.map((doc: any) => (
+                <TableRow key={doc._id}>
+                  <TableCell>
+                    <MyImage
+                      classNames={"rounded-full"}
+                      containerClasses={"w-12 rounded-full h-12"}
+                      src={doc.user.profilePicture}
+                      w={50}
+                      h={50}
+                    />
+                  </TableCell>
+                  <TableCell>{doc.user.name}</TableCell>
+                  <TableCell>{doc.user.email}</TableCell>
+                  <TableCell>{doc.role.title}</TableCell>
+                  <TableCell className="justify-center items-center flex gap-2">
+                    <Button
+                      size="sm"
+                      variant={"outline"}
+                      onClick={() => handleView(doc)}
+                    >
+                      View
+                    </Button>
+                    <Button size="sm" variant={"outline"}>
+                      <IoMdTrash color="red" size={20} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          {selectedStaff && (
+            <ViewStaff
+              isOpen={isModalOpen}
+              setIsOpen={setModalOpen}
+              selectedStaff={selectedStaff}
+            />
+          )}
+        </>
       ) : (
         <H
           size="3xl"
-          className="text-center text-muted h-[85vh] flex items-center justify-center"
+          className="text-center text-muted flex items-center justify-center"
         >
           No data found
         </H>

@@ -5,7 +5,7 @@ import image from "/public/images/auth.png";
 export default function StaffPage() {
   return (
     <div className="flex flex-col ">
-      <div className=" my-10 flex items-center justify-center">
+      {/* <div className=" my-10 flex items-center justify-center">
         <MyImage
           classNames="rounded-full"
           src={image}
@@ -14,7 +14,7 @@ export default function StaffPage() {
           containerClasses="h-[18rem] rounded-full w-[18rem]"
         />
         ;
-      </div>
+      </div> */}
       <AddStaff />
     </div>
   );

@@ -18,7 +18,8 @@
     "customerRequests": "Customer Requests",
     "security": "Security",
     "checkIn": "Check In",
-    "checkOut": "Check Out"
+    "checkOut": "Check Out",
+    "categories": "Categories "
   },
   "roles": {
     "role": "Role",
@@ -96,11 +97,13 @@
       "hotel": "Hotel",
       "serivce": "Service",
       "category": "Category",
+      "addCategory": "Add Category",
       "subcategory": "Subcategory",
       "employeeId": "Employee ID",
       "department": "Department",
       "address": "Address",
       "submit": "Submit",
+      "title": "Title",
 
       "addNew": "Add New {title}",
       "country": "Country",
@@ -112,13 +115,15 @@
       "businessDocs": "Business Documents",
       "servicesRequested": "Services Requested",
       "images": "Images",
+      "image": "Image",
+      "cancel": "Cancel",
       "idCardNumber": "ID Card Number",
       "roomNumber": "Room Number",
       "date": "Date",
       "attachments": "Attachments",
       "checkIn": "Check In",
-      "checkOut": "Check Out"
-
+      "checkOut": "Check Out",
+      "role": "Role"
     },
     "placeholders": {
       "email": "Enter email",
@@ -143,7 +148,10 @@
       "employeeId": "Enter employee ID",
       "address": "Enter address",
       "country": "Country",
+      "category": "Select Category",
       "city": "City",
+      "title": "Title",
+
       "roomNumber": "Enter Room Number",
 
       "name": "Write Your Name ",
@@ -151,7 +159,8 @@
       "hotelType": "Select a Hotel Type",
       "description": "Write Some Description",
       "idCardNumber": "Enter ID Card Number",
-      "periodOfContract": "Period of Contract"
+      "periodOfContract": "Period of Contract",
+      "role": "Select a role"
     },
     "errors": {
       "emailRequired": "Email is required",

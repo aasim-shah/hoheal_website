@@ -1,3 +1,317 @@
+// "use client";
+
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { useForm } from "react-hook-form";
+// import { z } from "zod";
+// import { useTranslations } from "next-intl";
+// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+// import { Label } from "@/components/ui/label";
+
+// import { Button } from "@/components/ui/button";
+// import {
+//   Form,
+//   FormControl,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { Input } from "@/components/ui/input";
+// import { addStaff } from "@/lib/api/department";
+// import useApi from "@/hooks/useApi";
+
+// const formSchema = z
+//   .object({
+//     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+//     email: z
+//       .string()
+//       .email({ message: "Email must be a valid email address." })
+//       .min(2, { message: "Email must be at least 2 characters." }),
+//     employeeId: z
+//       .string()
+//       .min(2, { message: "Employee ID must be at least 2 characters." }),
+//     address: z
+//       .string()
+//       .min(5, { message: "Address must be at least 5 characters." }),
+//     role: z.string().min(1, { message: "Please select a role." }),
+//     phoneNumber: z.string().min(9, { message: "Phone Number must be valid." }),
+//     password: z
+//       .string()
+//       .min(6, { message: "Password must be at least 6 characters long." }),
+//     confirmPassword: z.string().min(6, {
+//       message: "Confirm Password must be at least 6 characters long.",
+//     }),
+//     profilePicture: z.any().optional(),
+//     department: z.string(),
+//   })
+//   .refine((data) => data.password === data.confirmPassword, {
+//     path: ["confirmPassword"],
+//     message: "Passwords must match.",
+//   });
+
+// export default function AddStaff() {
+//   const labelsT = useTranslations("form.labels");
+//   const placeholderT = useTranslations("form.placeholders");
+
+//   const department = "6729bd3e5a9f963581db7890";
+
+//   const form = useForm({
+//     resolver: zodResolver(formSchema),
+//     defaultValues: {
+//       name: "",
+//       employeeId: "",
+//       address: "",
+//       phoneNumber: "",
+//       email: "",
+//       password: "",
+//       confirmPassword: "",
+//       role: "",
+//       department: department,
+//       profilePicture: null,
+//     },
+//   });
+
+//   const { data, loading, error, execute } = useApi(addStaff);
+
+//   function onSubmit(values: z.infer<typeof formSchema>) {
+//     const staffData = {
+//       ...values,
+//       department: "6729bd3e5a9f963581db7890",
+//       profilePicture:
+//         values.profilePicture instanceof File ? values.profilePicture : null,
+//     };
+
+//     execute(staffData);
+//     console.log({ data });
+//   }
+
+//   return (
+//     <div className="w-10/12 mx-auto">
+//       <Form {...form}>
+//         <form
+//           onSubmit={form.handleSubmit(onSubmit)}
+//           className=" flex flex-col lg:flex-row  flex-wrap  my-10 items-center justify-between gap-5"
+//         >
+//           <div className="w-10/12  lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="name"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("name")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 dark:bg-gray-700 border-none  placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+//                       placeholder={placeholderT("name")}
+//                       {...field}
+//                     />
+//                   </FormControl>
+
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12  lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="employeeId"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("employeeId")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+//                       placeholder={placeholderT("employeeId")}
+//                       {...field}
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12  lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="phoneNumber"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("phoneNumber")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+//                       placeholder={placeholderT("phoneNumber")}
+//                       {...field}
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+
+//           <div className="w-10/12 lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="department"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("department")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm rounded-none"
+//                       placeholder={placeholderT("department")}
+//                       {...field}
+//                       disabled
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12  lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="email"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("email")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+//                       placeholder={placeholderT("email")}
+//                       {...field}
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12  lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="address"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("address")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+//                       placeholder={placeholderT("address")}
+//                       {...field}
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12  lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="password"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("password")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+//                       placeholder={placeholderT("password")}
+//                       {...field}
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12  lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="confirmPassword"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("confirmPassword")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+//                       placeholder={placeholderT("confirmPassword")}
+//                       {...field}
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12 lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="profilePicture"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("profilePicture")}</FormLabel>
+//                   <FormControl>
+//                     <Input
+//                       type="file"
+//                       className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm rounded-none"
+//                       placeholder={placeholderT("profilePicture")}
+//                       onChange={(e) => {
+//                         const file = e.target.files?.[0] || null;
+//                         field.onChange(file);
+//                       }}
+//                     />
+//                   </FormControl>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <div className="w-10/12 lg:w-5/12">
+//             <FormField
+//               control={form.control}
+//               name="role"
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormLabel>{labelsT("role")}</FormLabel>
+//                   <RadioGroup
+//                     value={field.value}
+//                     onValueChange={(value) => field.onChange(value)}
+//                     className="flex justify-evenly items-center mt-3 flex-row"
+//                   >
+//                     <div className="flex items-center space-x-2">
+//                       <RadioGroupItem value="staff" id="staffMember" />
+//                       <Label htmlFor="staffMember">Staff Member</Label>
+//                     </div>
+//                     <div className="flex items-center space-x-2">
+//                       <RadioGroupItem
+//                         value="serviceManager"
+//                         id="serviceManager"
+//                       />
+//                       <Label htmlFor="serviceManager">Department Manager</Label>
+//                     </div>
+//                   </RadioGroup>
+//                   <FormMessage />
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <Button
+//             type="submit"
+//             className="mt-4 w-10/12 mx-auto"
+//             variant="signature"
+//           >
+//             {labelsT("submit")}
+//           </Button>
+//         </form>
+//       </Form>
+//     </div>
+//   );
+// }
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,200 +330,171 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormInput from "@/components/forms/fields/FormInput";
+import useApi from "@/hooks/useApi";
+import { addStaff } from "@/lib/api/department";
+import { toast } from "sonner";
+import { truncate } from "fs/promises";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+    email: z
+      .string()
+      .email({ message: "Email must be a valid email address." })
+      .min(2, { message: "Email must be at least 2 characters." }),
+    employeeId: z
+      .string()
+      .min(2, { message: "Employee ID must be at least 2 characters." }),
+    address: z
+      .string()
+      .min(5, { message: "Address must be at least 5 characters." }),
+    role: z.string().min(1, { message: "Please select a role." }),
+    phoneNumber: z.string().min(9, { message: "Phone Number must be valid." }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters long." }),
+    confirmPassword: z.string().min(6, {
+      message: "Confirm Password must be at least 6 characters long.",
+    }),
+    profilePicture: z.any().optional(),
+    department: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords must match.",
+  });
 
 export default function AddStaff() {
   const labelsT = useTranslations("form.labels");
   const placeholderT = useTranslations("form.placeholders");
+  const router = useRouter();
+
+  const department = "6729bd3e5a9f963581db7890";
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
       employeeId: "",
-      department: "",
       address: "",
       phoneNumber: "",
       email: "",
       password: "",
       confirmPassword: "",
-      profilePicture: "",
+      role: "",
+      department: department,
+      profilePicture: null,
     },
   });
 
-  // function onSubmit(values) {
-  //   // Do something with the form values.
-  //   console.log(values); // Type-safe and validated
-  // }
+  const { data, loading, error, execute } = useApi(addStaff);
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const staffData = {
+      ...values,
+      department: "6729bd3e5a9f963581db7890",
+      profilePicture:
+        values.profilePicture instanceof File ? values.profilePicture : null,
+    };
+    console.log({ staffData });
+
+    execute(staffData);
+  }
+
+  useEffect(() => {
+    if (data && data.success) {
+      toast.success("Staff added !");
+      router.back();
+    }
+  }, [data]);
 
   return (
     <div className="w-10/12 mx-auto">
       <Form {...form}>
         <form
-          // onSubmit={form.handleSubmit(onSubmit)}
-          className=" flex flex-col lg:flex-row  flex-wrap  my-10 items-center justify-between gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col lg:flex-row flex-wrap my-10 items-center justify-between gap-5"
         >
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
+              name="name"
               control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder="shadcn"
-                      {...field}
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
+              label={labelsT("name")}
+              placeholder={placeholderT("name")}
             />
           </div>
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
-              control={form.control}
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
               name="employeeId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("employeeId")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder={placeholderT("employeeId")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              control={form.control}
+              label={labelsT("employeeId")}
+              placeholder={placeholderT("employeeId")}
             />
           </div>
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
-              control={form.control}
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
               name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("phoneNumber")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder={placeholderT("phoneNumber")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              control={form.control}
+              label={labelsT("phoneNumber")}
+              placeholder={placeholderT("phoneNumber")}
             />
           </div>
-
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
-              control={form.control}
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
               name="department"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("department")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder={placeholderT("department")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              disabled={true}
+              control={form.control}
+              label={labelsT("department")}
+              placeholder={placeholderT("department")}
             />
           </div>
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
-              control={form.control}
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
               name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("email")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder={placeholderT("email")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              control={form.control}
+              label={labelsT("email")}
+              placeholder={placeholderT("email")}
             />
           </div>
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
-              control={form.control}
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
               name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("address")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder={placeholderT("address")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              control={form.control}
+              label={labelsT("address")}
+              placeholder={placeholderT("address")}
             />
           </div>
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
-              control={form.control}
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
+              type="password"
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("password")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder={placeholderT("password")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-10/12  lg:w-5/12">
-            <FormField
               control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("confirmPassword")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
-                      placeholder={placeholderT("confirmPassword")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label={labelsT("password")}
+              placeholder={placeholderT("password")}
             />
           </div>
-          <div className="w-10/12  lg:w-5/12">
+          <div className="w-10/12 lg:w-5/12">
+            <FormInput
+              type="password"
+              name="confirmPassword"
+              control={form.control}
+              label={labelsT("confirmPassword")}
+              placeholder={placeholderT("confirmPassword")}
+            />
+          </div>
+          <div className="w-10/12 lg:w-5/12">
+            {/* <FormInput
+              type="file"
+              name="profilePicture"
+              control={form.control}
+              label={labelsT("profilePicture")}
+              placeholder={placeholderT("profilePicture")}
+            /> */}
+
             <FormField
               control={form.control}
               name="profilePicture"
@@ -219,9 +504,15 @@ export default function AddStaff() {
                   <FormControl>
                     <Input
                       type="file"
-                      className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm  rounded-none"
+                      // className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm rounded-none"
+                      className={`bg-secondary/50 ${
+                        error ? "border-red-500 focus:ring-red-500" : ""
+                      }`}
                       placeholder={placeholderT("profilePicture")}
-                      {...field}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        field.onChange(file);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -229,25 +520,38 @@ export default function AddStaff() {
               )}
             />
           </div>
-          <div className="w-10/12  lg:w-5/12 ">
-            <RadioGroup
-              defaultValue="option-one"
-              className="flex justify-evenly items-center mt-3 flex-row"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option-one" id="option-one" />
-                <Label htmlFor="option-one">Staff Member</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option-two" id="option-two" />
-                <Label htmlFor="option-two"> Department Manager</Label>
-              </div>
-            </RadioGroup>
+          <div className="w-10/12 lg:w-5/12">
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{labelsT("role")}</FormLabel>
+                  <RadioGroup
+                    value={field.value}
+                    onValueChange={(value) => field.onChange(value)}
+                    className="flex justify-evenly items-center mt-3 flex-row"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="staff" id="staffMember" />
+                      <Label htmlFor="staffMember">Staff Member</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem
+                        value="serviceManager"
+                        id="serviceManager"
+                      />
+                      <Label htmlFor="serviceManager">Department Manager</Label>
+                    </div>
+                  </RadioGroup>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-          {/* submit button from shadcn */}
           <Button
             type="submit"
-            className="mt-4 w-4/12 mx-auto"
+            className="mt-4 w-10/12 mx-auto"
             variant="signature"
           >
             {labelsT("submit")}
