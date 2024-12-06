@@ -8,6 +8,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   placeholder?: string;
   type?: string;
+  disabled?: boolean;
   params?: any;
 }
 
@@ -16,6 +17,7 @@ const FormInput = ({
   control,
   label,
   placeholder,
+  disabled,
   type = "text",
   params,
   ...rest
@@ -48,6 +50,7 @@ const FormInput = ({
         {...field}
         {...rest}
         type={type}
+        disabled={disabled}
         placeholder={placeholder}
         className={`bg-secondary/50 ${
           error ? "border-red-500 focus:ring-red-500" : ""

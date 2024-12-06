@@ -12,21 +12,21 @@ import { H } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import MyImage from "@/components/MyImage";
 import useApi from "@/hooks/useApi";
-import {
-  getReservationRequests,
-  markAsAcceptedReject,
-} from "@/lib/api/department";
+import { markAsAcceptedReject } from "@/lib/api/department";
 import { useEffect, useState } from "react";
-import ShowDetails from "./showDetails";
 import TopBar from "@/components/TopBar";
 import Tabs from "@/components/Tabs";
 import { toast } from "sonner";
+import ShowDetails from "./showDetails";
+import { getCustomers } from "@/lib/api/hotel";
+import { baseUrl } from "@/constants";
+import { formatDate } from "date-fns";
 
-export default function CustomerDetailsTable() {
+export default function CustomersTable() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const tabData = ["All", "pending", "completed", "assigned"];
+  const tabData = ["All", "checkin", "checkout"];
   const [selectedTab, setSelectedTab] = useState(tabData[0] || "");
 
   const handleOpenDialog = (item: any) => {
@@ -34,39 +34,23 @@ export default function CustomerDetailsTable() {
     setIsOpen(true);
   };
   const headers = [
-    "icon",
-    "serviceName",
-    "status",
+    "picture",
+    "name",
+    "email",
+    "hotel",
     "roomNumber",
-    "Assigned To",
+    "checkInDate",
   ];
 
-  const { data, loading, error, execute } = useApi(getReservationRequests);
+  const { data, loading, error, execute } = useApi(getCustomers);
 
-  const {
-    data: acceptRejectResponse,
-    loading: acceptRejectResponseLoading,
-    error: acceptRejectResponseError,
-    execute: acceptReject,
-  } = useApi(markAsAcceptedReject);
+  const hotel = "6729b6b3b9dd6d75e6006b25";
 
   useEffect(() => {
-    execute(selectedTab);
-  }, [selectedTab, acceptReject, execute]);
+    execute(selectedTab, hotel);
+  }, [selectedTab, execute]);
 
-  const handleAccept = (id: string) => {
-    acceptReject("accept", id);
-    if (acceptRejectResponse) {
-      toast.success("Accepted");
-    }
-  };
-
-  const handleReject = (id: string) => {
-    acceptReject("reject", id);
-    if (acceptRejectResponse) {
-      toast.success("Rejected");
-    }
-  };
+  console.log({ data });
 
   return (
     <>
@@ -106,68 +90,23 @@ export default function CustomerDetailsTable() {
                     <MyImage
                       classNames={"rounded-full"}
                       containerClasses={"w-12 rounded-full h-12"}
-                      src={doc.service?.logo}
+                      src={`${baseUrl}/${doc.profilePicture}`}
                       w={50}
                       h={50}
                     />
                   </TableCell>
-                  <TableCell>{doc.service?.title}</TableCell>
+                  <TableCell>{doc.name}</TableCell>
+                  <TableCell>{doc.email}</TableCell>
+                  <TableCell>{doc.checkInInfo?.hotel?.name}</TableCell>
+                  <TableCell>{doc.checkInInfo?.roomNumber}</TableCell>
                   <TableCell>
-                    <div className="flex items-center">
-                      <span
-                        className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${
-                          doc.status === "completed"
-                            ? "border-green-500"
-                            : doc.status === "pending"
-                            ? "border-black"
-                            : doc.status === "rejected"
-                            ? "border-orange-500"
-                            : doc.status === "delayed"
-                            ? "border-red-500"
-                            : "border-gray-500"
-                        }`}
-                      >
-                        <span
-                          className={`h-2 w-2 rounded-full ${
-                            doc.status === "completed"
-                              ? "bg-green-500"
-                              : doc.status === "pending"
-                              ? "bg-black"
-                              : doc.status === "rejected"
-                              ? "bg-orange-500"
-                              : doc.status === "delayed"
-                              ? "bg-red-500"
-                              : "bg-gray-500" // Default fill color
-                          }`}
-                        ></span>
-                      </span>
-                      <span className="ml-2 text-gray-600 text-sm font-medium">
-                        {doc.status}
-                      </span>
-                    </div>
+                    {formatDate(doc.checkInInfo?.checkInDate, "dd-MM-yyyy")}
                   </TableCell>
-                  <TableCell>{doc.roomNumber}</TableCell>
-                  <TableCell>{doc.assignedTo?.user?.name}</TableCell>
 
                   <TableCell className="text-center">
                     {doc.status === "completed" ? (
                       <div className="flex   justify-center gap-3">
-                        <Button
-                          onClick={() => handleAccept(doc._id)}
-                          size="sm"
-                          className="text-blue-500 font-semibold"
-                          variant={"outline"}
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          onClick={() => handleReject(doc._id)}
-                          size="sm"
-                          className={"text-red-500 font-semibold"}
-                          variant={"outline"}
-                        >
-                          Reject
-                        </Button>
+                        asdfasdfa
                       </div>
                     ) : (
                       <Button

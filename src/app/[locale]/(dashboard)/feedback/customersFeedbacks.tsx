@@ -1,79 +1,33 @@
 "use client";
 
+import useApi from "@/hooks/useApi";
+import { getReviews } from "@/lib/api/department";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ShowDetails from "./showDetails";
 
 export default function CustomerFeedbacks() {
-  const [selected, setSelected] = useState(1);
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const feedbacks = [
-    {
-      id: 1,
-      name: "Shelby Goode",
-      feedback: "Lorem Ipsum is simply dummy text of the printing",
-      time: "1 min ago",
-      image: "/images/user.png",
-    },
-    {
-      id: 2,
-      name: "Robert Bacins",
-      feedback: "Lorem Ipsum is simply dummy text of the printing",
-      time: "9 min ago",
-      image: "/images/user.png",
-    },
-    {
-      id: 3,
-      name: "John Carilo",
-      feedback: "Lorem Ipsum is simply dummy text of the printing",
-      time: "15 min ago",
-      image: "/images/user.png",
-    },
-    {
-      id: 4,
-      name: "Adriene Watson",
-      feedback: "Lorem Ipsum is simply dummy text of the printing",
-      time: "21 min ago",
-      image: "/images/user.png",
-    },
-    {
-      id: 5,
-      name: "Jhon Deo",
-      feedback: "Lorem Ipsum is simply dummy text of the printing",
-      time: "29 min ago",
-      image: "/images/user.png",
-    },
-    {
-      id: 6,
-      name: "Mark Ruffalo",
-      feedback: "Lorem Ipsum is simply dummy text of the printing",
-      time: "45 min ago",
-      image: "/images/user.png",
-    },
-  ];
+  const { data, loading, error, execute } = useApi(getReviews);
+
+  useEffect(() => {
+    execute("All");
+  }, []);
+
+  const handleReviewClick = (review: any) => {
+    setSelectedReview(review);
+    setIsModalOpen(true);
+  };
 
   return (
-    <div className="bg-white shadow-md border rounded-lg p-4 w-full max-w-md">
+    <div className="bg-white shadow-md border rounded-lg p-4 col-span-11 md:col-span-5 max-w-md">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-900">
-          Customers feedback
+          Customers Feedback
         </h2>
-        <button className="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-200">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            stroke="currentColor"
-            className="w-5 h-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12h12m-6-6v12"
-            />
-          </svg>
-        </button>
       </div>
 
       {/* Search Bar */}
@@ -87,31 +41,42 @@ export default function CustomerFeedbacks() {
 
       {/* Feedback List */}
       <div className="space-y-2">
-        {feedbacks.map((feedback) => (
-          <div
-            key={feedback.id}
-            onClick={() => setSelected(feedback.id)}
-            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer ${
-              selected === feedback.id ? "bg-gray-100" : "hover:bg-gray-50"
-            }`}
-          >
-            <Image
-              src={feedback.image}
-              width={40}
-              height={40}
-              alt={feedback.name}
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-gray-900">
-                {feedback.name}
-              </h3>
-              <p className="text-xs text-gray-500">{feedback.feedback}</p>
+        {loading && <p>Loading reviews...</p>}
+        {error && <p>Error fetching reviews.</p>}
+        {data?.reviews &&
+          data.reviews.map((feedback: any) => (
+            <div
+              key={feedback._id}
+              onClick={() => handleReviewClick(feedback)}
+              className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-50`}
+            >
+              <Image
+                src={feedback.user?.profilePic || "/images/user.png"}
+                width={40}
+                height={40}
+                alt={feedback.user?.name}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-gray-900">
+                  {feedback.user?.name}
+                </h3>
+                <p className="text-xs text-gray-500">
+                  {feedback.review?.toString().slice(0, 60)}
+                </p>
+              </div>
             </div>
-            <span className="text-xs text-gray-400">{feedback.time}</span>
-          </div>
-        ))}
+          ))}
       </div>
+
+      {/* Show Details Modal */}
+      {selectedReview && (
+        <ShowDetails
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          selectedItem={selectedReview}
+        />
+      )}
     </div>
   );
 }

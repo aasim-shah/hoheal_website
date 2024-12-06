@@ -7,6 +7,8 @@ const nextConfig = {
     domains: [
       "upload.wikimedia.org",
       "192.168.18.121",
+      "aeroin.net",
+      "hoheal-server.hostdonor.com",
       "hoheal-server.hostdonor.com",
       "aeroin.net",
     ],

@@ -6,6 +6,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Image from "next/image";
+import { format } from "date-fns";
+import { baseUrl } from "@/constants";
 
 interface Task {
   _id: string;
@@ -22,15 +25,18 @@ interface Task {
     _id: string;
     name: string;
     email: string;
-    profilePic: string | null;
+    profilePicture: string | null;
   };
   status: string;
+  createdAt: string;
+  rating?: number;
+  review?: string;
 }
 
 interface ShowDetailsProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  selectedItem: Task | null; // Selected task to show in the dialog
+  selectedItem: Task | null;
 }
 
 export default function ShowDetails({
@@ -40,49 +46,73 @@ export default function ShowDetails({
 }: ShowDetailsProps) {
   const handleClose = () => setIsOpen(false);
 
+  const profilePicture = selectedItem?.user?.profilePicture
+    ? `${baseUrl}/${selectedItem.user?.profilePicture}`
+    : "/default-profile.png"; // fallback image
+
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {selectedItem?.service.title || "Details"}
+              {selectedItem?.service?.title || "Service Details"}
             </DialogTitle>
             <DialogDescription>
-              <div className="space-y-2 mt-4">
-                <p>
-                  <strong>Message:</strong> {selectedItem?.message}
-                </p>
-                s
-                <p>
-                  <strong>Date:</strong>{" "}
-                  {new Date(selectedItem?.date || "").toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Room Number:</strong> {selectedItem?.roomNumber}
-                </p>
-                <p>
-                  <strong>Tasks:</strong>{" "}
-                  {selectedItem?.tasksList?.map((task, index) => (
-                    <span key={index} className="block pl-2">
-                      {index + 1}. {task}
-                    </span>
-                  ))}
-                </p>
-                <p>
-                  <strong>Status:</strong> {selectedItem?.status}
-                </p>
-                <p>
-                  <strong>Assigned User:</strong> {selectedItem?.user?.name} (
-                  {selectedItem?.user?.email})
-                </p>
-                {selectedItem?.service?.logo && (
-                  <img
-                    src={selectedItem.service.logo}
-                    alt={selectedItem.service.title}
-                    className="w-20 h-20 rounded object-cover"
-                  />
-                )}
+              <div className="my-5 space-y-4">
+                {/* User Info */}
+                <div className="flex items-center justify-between">
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex gap-4 items-center">
+                      <div className="w-12 h-12 rounded-full overflow-hidden">
+                        <Image
+                          src={profilePicture}
+                          alt={selectedItem?.user?.name || "User"}
+                          width={64}
+                          height={64}
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="text-lg">
+                        <p className="font-semibold">
+                          {selectedItem?.user?.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {selectedItem?.user?.email}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {selectedItem?.createdAt
+                            ? format(
+                                new Date(selectedItem.createdAt),
+                                "hh:mm a, dd/MM/yyyy"
+                              )
+                            : ""}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm  text-gray-400">
+                        Status . {selectedItem?.status}
+                      </span>
+                      <span className="text-sm text-gray-400">
+                        Room . {selectedItem?.roomNumber}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Service Info */}
+                <div className="space-y-2">
+                  <p>
+                    <strong>Tasks</strong>
+                    <ul className="pl-4 list-disc">
+                      {selectedItem?.tasksList?.map((task, index) => (
+                        <li key={index}>{task}</li>
+                      ))}
+                    </ul>
+                  </p>
+                  <p>{selectedItem?.message}</p>
+                </div>
               </div>
             </DialogDescription>
           </DialogHeader>
