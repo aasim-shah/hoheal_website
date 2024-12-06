@@ -1,35 +1,42 @@
 "use client";
 
 import FormDatePickerWithRange from "@/components/forms/fields/FormDatePickerWithRange";
-import FormInput from "@/components/forms/fields/FormInput";
-import FormSelect from "@/components/forms/fields/FormSelect";
 import FormFileDropzone from "@/components/forms/fields/FormFileDropzone";
+import FormInput from "@/components/forms/fields/FormInput";
 import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import FormDatePicker from "./fields/FormDatePicket";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
+import useApi from "@/hooks/useApi";
+import { addHotel } from "@/lib/api/hotel";
 import hotelSchema from "@/validations/hotel";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
+import FormDatePicker from "./fields/FormDatePicket";
+import appendFormData from "@/utils/appendFormData";
 
 const HotelForm = () => {
   const router = useRouter();
+  const { loading, data, error, execute } = useApi(addHotel);
 
   const defaultValues = {
     hotelName: "",
-    numberOfRooms: "",
-    hotelType: "",
+    rooms: 0,
+    suits: 0,
+    hotelType: 1,
     periodOfContract: undefined,
-    businessLocation: "",
+    address: "",
+    city: "",
+    country: "",
     officialPhoneNumber: "",
     businessEmail: "",
-    password: "",
-    servicesRequested: "",
+    servicesRequested: 0,
     serviceStartDate: undefined,
-    detail: "",
-    logo: undefined,
-    images: undefined,
+    description: "",
+    logo: null,
+    images: [],
     ownerName: "",
     ownerPhoneNumber: "",
     ownerEmail: "",
@@ -39,16 +46,39 @@ const HotelForm = () => {
     ownerProfilePicture: undefined,
   };
 
-  const form = useForm<z.infer<typeof hotelSchema>>({
-    resolver: zodResolver(hotelSchema),
+  const form = useForm({
+    // resolver: zodResolver(hotelSchema),
     defaultValues,
   });
 
-  const { control, handleSubmit, reset, watch } = form;
+  const { control, handleSubmit, reset } = form;
 
-  const onSubmit = (values: any) => {
-    console.log(values);
+  const onSubmit = async (values: any) => {
+    console.log(values)
+    try {
+      const formData = new FormData();
+      appendFormData(formData, values);
+      await execute(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    if (data) {
+      if (data.success) {
+        toast.success(data.body || "Hotel added successfully.");
+        // reset();
+        // router.push("/all-hotels");
+      } else {
+        toast.error(data.error || "An error occurred while adding the hotel.");
+      }
+    }
+
+    if (error) {
+      toast.error(error || "Something went wrong. Please try again.");
+    }
+  }, [data, error, reset, router]);
 
   return (
     <Form {...form}>
@@ -63,22 +93,26 @@ const HotelForm = () => {
               label="Hotel Name"
               placeholder="Enter hotel name"
             />
-            <FormSelect
-              name="numberOfRooms"
+            <FormInput
+              name="rooms"
               control={control}
               label="Number of Rooms"
               placeholder="Select number of rooms"
-              options={[
-                { value: "1-10", label: "1-10" },
-                { value: "11-50", label: "11-50" },
-                { value: "51-100", label: "51-100" },
-              ]}
+              type="number"
+            />
+            <FormInput
+              name="suits"
+              control={control}
+              label="Number of Suits"
+              placeholder="Select number of Suits"
+              type="number"
             />
             <FormInput
               name="hotelType"
               control={control}
               label="Hotel Type"
               placeholder="Enter hotel type"
+              type="number"
             />
             <FormDatePickerWithRange
               name="periodOfContract"
@@ -86,10 +120,22 @@ const HotelForm = () => {
               label="Period of Contract"
             />
             <FormInput
-              name="businessLocation"
+              name="address"
               control={control}
-              label="Business Location"
-              placeholder="Enter location"
+              label="Business Address"
+              placeholder="Enter Address"
+            />
+            <FormInput
+              name="city"
+              control={control}
+              label="Business City"
+              placeholder="Enter City"
+            />
+            <FormInput
+              name="country"
+              control={control}
+              label="Business Country"
+              placeholder="Enter Country"
             />
             <FormInput
               name="officialPhoneNumber"
@@ -104,22 +150,11 @@ const HotelForm = () => {
               placeholder="Enter email"
             />
             <FormInput
-              name="password"
-              control={control}
-              label="Password"
-              placeholder="Enter password"
-              type="password"
-            />
-            <FormSelect
               name="servicesRequested"
               control={control}
               label="Services Requested"
-              placeholder="Select services"
-              options={[
-                { value: "service1", label: "Service 1" },
-                { value: "service2", label: "Service 2" },
-                { value: "service3", label: "Service 3" },
-              ]}
+              placeholder="Enter number of services requested"
+              type="number"
             />
             <FormDatePicker
               name="serviceStartDate"
@@ -127,10 +162,10 @@ const HotelForm = () => {
               label="Service Start Date"
             />
             <FormInput
-              name="detail"
+              name="description"
               control={control}
-              label="Details"
-              placeholder="Enter details"
+              label="Description"
+              placeholder="Enter description"
             />
           </div>
 
@@ -216,8 +251,13 @@ const HotelForm = () => {
             >
               Cancel
             </Button>
-            <Button className="w-full" type="submit" variant="signature">
-              Save
+            <Button
+              className="w-full"
+              type="submit"
+              variant="signature"
+              disabled={loading}
+            >
+              {loading ? "Adding Hotel..." : "Add Hotel"}
             </Button>
           </div>
         </div>

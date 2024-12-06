@@ -9,19 +9,26 @@ import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
+import useApi from "@/hooks/useApi";
+import { addRoomService, addService } from "@/lib/api/service";
+import appendFormData from "@/utils/appendFormData";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import ActivityForm from "./ActivityForm";
 import RestaurantForm from "./RestaurantForm";
 import RoomServiceForm from "./RoomServiceForm";
 import RoomUpgradeForm from "./RoomUpgradeForm";
 import TechnicalServiceForm from "./TechnicalServiceForm";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 const ServicesForm = () => {
   const { selectedService } = useSelector((state: RootState) => state.services);
   const { userProfile } = useSelector((state: RootState) => state.auth);
   const hotelId = userProfile?.hotel?._id;
-  const category = selectedService?.category._id;
-  const subCategory = selectedService?.subCategory?._id;
+
+  const { title, category, subCategory } = selectedService || {};
+
+  const serviceType = title === "Room Service" ? addRoomService : addService;
+  const { data, loading, error, execute } = useApi(serviceType);
 
   const router = useRouter();
 
@@ -35,9 +42,12 @@ const ServicesForm = () => {
     menu: z.string().nullable(),
     menuTitle: z.string().nullable(),
     timing: z.array(z.string()),
+    paid: z.boolean(),
+    price: z.number(),
+    completionTime: z.number(),
     menuItems: z.array(z.string()),
-    images: z.string().optional(),
-    icon: z.string().nullable(),
+    images: z.array(z.instanceof(File)).optional(),
+    icon: z.instanceof(File).nullable().optional(),
     openingHours: z.array(z.string()),
     menuType: z.string(),
     reservation: z.string(),
@@ -49,7 +59,7 @@ const ServicesForm = () => {
   });
 
   const defaultValues = {
-    hotel: "", // default value for hotel
+    hotel: "",
     title: "",
     description: "",
     roomType: "",
@@ -58,12 +68,15 @@ const ServicesForm = () => {
     menu: null,
     menuTitle: "",
     timing: [],
+    paid: false,
+    price: 0,
+    completionTime: 0,
     menuItems: [],
-    images: undefined,
+    images: [],
     icon: null,
     openingHours: [],
     menuType: "",
-    reservation: "",
+    reservation: false,
     schedule: {
       date: "",
       from: "",
@@ -71,19 +84,41 @@ const ServicesForm = () => {
     },
   };
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm({
     defaultValues,
   });
 
   const { control, setValue, handleSubmit, reset, watch } = form;
 
-  // Set the hotel field value
-  hotelId && setValue("hotel", hotelId);
-
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("Form Data: ", { ...data, category, subCategory });
+  const onSubmit = async (values: any) => {
+    try {
+      const formData = new FormData();
+      appendFormData(formData, values);
+      formData.append("category", category?._id || "");
+      formData.append("subCategory", subCategory?._id || "");
+      await execute(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    if (data) {
+      if (data.success) {
+        toast.success(data.body || `Service added successfully!`);
+        reset();
+        router.push("/services");
+      } else {
+        toast.error(data.error || "An error occurred while adding the hotel.");
+      }
+    }
+
+    if (error) {
+      toast.error(error || "Something went wrong. Please try again.");
+    }
+  }, [data, error, reset, router]);
+
+  hotelId && setValue("hotel", hotelId);
 
   const renderSubCategoryForm = () => {
     if (!selectedService?.subCategory) {
@@ -129,8 +164,13 @@ const ServicesForm = () => {
               >
                 Cancel
               </Button>
-              <Button className="w-full" type="submit" variant="signature">
-                Save
+              <Button
+                className="w-full"
+                type="submit"
+                variant="signature"
+                disabled={loading}
+              >
+                {loading ? "Adding Service..." : "Add Service"}
               </Button>
             </div>
           </div>

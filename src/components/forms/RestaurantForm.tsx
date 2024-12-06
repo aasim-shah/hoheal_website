@@ -5,7 +5,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { useState } from "react";
@@ -51,6 +51,11 @@ const RestaurantForm = ({ control }: { control: any }) => {
     toast.success("Opening hours removed!");
   };
 
+  const reservation = useWatch({ control, name: "reservation" });
+  const handleReservationChange = () => {
+    setValue("reservation", !reservation);
+  };
+
   return (
     <>
       <CommonFields control={control} />
@@ -61,7 +66,7 @@ const RestaurantForm = ({ control }: { control: any }) => {
         <Dialog>
           <DialogTrigger asChild>
             <Button variant={"secondary"} className="w-full">
-              Select Opening Hours
+              {`${openingHours?.length} Added` || "Select Opening Hours"}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
@@ -131,6 +136,22 @@ const RestaurantForm = ({ control }: { control: any }) => {
             )}
           </DialogContent>
         </Dialog>
+      </div>
+      <div className="space-y-2">
+        <Label className="block text-sm font-medium text-muted-foreground">
+          Reservation Status
+        </Label>
+        <div className="flex gap-2 items-center">
+          <Input
+            className="h-8 w-8"
+            type="checkbox"
+            defaultChecked={reservation}
+            onChange={handleReservationChange}
+          />
+          <Label className="block text-sm font-medium text-muted-foreground">
+            Reservation
+          </Label>
+        </div>
       </div>
       <FormFileDropzone
         name="menu"

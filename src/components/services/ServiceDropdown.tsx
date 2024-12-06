@@ -9,10 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useApi from "@/hooks/useApi";
 import { getCategories } from "@/lib/api/formData";
-import {
-  selectOption,
-  toggleCategory,
-} from "@/store/features/serviceCategorySlice";
+import { selectOption, toggleCategory } from "@/store/features/serviceSlice";
 import { RootState } from "@/store/store";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -20,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const CategoryDropdown = () => {
   const { data, loading, error, execute } = useApi(getCategories);
+  const hotel = useSelector((state: RootState) => state?.hotels?.hotelId);
+
   const dispatch = useDispatch();
   const { expandedCategory, selectedService } = useSelector(
     (state: RootState) => state.services
@@ -29,9 +28,9 @@ const CategoryDropdown = () => {
 
   useEffect(() => {
     (async () => {
-      await execute();
+      await execute(hotel);
     })();
-  }, [execute]);
+  }, [execute, hotel]);
 
   useEffect(() => {
     if (data) {
