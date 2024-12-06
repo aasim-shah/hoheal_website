@@ -7,8 +7,7 @@ export default function Home() {
 
   return (
     <div className="">
-      {/* <LineChart /> */}
-      <AddNewButton title="hotel" />
+      DASHBOARD
     </div>
   );
 }

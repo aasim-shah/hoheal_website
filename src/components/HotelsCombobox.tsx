@@ -1,7 +1,5 @@
 "use client";
 
-import { Check, ChevronsUpDown } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -19,21 +17,30 @@ import {
 import useApi from "@/hooks/useApi";
 import { getAllHotels } from "@/lib/api/hotel";
 import { cn } from "@/lib/utils";
+import { setHotelId } from "@/store/features/hotelSlice";
+import { RootState } from "@/store/store";
+import { Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import MyImage from "./MyImage";
 
-export function ComboboxDemo() {
+export function HotelsCombobox() {
   const { data, loading, error, execute } = useApi(getAllHotels);
+  const { hotelId } = useSelector((state: RootState) => state.hotels);
+  console.log(hotelId);
+  const [hotels, setHotels] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<any>({});
-  const [hotels, setHotels] = useState<any>([]);
-
+  const dispatch = useDispatch();
   const { setValue } = useFormContext();
 
-  const handleSelect = (id: any) => {
+  const handleSelect = (id: string) => {
     setOpen(false);
-    setSelectedHotel(hotels.find((hotel: any) => hotel._id === id));
+    const selected = hotels.find((hotel: any) => hotel._id === id);
+    setSelectedHotel(selected);
+    dispatch(setHotelId(id));
     setValue("hotel", id);
   };
 
@@ -43,9 +50,18 @@ export function ComboboxDemo() {
 
   useEffect(() => {
     if (data) {
-      setHotels(data.body?.hotels);
+      if (data?.body?.hotels) {
+        setHotels(data.body.hotels);
+      }
     }
   }, [data]);
+
+  useEffect(() => {
+    if (hotelId && hotels.length) {
+      const selected = hotels.find((hotel: any) => hotel._id === hotelId);
+      setSelectedHotel(selected || null);
+    }
+  }, [hotelId, hotels]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,12 +73,23 @@ export function ComboboxDemo() {
           className=" justify-between"
           disabled={loading}
         >
-          {loading
-            ? "Loading..."
-            : selectedHotel.email
-            ? hotels.find((hotel: any) => hotel.email === selectedHotel.email)
-                ?.name
-            : "Select hotel..."}
+          {loading ? (
+            "Loading..."
+          ) : selectedHotel?.name ? (
+            <div className="flex items-center gap-2">
+              <MyImage
+                src={selectedHotel.logo}
+                alt={selectedHotel.name}
+                width={40}
+                height={40}
+                className="w-6 h-6 object-cover"
+                containerClasses="w-full h-full rounded-full"
+              />
+              <p className="font-semibold">{selectedHotel.name}</p>
+            </div>
+          ) : (
+            "Select Hotel"
+          )}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -81,12 +108,13 @@ export function ComboboxDemo() {
                   onSelect={handleSelect}
                   className="flex items-center justify-between gap-2"
                 >
-                  <Image
+                  <MyImage
                     src={hotel.logo}
                     alt={hotel.name}
                     width={40}
                     height={40}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-full h-full object-cover"
+                    containerClasses="w-6 h-6 rounded-full"
                   />
                   <div>
                     <p className="text-sm font-semibold">{hotel.name}</p>
@@ -97,7 +125,9 @@ export function ComboboxDemo() {
                   <Check
                     className={cn(
                       "ml-auto",
-                      hotel.email === hotel.email ? "opacity-100" : "opacity-0"
+                      hotel._id === selectedHotel._id
+                        ? "opacity-100"
+                        : "opacity-0"
                     )}
                   />
                 </CommandItem>

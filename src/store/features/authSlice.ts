@@ -30,9 +30,10 @@ const authSlice: Slice = createSlice({
       state.userProfile = null;
       localStorage.removeItem("token");
     },
+    resetAuth: () => initialState
   },
 });
 
-export const { setToken, setRole, setUserProfile, handleLogout } =
+export const { setToken, setRole, setUserProfile, handleLogout, resetAuth } =
   authSlice.actions;
 export default authSlice.reducer;

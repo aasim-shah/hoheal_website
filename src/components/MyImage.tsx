@@ -1,31 +1,67 @@
-import Image, { StaticImageData } from "next/image";
-import React from "react";
+"use client";
 
-interface MyImageProps {
+import { baseUrl } from "@/constants";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { useState } from "react";
+
+interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   containerClasses?: string;
   w?: number;
   h?: number;
-  src: string | StaticImageData;
+  src: string;
   classNames?: string;
   alt?: string;
 }
 
-export default function MyImage({
-  containerClasses = "",
-  w = 500,
-  h = 500,
-  src = "",
-  classNames = "",
-  alt = "image",
-}: MyImageProps) {
+export default function MyImage(props: Props) {
+  const placeHolderImage = "/images/placeholder.png";
+  const {
+    containerClasses = "",
+    w = 200,
+    h = 200,
+    src,
+    classNames = "",
+    alt = "image",
+    ...rest
+  } = props;
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const imageSrc = !src
+    ? placeHolderImage
+    : src.startsWith("http")
+    ? src
+    : baseUrl + src;
+
+  const [image, setImage] = useState(imageSrc);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
+
+  const handleError = () => {
+    setImage(placeHolderImage);
+  };
+
   return (
-    <div className={`bg-gray-50 ${containerClasses}`}>
+    <div className={cn("overflow-hidden", containerClasses)}>
+      {isLoading && (
+        <div className="w-full h-full flex justify-center items-center bg-secondary rounded-md">
+          <div className="w-5 h-5 border-4 border-t-transparent border-signature-light border-solid rounded-full animate-spin"></div>
+        </div>
+      )}
+
       <Image
-        width={w}
-        height={h}
-        className={`w-full h-full ${classNames}`}
+        key={image}
+        width={w as any}
+        height={h as any}
+        className={`w-full h-full object-cover ${classNames}`}
+        src={image}
         alt={alt}
-        src={src}
+        onLoad={handleLoadingComplete}
+        onError={handleError}
+        {...rest}
       />
     </div>
   );

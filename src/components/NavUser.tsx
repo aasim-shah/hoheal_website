@@ -16,9 +16,12 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import MyDialog from "./MyDialog";
 import { Dialog, DialogTrigger } from "./ui/dialog";
-import { handleLogout } from "@/store/features/authSlice";
+import { handleLogout, resetAuth } from "@/store/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { resetServices } from "@/store/features/serviceSlice";
+import { resetHotels } from "@/store/features/hotelSlice";
+
 export function NavUser() {
   const auth = useSelector((state: RootState) => state.auth);
   const { name, email, profilePicture } = auth?.userProfile || {};
@@ -42,8 +45,12 @@ export function NavUser() {
     },
   ];
   const dispatch = useDispatch();
-  const handleLogoutClick = () => {
-    dispatch(handleLogout(auth));
+
+  const handleLogoutClick = (): void => {
+    dispatch(resetServices());
+    dispatch(resetAuth(auth));
+    dispatch(resetHotels(auth));
+    localStorage.removeItem("token");
   };
   return (
     <>

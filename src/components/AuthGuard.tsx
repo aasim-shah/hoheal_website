@@ -8,11 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRole, setToken, setUserProfile } from "@/store/features/authSlice";
 import useApi from "@/hooks/useApi";
 import { getUserData } from "@/lib/api/auth";
+import { setHotelId } from "@/store/features/hotelSlice";
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { data, error, loading, execute } = useApi(getUserData);
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const token: string = useSelector((state: any) => state.auth.token);
   const role: Role = useSelector((state: any) => state.auth.role);
@@ -74,9 +75,11 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    handleTokenCheck();
-    handleNavigation();
-    setIsLoading(false);
+    (async () => {
+      await handleTokenCheck();
+      handleNavigation();
+      setIsCheckingAuth(false);
+    })();
   }, [dispatch, router, token, role]);
 
   useEffect(() => {
@@ -88,10 +91,14 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (data) {
       dispatch(setUserProfile(data?.body?.user));
+      dispatch(setHotelId(data?.body?.user?.hotel?._id));
     }
   }, [data, dispatch]);
 
-  return isLoading ? null : children;
+  // Show nothing while checking authentication
+  if (isCheckingAuth) return null;
+
+  return children;
 };
 
 export default AuthGuard;

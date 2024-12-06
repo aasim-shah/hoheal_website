@@ -18,8 +18,13 @@ const useApi = <T,>(apiFunction: ApiFunction<T>) => {
         return result;
       } catch (error: any) {
         console.log(error);
-        toast.warning(error?.response?.data?.error || "Something went wrong");
-        setError(error?.response?.data?.message || error.message);
+
+        setError(
+          error?.response?.data?.message ||
+            error?.response?.data?.error ||
+            error.message ||
+            "Something went wrong!"
+        );
       } finally {
         setLoading(false);
       }

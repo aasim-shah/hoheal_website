@@ -1,6 +1,10 @@
 import FormInput from "./fields/FormInput";
 import MultiSelect from "./fields/MultiSelect";
-import { CommonFields, ImageFields } from "./fields/SharedFields";
+import {
+  CommonFields,
+  ImageFields,
+  RoomServicesCommonFields,
+} from "./fields/SharedFields";
 
 const TechnicalServicesForm = ({ control }: { control: any }) => {
   const checklistValues = [
@@ -19,6 +23,7 @@ const TechnicalServicesForm = ({ control }: { control: any }) => {
         values={checklistValues}
         control={control}
       />
+      <RoomServicesCommonFields control={control} />
       <ImageFields control={control} />
     </>
   );

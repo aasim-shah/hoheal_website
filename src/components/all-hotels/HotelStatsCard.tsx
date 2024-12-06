@@ -3,15 +3,15 @@ import { BiSolidBriefcase } from "react-icons/bi";
 import { FaUser } from "react-icons/fa";
 
 const HotelStatsCard = ({
-  payment,
-  hotelType,
-  totalRooms,
+  type,
+  rooms,
+  suites,
   contractDuration,
 }: HotelStatsCard) => {
   const heading = [
-    { key: "payment", value: payment, icon: BiSolidBriefcase },
-    { key: "hotelType", value: hotelType, icon: FaUser },
-    { key: "totalRooms", value: totalRooms, icon: FaUser },
+    { key: "hotelType", value: type, icon: BiSolidBriefcase },
+    { key: "totalRooms", value: rooms, icon: FaUser },
+    { key: "totalSuites", value: suites, icon: FaUser },
     { key: "contractDuration", value: contractDuration, icon: FaUser },
   ];
 

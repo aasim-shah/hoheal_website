@@ -1,4 +1,5 @@
 import AuthGuard from "@/components/AuthGuard";
+import FetchData from "@/components/FetchData";
 import TopLoader from "@/components/TopLoader";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +19,7 @@ const Providers = async ({ children }: { children: React.ReactNode }) => {
           <ReactQueryClientProvider>
             <TooltipProvider>
               <AuthGuard>
+                <FetchData/>
                 {children}
               </AuthGuard>
               <Toaster />

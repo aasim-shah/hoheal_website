@@ -23,9 +23,9 @@ interface StatsData {
 type AddButtonTitle = "hotel" | "service" | "category" | "subcategory";
 
 interface HotelStatsCard {
-  payment: string;
-  hotelType: string;
-  totalRooms: string | number;
+  type: string;
+  rooms: string;
+  suites: string;
   contractDuration: string;
 }
 
@@ -68,4 +68,10 @@ interface Item {
   price: string;
   timing?: string;
   availability: string;
+}
+
+interface Pagination {
+  totalPages: number;
+  currentPage: number;
+  total: number;
 }

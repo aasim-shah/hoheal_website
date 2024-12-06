@@ -1,8 +1,33 @@
+import { requestDataLimit } from "@/constants";
 import request from "./request";
 
-export const getAllHotels = async () => {
+export const getAllHotels = async (params: {
+  page?: number;
+  status?: string;
+}) => {
   try {
-    const response = await request.get(`/admin/hotel`, {
+    const { page = 1, status = "" } = params || {};
+    const limit = requestDataLimit;
+
+    const response = await request.get(
+      `/admin/hotel?page=${page}&pageSize=${limit}&status=${status}`,
+      {
+        headers: { requiresAuth: true },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getHotelById = async (id: string) => {
+  try {
+    if (!id) {
+      throw new Error("Invalid hotel id");
+    }
+
+    const response = await request.get(`/admin/hotel/details/${id}`, {
       headers: { requiresAuth: true },
     });
     return response.data;
