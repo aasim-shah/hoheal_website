@@ -13,6 +13,7 @@ export const getCategories = async (hotel?: string) => {
   }
 };
 
+/// testing
 export const getFeatures = async (page: number) => {
   try {
     const response = await request.get(`/admin/features`, {
