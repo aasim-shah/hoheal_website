@@ -334,10 +334,15 @@ import FormInput from "@/components/forms/fields/FormInput";
 import useApi from "@/hooks/useApi";
 import { addStaff } from "@/lib/api/department";
 import { toast } from "sonner";
-import { truncate } from "fs/promises";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import FormFileDropzone from "@/components/forms/fields/FormFileDropzone";
+import { profile } from "console";
+import { useSelector } from "react-redux";
+import { HotelsCombobox } from "@/components/HotelsCombobox";
+import { RootState } from "@/store/store";
+import { DepartmentsDropdown } from "@/components/forms/fields/DepartmentsDropdown";
 
 const formSchema = z
   .object({
@@ -356,11 +361,11 @@ const formSchema = z
     phoneNumber: z.string().min(9, { message: "Phone Number must be valid." }),
     password: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters long." }),
-    confirmPassword: z.string().min(6, {
-      message: "Confirm Password must be at least 6 characters long.",
+      .min(4, { message: "Password must be at least 4 characters long." }),
+    confirmPassword: z.string().min(4, {
+      message: "Confirm Password must be at least 4 characters long.",
     }),
-    profilePicture: z.any().optional(),
+    profilePicture: z.instanceof(File).nullable().optional(),
     department: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -372,8 +377,43 @@ export default function AddStaff() {
   const labelsT = useTranslations("form.labels");
   const placeholderT = useTranslations("form.placeholders");
   const router = useRouter();
+  const { role, userProfile } = useSelector((state: RootState) => state.auth);
 
-  const department = "6729bd3e5a9f963581db7890";
+  console.log({ userProfile });
+  // const department = "6729bd3e5a9f963581db7890";
+  const department =
+    role && role === "serviceManager" ? userProfile.employee.department : "";
+
+  interface DepartmentUIProps {
+    form: any;
+    labelsT: (key: string) => string;
+    placeholderT: (key: string) => string;
+  }
+  const DepartmentUI: React.FC<DepartmentUIProps> = ({
+    form,
+    labelsT,
+    placeholderT,
+  }) => {
+    if (role === "superAdmin") {
+      return (
+        <div className="lg:col-span-2">
+          <DepartmentsDropdown hotel="" />
+        </div>
+      );
+    } else {
+      return (
+        <div className="lg:col-span-2">
+          <FormInput
+            name="department"
+            disabled={true}
+            control={form.control}
+            label={labelsT("department")}
+            placeholder={placeholderT("department")}
+          />
+        </div>
+      );
+    }
+  };
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -414,6 +454,14 @@ export default function AddStaff() {
 
   return (
     <div className="w-10/12 mx-auto">
+      <div className="flex flex-row justify-e">
+        {role === "superAdmin" && (
+          <div className="lg:col-span-2">
+            {/* <HotelsCombobox /> */}
+            Hello
+          </div>
+        )}
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -444,12 +492,18 @@ export default function AddStaff() {
             />
           </div>
           <div className="w-10/12 lg:w-5/12">
-            <FormInput
+            {/* <FormInput
               name="department"
               disabled={true}
               control={form.control}
               label={labelsT("department")}
               placeholder={placeholderT("department")}
+            /> */}
+            {/* <DepartmentsDropdown hotel={"6729bd3e5a9f963581db7890"} /> */}
+            <DepartmentUI
+              form={form}
+              labelsT={labelsT}
+              placeholderT={placeholderT}
             />
           </div>
           <div className="w-10/12 lg:w-5/12">
@@ -487,37 +541,11 @@ export default function AddStaff() {
             />
           </div>
           <div className="w-10/12 lg:w-5/12">
-            {/* <FormInput
-              type="file"
+            <FormFileDropzone
               name="profilePicture"
               control={form.control}
-              label={labelsT("profilePicture")}
-              placeholder={placeholderT("profilePicture")}
-            /> */}
-
-            <FormField
-              control={form.control}
-              name="profilePicture"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{labelsT("profilePicture")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      // className="bg-gray-100 border-none placeholder:text-gray-400 placeholder:text-sm rounded-none"
-                      className={`bg-secondary/50 ${
-                        error ? "border-red-500 focus:ring-red-500" : ""
-                      }`}
-                      placeholder={placeholderT("profilePicture")}
-                      onChange={(e) => {
-                        const file = e.target.files?.[0] || null;
-                        field.onChange(file);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="profilePicture"
+              multiple={false}
             />
           </div>
           <div className="w-10/12 lg:w-5/12">

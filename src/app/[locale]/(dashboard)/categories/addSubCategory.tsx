@@ -21,6 +21,8 @@ import useApi from "@/hooks/useApi";
 import { getCategoriesList } from "@/lib/api/admin";
 import { toast } from "sonner";
 import { set } from "date-fns";
+import FormFileDropzone from "@/components/forms/fields/FormFileDropzone";
+import appendFormData from "@/utils/appendFormData";
 
 interface Category {
   _id: string;
@@ -45,7 +47,7 @@ interface AddCategoryFormProps {
     title?: string;
     category: string;
     subCategory?: string;
-    // image: any;
+    image: any;
   }) => void;
 }
 
@@ -53,6 +55,7 @@ const formSchema = z.object({
   title: z.string().optional(),
   category: z.string().min(1, { message: "Category should be selected." }),
   subCategory: z.string().optional(),
+  image: z.instanceof(File).nullable().optional(),
 });
 
 export default function AddSubCategoryModel({
@@ -73,6 +76,7 @@ export default function AddSubCategoryModel({
       title: "",
       category: "",
       subCategory: "",
+      image: "",
     },
   });
 
@@ -132,17 +136,28 @@ export default function AddSubCategoryModel({
       (subCat: SubCategory) => subCat.categoryValue === selectedCategory.value
     );
 
+    console.log({ subCategories, selectedCategory });
     setFilteredSubCategories(filteredSubCategories);
   };
 
-  const handleSubmit = (values: {
-    title?: string;
-    category: string;
-    subCategory?: string;
-    // image: string;
-  }) => {
-    onSubmit(values);
-    console.log({ values });
+  // const handleSubmit = (values: {
+  //   title?: string;
+  //   category: string;
+  //   subCategory?: string;
+  //   image: string;
+  // }) => {
+  //   onSubmit(values);
+  //   console.log({ values });
+  // };
+
+  const handleSubmit = async (values: any) => {
+    try {
+      console.log({ values });
+
+      onSubmit(values);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   console.log({ categories });
@@ -202,24 +217,14 @@ export default function AddSubCategoryModel({
                   )}
                 />
 
-                {/* <FormField
-                  control={formMethods.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{labelsT("image")}</FormLabel>
-                      <FormControl>
-                        <input
-                          type="text"
-                          className="w-full p-2 rounded-md"
-                          placeholder={placeholderT("image")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+                <div className="space-y-4">
+                  <FormFileDropzone
+                    name="image"
+                    control={formMethods.control}
+                    label="Image"
+                    multiple={false}
+                  />
+                </div>
               </>
             )}
 
@@ -287,24 +292,14 @@ export default function AddSubCategoryModel({
                   )}
                 />
 
-                {/* <FormField
-                  control={formMethods.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{labelsT("image")}</FormLabel>
-                      <FormControl>
-                        <input
-                          type="text"
-                          className="w-full p-2 rounded-md"
-                          placeholder={placeholderT("image")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+                <div className="space-y-4">
+                  <FormFileDropzone
+                    name="image"
+                    control={formMethods.control}
+                    label="Image"
+                    multiple={false}
+                  />
+                </div>
               </>
             )}
 

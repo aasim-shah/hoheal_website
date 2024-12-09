@@ -22,7 +22,7 @@ export default function CustomerFeedbacks() {
   };
 
   return (
-    <div className="bg-white shadow-md border rounded-lg p-4 col-span-11 md:col-span-5 max-w-md">
+    <div className=" shadow-md border rounded-lg p-4 col-span-11 md:col-span-5 max-w-md">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-900">
@@ -35,7 +35,7 @@ export default function CustomerFeedbacks() {
         <input
           type="text"
           placeholder="Search"
-          className="w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          className="w-full p-2.5 text-sm text-gray-900  border  rounded-lg focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
 
@@ -48,7 +48,7 @@ export default function CustomerFeedbacks() {
             <div
               key={feedback._id}
               onClick={() => handleReviewClick(feedback)}
-              className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-50`}
+              className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer `}
             >
               <Image
                 src={feedback.user?.profilePic || "/images/user.png"}
@@ -58,9 +58,7 @@ export default function CustomerFeedbacks() {
                 className="w-10 h-10 rounded-full object-cover"
               />
               <div className="flex-1">
-                <h3 className="text-sm font-medium text-gray-900">
-                  {feedback.user?.name}
-                </h3>
+                <h3 className="text-sm font-medium ">{feedback.user?.name}</h3>
                 <p className="text-xs text-gray-500">
                   {feedback.review?.toString().slice(0, 60)}
                 </p>
