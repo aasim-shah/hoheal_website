@@ -46,6 +46,15 @@ export default function AddCategoryForm({
     },
   });
 
+  const { data, loading, error, execute } = useApi(getCategoriesList);
+
+  useEffect(() => {
+    execute();
+  }, [execute]);
+
+  const categories = data?.categories || [];
+  console.log({ categories });
+
   const labelsT = useTranslations("form.labels");
   const placeholderT = useTranslations("form.placeholders");
 
@@ -58,14 +67,6 @@ export default function AddCategoryForm({
     setIsOpen(false);
     formMethods.reset(); // Reset the form on close
   };
-
-  const { data, loading, error, execute } = useApi(getCategoriesList);
-
-  useEffect(() => {
-    execute();
-  }, [execute]);
-
-  const categories = data?.categories || [];
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

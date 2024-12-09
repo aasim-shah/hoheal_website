@@ -29,12 +29,12 @@ import MyImage from "./MyImage";
 export function HotelsCombobox() {
   const { data, loading, error, execute } = useApi(getAllHotels);
   const { hotelId } = useSelector((state: RootState) => state.hotels);
-  console.log(hotelId);
+  console.log({ hotelId });
   const [hotels, setHotels] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<any>({});
   const dispatch = useDispatch();
-  const { setValue } = useFormContext();
+  const { setValue } = useFormContext(); // we need fix this
 
   const handleSelect = (id: string) => {
     setOpen(false);
