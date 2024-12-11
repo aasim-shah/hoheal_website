@@ -1,5 +1,6 @@
 "use client";
 
+import { baseUrl } from "@/constants";
 import MyImage from "../MyImage";
 import { Label } from "../ui/label";
 import { H } from "../ui/typography";

@@ -87,13 +87,15 @@ export default function AddSubCategoryModel({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      if (role === "hotelAdmin" && hotel !== "") {
-        const resp = await execute(hotel);
-        setCategories(resp?.categories || []);
-      } else if (role === "superAdmin") {
-        const resp = await execute();
-        setCategories(resp?.categories || []);
-      }
+      // if (role === "hotelAdmin" && hotel !== "") {
+      //   const resp = await execute(hotel);
+      //   setCategories(resp?.categories || []);
+      // } else if (role === "superAdmin") {
+      //   const resp = await execute();
+      //   setCategories(resp?.categories || []);
+      // }
+      const resp = await execute(hotel);
+      setCategories(resp?.categories || []);
     };
     fetchCategories();
   }, [role, hotel, execute]);
@@ -172,7 +174,7 @@ export default function AddSubCategoryModel({
             onSubmit={formMethods.handleSubmit(handleSubmit)}
             className="space-y-4"
           >
-            {role === "superAdmin" && (
+            {/* {role === "superAdmin" && (
               <>
                 <FormField
                   control={formMethods.control}
@@ -226,82 +228,80 @@ export default function AddSubCategoryModel({
                   />
                 </div>
               </>
-            )}
+            )} */}
 
-            {role === "hotelAdmin" && (
-              <>
-                <FormField
+            <>
+              <FormField
+                control={formMethods.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{labelsT("category")}</FormLabel>
+                    <FormControl>
+                      <select
+                        className="w-full py-2 rounded-md"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          handleCategoryChange(e.target.value);
+                        }}
+                      >
+                        <option value="" disabled>
+                          {placeholderT("category")}
+                        </option>
+                        {categories &&
+                          categories.map((category: any) => (
+                            <option key={category._id} value={category._id}>
+                              {category.title}
+                            </option>
+                          ))}
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={formMethods.control}
+                name="subCategory"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{labelsT("subcategory")}</FormLabel>
+                    <FormControl>
+                      <select
+                        className="w-full py-2 rounded-md"
+                        {...field}
+                        disabled={!filteredSubCategories.length}
+                      >
+                        <option value="" disabled>
+                          {labelsT("subcategory")}
+                        </option>
+                        {filteredSubCategories &&
+                          filteredSubCategories.map((subCategory: any) => (
+                            <option
+                              key={subCategory._id}
+                              value={subCategory._id}
+                            >
+                              {subCategory.title}
+                            </option>
+                          ))}
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="space-y-4">
+                <FormFileDropzone
+                  name="image"
                   control={formMethods.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{labelsT("category")}</FormLabel>
-                      <FormControl>
-                        <select
-                          className="w-full py-2 rounded-md"
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e);
-                            handleCategoryChange(e.target.value);
-                          }}
-                        >
-                          <option value="" disabled>
-                            {placeholderT("category")}
-                          </option>
-                          {categories &&
-                            categories.map((category: any) => (
-                              <option key={category._id} value={category._id}>
-                                {category.title}
-                              </option>
-                            ))}
-                        </select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Image"
+                  multiple={false}
                 />
-
-                <FormField
-                  control={formMethods.control}
-                  name="subCategory"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{labelsT("subcategory")}</FormLabel>
-                      <FormControl>
-                        <select
-                          className="w-full py-2 rounded-md"
-                          {...field}
-                          disabled={!filteredSubCategories.length}
-                        >
-                          <option value="" disabled>
-                            {labelsT("subcategory")}
-                          </option>
-                          {filteredSubCategories &&
-                            filteredSubCategories.map((subCategory: any) => (
-                              <option
-                                key={subCategory._id}
-                                value={subCategory._id}
-                              >
-                                {subCategory.title}
-                              </option>
-                            ))}
-                        </select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="space-y-4">
-                  <FormFileDropzone
-                    name="image"
-                    control={formMethods.control}
-                    label="Image"
-                    multiple={false}
-                  />
-                </div>
-              </>
-            )}
+              </div>
+            </>
 
             <div className="flex justify-end gap-2">
               <Button type="button" variant="secondary" onClick={handleClose}>
