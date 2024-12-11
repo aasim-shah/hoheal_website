@@ -20,6 +20,8 @@ import useApi from "@/hooks/useApi";
 import { checkIn } from "@/lib/api/hotel";
 import { toast } from "sonner";
 import FormInput from "@/components/forms/fields/FormInput";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const formSchema = z.object({
   idCardNumber: z
@@ -27,7 +29,7 @@ const formSchema = z.object({
     .min(2, { message: "ID card number must be at least 2 characters." }),
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().min(2, { message: "Email must be at least 2 characters." }),
-  roomNumber: z.string(),
+  roomNumber: z.number(),
   roomType: z.string().min(1, { message: "Please select a room type." }),
   checkInDate: z
     .string()
@@ -42,7 +44,7 @@ export default function CheckIn() {
       name: "",
       email: "",
       reservationNumber: "",
-      roomNumber: "",
+      roomNumber: 0,
       hotel: "",
       checkInDate: "",
       roomType: "",
@@ -52,13 +54,19 @@ export default function CheckIn() {
   const labelsT = useTranslations("form.labels");
   const placeholderT = useTranslations("form.placeholders");
 
+  const { userProfile, role } = useSelector((state: RootState) => state.auth);
+
   const { data, loading, error, execute } = useApi(checkIn);
+
+  const hotel = userProfile?.employee?.hotel || "";
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const payload = {
       ...values,
-      hotel: "6729b6b3b9dd6d75e6006b25",
+      hotel: hotel,
     };
+
+    console.log({ payload });
     execute(payload);
   }
 

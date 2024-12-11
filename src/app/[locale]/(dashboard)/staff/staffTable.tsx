@@ -42,10 +42,10 @@ export default function StaffTable() {
 
       execute(userProfile?.employee?.department);
     }
-    // if (role === "hotelManager" && userProfile?.role.value === "hotelManager") {
-    //   execute(userProfile?.hotel._id);
-    //   console.log("hotel");
-    // }
+
+    if (role === "hotelAdmin" && userProfile?.role?.value === "hotelAdmin") {
+      execute("", userProfile?.hotel._id);
+    }
   }, []);
 
   console.log({ data });

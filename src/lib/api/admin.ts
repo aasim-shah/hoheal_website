@@ -38,6 +38,20 @@ export const createSubCatSuperADmin = async (data: any) => {
   }
 };
 
+export const getServicesList = async (hotel: string) => {
+  try {
+    const response = await request.get(
+      "/admin/service/list?pageSize=400&hotel=" + hotel,
+      {
+        headers: { requiresAuth: true },
+      }
+    );
+    return response.data.body;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createSubCatHotelADmin = async (data: any) => {
   try {
     const response = await request.post("/hotel/subcategory/new", data, {

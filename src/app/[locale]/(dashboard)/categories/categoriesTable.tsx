@@ -33,6 +33,8 @@ export default function CategoriesTable() {
   const [addCatModal, setAddCatModal] = useState<boolean>(false);
   const [addSubCatModal, setAddSubCatModal] = useState<boolean>(false);
 
+  const selectedHotel = "6729b6b3b9dd6d75e6006b25";
+
   const tabData = ["categories", "subcategories"];
   const [selectedTab, setSelectedTab] = useState(tabData[0] || "");
 
@@ -76,7 +78,7 @@ export default function CategoriesTable() {
     if (userInfo?.role?.value === "hotelAdmin") {
       execute(userInfo?.hotel._id);
     } else {
-      execute();
+      execute(selectedHotel);
     }
   }, [selectedTab, execute]);
 
@@ -113,7 +115,16 @@ export default function CategoriesTable() {
       };
       createCatHotelAdmin(payload);
     } else {
-      createCatSuperAdmin({ title: data.title });
+      const payload = {
+        title: data.title,
+        id: data.categoryId,
+        hotel:
+          userInfo?.role?.value === "hotelAdmin"
+            ? userInfo?.hotel._id
+            : selectedHotel,
+      };
+      createCatHotelAdmin(payload);
+      // createCatSuperAdmin({ title: data.title });
     }
   };
   const handleAddSubCategory = (data: any) => {
