@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { toast } from "sonner";
 
 type ApiFunction<T> = (...args: any[]) => Promise<T>;
 
@@ -9,7 +8,7 @@ const useApi = <T,>(apiFunction: ApiFunction<T>) => {
   const [loading, setLoading] = useState(false);
 
   const execute = useCallback(
-    async (...args: any) => {
+    async (...args: any[]) => {
       setLoading(true);
       try {
         const result = await apiFunction(...args);
@@ -17,14 +16,14 @@ const useApi = <T,>(apiFunction: ApiFunction<T>) => {
         setError(null);
         return result;
       } catch (error: any) {
-        console.log(error);
-
+        console.error(error);
         setError(
           error?.response?.data?.message ||
             error?.response?.data?.error ||
             error.message ||
             "Something went wrong!"
         );
+        setData(null);
       } finally {
         setLoading(false);
       }
@@ -32,7 +31,19 @@ const useApi = <T,>(apiFunction: ApiFunction<T>) => {
     [apiFunction]
   );
 
-  return { data, error, loading, execute };
+  const resetLoading = () => {
+    setData(null);
+    setError(null);
+    setLoading(true);
+  };
+
+  return {
+    data,
+    error,
+    loading,
+    execute,
+    resetLoading,
+  };
 };
 
 export default useApi;

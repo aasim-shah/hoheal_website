@@ -18,7 +18,7 @@ const menus = {
     { title: "chats", path: "/chats", icon: FaComments },
     { title: "feedback", path: "/feedback", icon: MdFeedback },
     { title: "vendor", path: "/vendor", icon: FaUsers },
-    // { title: "staff", path: "/staff", icon: AiOutlineTeam },
+
     {
       title: "customerDetails",
       path: "/customer-details",

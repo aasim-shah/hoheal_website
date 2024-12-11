@@ -3,7 +3,7 @@
 import Pagination from "@/components/Pagination";
 import TopBar from "@/components/TopBar";
 import ServiceCard from "@/components/services/ServiceCard";
-import CategoryDropdown from "@/components/services/ServiceDropdown";
+import ServiceDropdown from "@/components/services/ServiceDropdown";
 import useApi from "@/hooks/useApi";
 import { getAllServices } from "@/lib/api/service";
 import {
@@ -17,6 +17,7 @@ import { RootState } from "@/store/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../loading";
+import { HotelsCombobox } from "@/components/HotelsCombobox";
 
 const Services = () => {
   const dispatch = useDispatch();
@@ -71,7 +72,14 @@ const Services = () => {
   return (
     <div className="space-y-8">
       <TopBar addButtonTitle="service">
-        <CategoryDropdown />
+        <div className="flex items-center gap-4 w-full">
+          <div className="w-1/2">
+            <HotelsCombobox />
+          </div>
+          <div className="w-1/2">
+            <ServiceDropdown />
+          </div>
+        </div>
       </TopBar>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {services?.length > 0 &&
