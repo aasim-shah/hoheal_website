@@ -18,8 +18,7 @@ export const getDashboardStats = async (
 // `/admin/hotel?page=${page}&pageSize=${limit}&status=${status}`,
 export const getDashboardHotels = async (period: "month" | "year") => {
   try {
-    let endpoint = `/admin/hotel?period=${period}`;
-
+    const endpoint = `/admin/hotel?period=${period}`;
     const response = await request.get(endpoint, {
       headers: { requiresAuth: true },
     });
