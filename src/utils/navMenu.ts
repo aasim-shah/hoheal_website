@@ -18,6 +18,7 @@ const menus = {
     { title: "chats", path: "/chats", icon: FaComments },
     { title: "feedback", path: "/feedback", icon: MdFeedback },
     { title: "vendor", path: "/vendor", icon: FaUsers },
+
     {
       title: "customerDetails",
       path: "/customer-details",
@@ -72,6 +73,7 @@ const menus = {
       path: "/customer-details",
       icon: FaClipboardList,
     },
+    { title: "preCheckin", path: "/pre-checkin", icon: AiOutlineTeam },
     { title: "checkIn", path: "/check-in", icon: RiDashboard3Line },
     { title: "checkOut", path: "/check-out", icon: FaUserShield },
     { title: "chats", path: "/chats", icon: FaComments },

@@ -79,7 +79,7 @@ export default function AddCategoryForm({
             onSubmit={formMethods.handleSubmit(handleSubmit)}
             className="space-y-4"
           >
-            {role === "superAdmin" && (
+            {/* {role === "superAdmin" && (
               <FormField
                 control={formMethods.control}
                 name="title"
@@ -98,32 +98,30 @@ export default function AddCategoryForm({
                   </FormItem>
                 )}
               />
-            )}
+            )} */}
 
-            {role === "hotelAdmin" && (
-              <FormField
-                control={formMethods.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{labelsT("title")}</FormLabel>
-                    <FormControl>
-                      <select className="w-full py-2 rounde-md" {...field}>
-                        <option value="" disabled>
-                          Select
+            <FormField
+              control={formMethods.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{labelsT("title")}</FormLabel>
+                  <FormControl>
+                    <select className="w-full py-2 rounde-md" {...field}>
+                      <option value="" disabled>
+                        Select
+                      </option>
+                      {categories.map((category: any) => (
+                        <option key={category._id} value={category._id}>
+                          {category.title}
                         </option>
-                        {categories.map((category: any) => (
-                          <option key={category._id} value={category._id}>
-                            {category.title}
-                          </option>
-                        ))}
-                      </select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+                      ))}
+                    </select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="flex justify-end gap-2">
               <Button type="button" variant="secondary" onClick={handleClose}>

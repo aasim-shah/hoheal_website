@@ -12,26 +12,17 @@ import { H } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import MyImage from "@/components/MyImage";
 import useApi from "@/hooks/useApi";
-import { markAsAcceptedReject } from "@/lib/api/department";
-import { use, useEffect, useState } from "react";
-import TopBar from "@/components/TopBar";
-import Tabs from "@/components/Tabs";
-import { toast } from "sonner";
-import ShowDetails from "./showDetails";
-import { getCustomers } from "@/lib/api/hotel";
+import { useEffect, useState } from "react";
+import { getCustomers, getPrecheckinData } from "@/lib/api/hotel";
 import { baseUrl } from "@/constants";
 import { formatDate } from "date-fns";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import ConfirmCheckIn from "./confirmCheckinModel";
 
-export default function CustomersTable() {
+export default function PrecheckInData() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
-  const tabData = ["All", "precheckin", "checkin", "checkout"];
-  const [selectedTab, setSelectedTab] = useState(tabData[0] || "");
-
-  const { userProfile, role } = useSelector((state: RootState) => state.auth);
 
   const handleOpenDialog = (item: any) => {
     setSelectedItem(item);
@@ -41,33 +32,26 @@ export default function CustomersTable() {
     "picture",
     "name",
     "email",
-    "hotel",
-    "roomNumber",
-    "checkInDate",
+    "booking number",
+    "arrival time",
+    "arrival date",
   ];
 
-  const { data, loading, error, execute } = useApi(getCustomers);
+  const { data, loading, error, execute } = useApi(getPrecheckinData);
+  const { userProfile, role } = useSelector((state: RootState) => state.auth);
+  console.log({ userProfile });
 
-  const hotel = userProfile?.employee?.hotel || "";
-
-  // const hotel = "6729b6b3b9dd6d75e6006b25";
+  const hotel = userProfile?.employee?.hotel || "6729b6b3b9dd6d75e6006b25";
+  //   const hotel = "6752c104ecd410e33097ce93";
 
   useEffect(() => {
-    execute(selectedTab, hotel);
-  }, [selectedTab, execute]);
+    execute(hotel);
+  }, [execute]);
 
   console.log({ data });
 
   return (
     <>
-      {/* <TopBar addButtonTitle="hotel"> */}
-      <div className="my-5">
-        <Tabs
-          tabData={tabData}
-          selectedTab={selectedTab}
-          handleTabClick={setSelectedTab}
-        />
-      </div>
       {/* </TopBar> */}
       <div className=" shadow-md  p-5 rounded-lg">
         {!data && error && (
@@ -96,33 +80,26 @@ export default function CustomersTable() {
                     <MyImage
                       classNames={"rounded-full"}
                       containerClasses={"w-12 rounded-full h-12"}
-                      src={`${baseUrl}/${doc.profilePicture}`}
+                      src={`${baseUrl}/${doc.user.profilePicture}`}
                       w={50}
                       h={50}
                     />
                   </TableCell>
-                  <TableCell>{doc.name}</TableCell>
-                  <TableCell>{doc.email}</TableCell>
-                  <TableCell>{doc.checkInInfo?.hotel?.name}</TableCell>
-                  <TableCell>{doc.checkInInfo?.roomNumber}</TableCell>
-                  <TableCell>{doc.checkInInfo?.checkInDate}</TableCell>
-                  {/* <TableCell>
-                    {formatDate(doc.checkInInfo?.checkInDate, "dd-MM-yyyy")}
-                  </TableCell> */}
+                  <TableCell>{doc.user.name}</TableCell>
+                  <TableCell>{doc.user.email}</TableCell>
+                  <TableCell>{doc.bookingNumber}</TableCell>
+                  <TableCell>{doc.arrivalTime}</TableCell>
+                  <TableCell>
+                    {formatDate(doc.arrivalDate, "dd-MM-yyyy")}
+                  </TableCell>
 
                   <TableCell className="text-center">
-                    {doc.status === "completed" ? (
-                      <div className="flex   justify-center gap-3">
-                        asdfasdfa
-                      </div>
-                    ) : (
-                      <Button
-                        onClick={() => handleOpenDialog(doc)}
-                        className="px-4 py-2  bg-black dark:bg-white dark:text-black text-white rounded"
-                      >
-                        View Details
-                      </Button>
-                    )}
+                    <Button
+                      onClick={() => handleOpenDialog(doc)}
+                      className="px-4 py-2  bg-black dark:bg-white dark:text-black text-white rounded"
+                    >
+                      Checkin
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -137,7 +114,7 @@ export default function CustomersTable() {
           </H>
         )}
       </div>
-      <ShowDetails
+      <ConfirmCheckIn
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         selectedItem={selectedItem}
