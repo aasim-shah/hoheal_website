@@ -14,7 +14,12 @@ export interface StaffData {
 }
 
 export const getStaffList = async (departmentId: string): Promise<any> => {
-  const response = await request.get(`/hotel/department/${departmentId}`);
+  // const response = await request.get(`/hotel/department/${departmentId}`);
+  const response = await request.get(
+    departmentId
+      ? `/admin/employees?department=${departmentId}`
+      : "/admin/employees"
+  );
   return response.data.body;
 };
 export const getReservationRequests = async (status: string): Promise<any> => {

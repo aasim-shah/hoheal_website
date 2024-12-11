@@ -16,6 +16,8 @@ import { useState, useEffect } from "react";
 import useApi from "@/hooks/useApi";
 import { getStaffList } from "@/lib/api/department";
 import ViewStaff from "./viewStaff";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export default function StaffTable() {
   const headers = ["Profile", "Name", "Email", "Role"];
@@ -24,9 +26,29 @@ export default function StaffTable() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
 
+  const { role, userProfile } = useSelector((state: RootState) => state.auth);
+  console.log({ userProfile });
+
   useEffect(() => {
-    execute("6729bd3e5a9f963581db7890");
+    if (role === "superAdmin" && userProfile?.role?.value === "superAdmin") {
+      execute("");
+      console.log("sueper");
+    }
+    if (
+      role === "serviceManager" &&
+      userProfile?.role?.value === "serviceManager"
+    ) {
+      console.log("service");
+
+      execute(userProfile?.employee?.department);
+    }
+    // if (role === "hotelManager" && userProfile?.role.value === "hotelManager") {
+    //   execute(userProfile?.hotel._id);
+    //   console.log("hotel");
+    // }
   }, []);
+
+  console.log({ data });
 
   const handleView = (staff: any) => {
     console.log({ staff });
@@ -42,7 +64,7 @@ export default function StaffTable() {
 
   return (
     <div className="border-2 shadow-sm border-gray-100 p-5 rounded-lg">
-      {data && data.employees && data.employees.length > 0 ? (
+      {data && data.length > 0 ? (
         <>
           <Table className="overflow-auto text-start h-full">
             <TableHeader>
@@ -56,7 +78,7 @@ export default function StaffTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.employees.map((doc: any) => (
+              {data.map((doc: any) => (
                 <TableRow key={doc._id}>
                   <TableCell>
                     <MyImage

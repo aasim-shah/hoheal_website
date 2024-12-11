@@ -54,7 +54,7 @@ const HotelForm = () => {
   const { control, handleSubmit, reset } = form;
 
   const onSubmit = async (values: any) => {
-    console.log(values)
+    console.log(values);
     try {
       const formData = new FormData();
       appendFormData(formData, values);

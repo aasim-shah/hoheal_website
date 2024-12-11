@@ -8,18 +8,13 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { camelCaseToNormalCase } from "@/utils/reuseableMethods";
-import { H } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
-import MyImage from "@/components/MyImage";
 import useApi from "@/hooks/useApi";
-import { markAsAcceptedReject } from "@/lib/api/department";
 import { useEffect, useState } from "react";
-import TopBar from "@/components/TopBar";
 import Tabs from "@/components/Tabs";
 import { toast } from "sonner";
-import { getCustomers } from "@/lib/api/hotel";
 import { baseUrl } from "@/constants";
-import { format, formatDate } from "date-fns";
+import { format } from "date-fns";
 import {
   createCategoryHotelAdmin,
   createCategorySuperAdmin,
@@ -32,6 +27,7 @@ import AddCategoryForm from "./addCategory";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import AddSubCategoryModel from "./addSubCategory";
+import appendFormData from "@/utils/appendFormData";
 
 export default function CategoriesTable() {
   const [addCatModal, setAddCatModal] = useState<boolean>(false);
@@ -74,6 +70,7 @@ export default function CategoriesTable() {
   } = useApi(createSubCatHotelADmin);
 
   const userInfo = useSelector((state: RootState) => state.auth.userProfile);
+  console.log({ userInfo });
 
   useEffect(() => {
     if (userInfo?.role?.value === "hotelAdmin") {
@@ -81,7 +78,7 @@ export default function CategoriesTable() {
     } else {
       execute();
     }
-  }, [selectedTab]);
+  }, [selectedTab, execute]);
 
   useEffect(() => {
     if (data?.categories?.length) {
@@ -103,13 +100,9 @@ export default function CategoriesTable() {
       setCategories(allCategories);
       setSubCategories(allSubCategories);
     }
-  }, [
-    data,
-    selectedTab,
-    createCatHotelAdminResponse,
-    createCatSuperAdminResponse,
-  ]);
+  }, [data, selectedTab, execute]);
 
+  console.log({ categories, subCategories });
   const handleAddCategory = (data: any) => {
     if (userInfo?.role?.value === "hotelAdmin") {
       const payload = {
@@ -130,15 +123,20 @@ export default function CategoriesTable() {
         title: data.title,
         category: data.category,
         subcategory: data.subCategory,
+        image: data.image,
         hotel:
           userInfo?.role?.value === "hotelAdmin" ? userInfo?.hotel._id : null,
       };
-      createSubCatHotelADminExecute(payload);
+
+      const formData = new FormData();
+      appendFormData(formData, payload);
+      createSubCatHotelADminExecute(formData);
+      execute(userInfo.hotel._id);
     } else {
-      createSubCatSuperADminExecute({
-        title: data.title,
-        category: data.category,
-      });
+      const formData = new FormData();
+      appendFormData(formData, data);
+      createSubCatSuperADminExecute(formData);
+      execute();
     }
   };
 
@@ -148,6 +146,13 @@ export default function CategoriesTable() {
       setAddCatModal(false);
     }
   }, [createCatHotelAdminResponse, createCatSuperAdminResponse]);
+
+  useEffect(() => {
+    if (createSubCatHotelADminResponse || createSubCatSuperADminResponse) {
+      toast.success("Sub Category added successfully!");
+      setAddSubCatModal(false);
+    }
+  }, [createSubCatHotelADminResponse, createSubCatSuperADminResponse]);
 
   return (
     <>
@@ -184,40 +189,44 @@ export default function CategoriesTable() {
           </div>
         )}
 
-        {selectedTab === "categories" && categories && categories.length > 0 ? (
+        {selectedTab === "categories" ? (
           <>
-            <Table className="overflow-auto text-start h-full">
-              <TableHeader>
-                <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
-                  {headers.map((header: string) => (
-                    <TableHead key={header} className="font-bold">
-                      {camelCaseToNormalCase(header)}
-                    </TableHead>
-                  ))}
-
-                  <TableHead className="text-center">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {categories.map((doc: (typeof data)[0]) => (
-                  <TableRow key={doc._id}>
-                    <TableCell>{doc.title}</TableCell>
-                    <TableCell>
-                      {(doc.createdAt && format(doc.createdAt, "dd/MM/yyyy")) ||
-                        ""}
-                    </TableCell>
-                    <TableCell className="flex gap-3 justify-center items-center">
-                      <Button variant={"outline"} className="">
-                        Edit
-                      </Button>
-                      <Button variant={"outline"} className="text-red-500">
-                        Delete
-                      </Button>
-                    </TableCell>
+            {" "}
+            {categories && categories.length > 0 ? (
+              <Table className="overflow-auto text-start h-full">
+                <TableHeader>
+                  <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
+                    {headers.map((header: string) => (
+                      <TableHead key={header} className="font-bold">
+                        {camelCaseToNormalCase(header)}
+                      </TableHead>
+                    ))}
+                    <TableHead className="text-center">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {categories.map((doc: any) => (
+                    <TableRow key={doc._id}>
+                      <TableCell>{doc.title}</TableCell>
+                      <TableCell>
+                        {doc.createdAt &&
+                          format(new Date(doc.createdAt), "dd/MM/yyyy")}
+                      </TableCell>
+                      <TableCell className="flex gap-3 justify-center items-center">
+                        <Button variant={"outline"}>Edit</Button>
+                        <Button variant={"outline"} className="text-red-500">
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <div className="text-center text-gray-500">
+                No categories found. Please add one!
+              </div>
+            )}
             <AddCategoryForm
               role={userInfo?.role?.value}
               onSubmit={handleAddCategory}
@@ -225,50 +234,49 @@ export default function CategoriesTable() {
               setIsOpen={setAddCatModal}
             />
           </>
-        ) : (
-          ""
-        )}
+        ) : null}
 
-        {selectedTab === "subcategories" &&
-        subCategories &&
-        subCategories.length > 0 ? (
+        {selectedTab === "subcategories" ? (
           <>
-            <Table className="overflow-auto text-start h-full">
-              <TableHeader>
-                <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
-                  {headersSubCategories.map((header: string) => (
-                    <TableHead key={header} className="font-bold">
-                      {camelCaseToNormalCase(header)}
-                    </TableHead>
-                  ))}
-
-                  <TableHead className="text-center">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {subCategories.map((doc: (typeof data)[0]) => (
-                  <TableRow key={doc._id}>
-                    <TableCell>
-                      <div className="w-12 h-12">
-                        <Image
-                          width={200}
-                          height={200}
-                          src={`${baseUrl}/${doc.image}`}
-                          alt="icon"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell>{doc.title}</TableCell>
-                    <TableCell>{doc.category}</TableCell>
-                    <TableCell className="text-center">
-                      <Button variant={"outline"} className="">
-                        Edit
-                      </Button>
-                    </TableCell>
+            {subCategories && subCategories.length > 0 ? (
+              <Table className="overflow-auto text-start h-full">
+                <TableHeader>
+                  <TableRow className="sticky top-0 z-40 bg-white capitalize hover:bg-muted">
+                    {headersSubCategories.map((header: string) => (
+                      <TableHead key={header} className="font-bold">
+                        {camelCaseToNormalCase(header)}
+                      </TableHead>
+                    ))}
+                    <TableHead className="text-center">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {subCategories.map((doc: any) => (
+                    <TableRow key={doc._id}>
+                      <TableCell>
+                        <div className="w-12 h-12">
+                          <Image
+                            width={200}
+                            height={200}
+                            src={`${baseUrl}/${doc.image}`}
+                            alt="icon"
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell>{doc.title}</TableCell>
+                      <TableCell>{doc.category}</TableCell>
+                      <TableCell className="text-center">
+                        <Button variant={"outline"}>Edit</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <div className="text-center text-gray-500">
+                No subcategories found. Please add one!
+              </div>
+            )}
             <AddSubCategoryModel
               role={userInfo?.role?.value}
               hotel={userInfo?.hotel?._id}
