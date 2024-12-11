@@ -18,7 +18,7 @@ import ActivityForm from "./ActivityForm";
 import RestaurantForm from "./RestaurantForm";
 import RoomServiceForm from "./RoomServiceForm";
 import RoomUpgradeForm from "./RoomUpgradeForm";
-import TechnicalServiceForm from "./TechnicalServiceForm";
+import TechnicalServiceForm from "./TechnicalServiceForm"; // okay
 
 const ServicesForm = () => {
   const { hotelId } = useSelector((state: RootState) => state.hotels);
