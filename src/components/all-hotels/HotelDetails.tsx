@@ -65,7 +65,7 @@ const HotelDetails = ({ id }: any) => {
 
   return (
     <div>
-      <MyCarousel data={images} renderItem={renderImage} showDots/>
+      <MyCarousel data={images} renderItem={renderImage} showDots />
       <div className="space-y-4 md:space-y-8 my-4">
         <div className="space-y-4">
           <H className="text-xl font-bold">Hotel Details</H>

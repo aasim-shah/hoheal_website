@@ -28,12 +28,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import AddSubCategoryModel from "./addSubCategory";
 import appendFormData from "@/utils/appendFormData";
+import { HotelsCombobox } from "@/components/HotelsCombobox";
 
 export default function CategoriesTable() {
   const [addCatModal, setAddCatModal] = useState<boolean>(false);
   const [addSubCatModal, setAddSubCatModal] = useState<boolean>(false);
-
-  const selectedHotel = "6729b6b3b9dd6d75e6006b25";
 
   const tabData = ["categories", "subcategories"];
   const [selectedTab, setSelectedTab] = useState(tabData[0] || "");
@@ -45,12 +44,21 @@ export default function CategoriesTable() {
   const [subCategories, setSubCategories] = useState([]);
 
   const { data, loading, error, execute } = useApi(getCategoriesList);
-  const {
-    data: createCatSuperAdminResponse,
-    loading: createCatSuperAdminLoading,
-    error: createCatSuperAdminError,
-    execute: createCatSuperAdmin,
-  } = useApi(createCategorySuperAdmin);
+
+  const userInfo = useSelector((state: RootState) => state.auth.userProfile);
+  console.log({ userInfo });
+
+  const userRole = userInfo?.role?.value;
+  const { hotelId } = useSelector((state: RootState) => state.hotels);
+  const hotel =
+    userInfo?.role?.value === "hotelAdmin" ? userInfo?.hotel._id : hotelId;
+
+  // const {
+  //   data: createCatSuperAdminResponse,
+  //   loading: createCatSuperAdminLoading,
+  //   error: createCatSuperAdminError,
+  //   execute: createCatSuperAdmin,
+  // } = useApi(createCategorySuperAdmin);
   const {
     data: createCatHotelAdminResponse,
     loading: createCatHotelAdminLoading,
@@ -58,12 +66,12 @@ export default function CategoriesTable() {
     execute: createCatHotelAdmin,
   } = useApi(createCategoryHotelAdmin);
 
-  const {
-    data: createSubCatSuperADminResponse,
-    loading: createSubCatSuperADminLoading,
-    error: createSubCatSuperADminError,
-    execute: createSubCatSuperADminExecute,
-  } = useApi(createSubCatSuperADmin);
+  // const {
+  //   data: createSubCatSuperADminResponse,
+  //   loading: createSubCatSuperADminLoading,
+  //   error: createSubCatSuperADminError,
+  //   execute: createSubCatSuperADminExecute,
+  // } = useApi(createSubCatSuperADmin);
   const {
     data: createSubCatHotelADminResponse,
     loading: createSubCatHotelADminLoading,
@@ -71,16 +79,13 @@ export default function CategoriesTable() {
     execute: createSubCatHotelADminExecute,
   } = useApi(createSubCatHotelADmin);
 
-  const userInfo = useSelector((state: RootState) => state.auth.userProfile);
-  console.log({ userInfo });
-
   useEffect(() => {
     if (userInfo?.role?.value === "hotelAdmin") {
       execute(userInfo?.hotel._id);
     } else {
-      execute(selectedHotel);
+      execute(hotelId);
     }
-  }, [selectedTab, execute]);
+  }, [selectedTab, execute, hotelId]);
 
   useEffect(() => {
     if (data?.categories?.length) {
@@ -102,71 +107,51 @@ export default function CategoriesTable() {
       setCategories(allCategories);
       setSubCategories(allSubCategories);
     }
-  }, [data, selectedTab, execute]);
+  }, [data, selectedTab, execute, hotelId]);
 
   console.log({ categories, subCategories });
   const handleAddCategory = (data: any) => {
-    if (userInfo?.role?.value === "hotelAdmin") {
-      const payload = {
-        title: data.title,
-        id: data.categoryId,
-        hotel:
-          userInfo?.role?.value === "hotelAdmin" ? userInfo?.hotel._id : null,
-      };
-      createCatHotelAdmin(payload);
-    } else {
-      const payload = {
-        title: data.title,
-        id: data.categoryId,
-        hotel:
-          userInfo?.role?.value === "hotelAdmin"
-            ? userInfo?.hotel._id
-            : selectedHotel,
-      };
-      createCatHotelAdmin(payload);
-      // createCatSuperAdmin({ title: data.title });
-    }
+    const payload = {
+      title: data.title,
+      id: data.categoryId,
+      hotel: hotel,
+    };
+    createCatHotelAdmin(payload);
   };
   const handleAddSubCategory = (data: any) => {
     console.log({ dataSubCat: data });
-    if (userInfo?.role?.value === "hotelAdmin") {
-      const payload = {
-        title: data.title,
-        category: data.category,
-        subcategory: data.subCategory,
-        image: data.image,
-        hotel:
-          userInfo?.role?.value === "hotelAdmin" ? userInfo?.hotel._id : null,
-      };
-
-      const formData = new FormData();
-      appendFormData(formData, payload);
-      createSubCatHotelADminExecute(formData);
-      execute(userInfo.hotel._id);
-    } else {
-      const formData = new FormData();
-      appendFormData(formData, data);
-      createSubCatSuperADminExecute(formData);
-      execute();
-    }
+    const payload = {
+      title: data.title,
+      category: data.category,
+      subcategory: data.subCategory,
+      image: data.image,
+      hotel: hotel,
+    };
+    const formData = new FormData();
+    appendFormData(formData, payload);
+    createSubCatHotelADminExecute(formData);
+    // execute(hotel);
   };
 
   useEffect(() => {
-    if (createCatHotelAdminResponse || createCatSuperAdminResponse) {
+    if (createCatHotelAdminResponse) {
       toast.success("Category added successfully!");
       setAddCatModal(false);
     }
-  }, [createCatHotelAdminResponse, createCatSuperAdminResponse]);
+  }, [createCatHotelAdminResponse]);
 
   useEffect(() => {
-    if (createSubCatHotelADminResponse || createSubCatSuperADminResponse) {
+    if (createSubCatHotelADminResponse) {
       toast.success("Sub Category added successfully!");
       setAddSubCatModal(false);
     }
-  }, [createSubCatHotelADminResponse, createSubCatSuperADminResponse]);
+  }, [createSubCatHotelADminResponse]);
 
   return (
     <>
+      <div className="flex  justify-end my-4">
+        {userRole === "superAdmin" && <HotelsCombobox />}
+      </div>
       <div className="my-5 flex flex-row justify-between items-center">
         <Tabs
           tabData={tabData}
@@ -178,6 +163,7 @@ export default function CategoriesTable() {
             onClick={() => setAddCatModal(true)}
             variant={"signature"}
             className=""
+            disabled={!hotel}
           >
             Add Category
           </Button>
@@ -187,6 +173,7 @@ export default function CategoriesTable() {
             onClick={() => setAddSubCatModal(true)}
             variant={"signature"}
             className=""
+            disabled={!hotel}
           >
             Add SubCategory
           </Button>
@@ -290,7 +277,7 @@ export default function CategoriesTable() {
             )}
             <AddSubCategoryModel
               role={userInfo?.role?.value}
-              hotel={userInfo?.hotel?._id}
+              hotel={hotel}
               onSubmit={handleAddSubCategory}
               isOpen={addSubCatModal}
               setIsOpen={setAddSubCatModal}

@@ -9,6 +9,8 @@ import {
   ImageFields,
   RoomServicesCommonFields,
 } from "./fields/SharedFields";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const RoomUpgradeForm = ({ control }: { control: any }) => {
   const features = [
@@ -21,17 +23,19 @@ const RoomUpgradeForm = ({ control }: { control: any }) => {
   ];
 
   const fields = useWatch({ control });
-  const { hotel } = fields || {};
+  // const { hotel } = fields || {};
+  const { hotelId } = useSelector((state: RootState) => state.hotels);
 
   const { data, loading, error, execute } = useApi(getRoomTypes);
 
   const [roomTypes, setRoomTypes] = useState([]);
 
+  console.log({ data, hotelId });
   useEffect(() => {
-    if (hotel) {
-      execute(hotel);
+    if (hotelId) {
+      execute(hotelId);
     }
-  }, [execute, hotel]);
+  }, [execute, hotelId]);
 
   useEffect(() => {
     if (data) {
