@@ -5,7 +5,7 @@ import { SidebarTrigger } from "./ui/sidebar";
 
 const Navbar = () => {
   return (
-    <div className="h-12 flex justify-between items-center gap-4 bg-secondary sticky top-0 px-4 z-50">
+    <div className="h-12 flex justify-between items-center gap-4 bg-secondary sticky top-0 px-4 z-50 shadow-lg">
       <SidebarTrigger />
       <div className="flex gap-4 items-center h-full">
         <Notifications />

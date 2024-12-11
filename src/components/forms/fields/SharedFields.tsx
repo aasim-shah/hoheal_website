@@ -1,21 +1,12 @@
-import { HotelsCombobox } from "@/components/HotelsCombobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RootState } from "@/store/store";
 import { useFormContext, useWatch } from "react-hook-form";
-import { useSelector } from "react-redux";
 import FormFileDropzone from "./FormFileDropzone";
 import FormInput from "./FormInput";
 
 export const CommonFields = ({ control }: { control: any }) => {
-  const { role } = useSelector((state: RootState) => state.auth);
   return (
     <>
-      {role === "superAdmin" && (
-        <div className="lg:col-span-2">
-          <HotelsCombobox />
-        </div>
-      )}
       <FormInput
         name="title"
         control={control}

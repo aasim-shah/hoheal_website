@@ -1,37 +1,21 @@
 import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselDots,
   CarouselItem,
 } from "./ui/carousel";
-import MyImage from "./MyImage";
-import { useRef, useState } from "react";
 
 type Props = {
-  images: string[];
+  data: [];
+  renderItem: (item: any) => JSX.Element;
+  showDots?: boolean;
 };
 
-const MyCarousel = ({ images }: Props) => {
+const MyCarousel = ({ data, renderItem, showDots = false }: Props) => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
 
-  const [currentBanner, setCurrentBanner] = useState(0);
-  const handleCurrentBanner = (index: number) => {
-    setCurrentBanner(index);
-  };
-
-  const renderImage = (src: any) => {
-    // handleCurrentBanner(banner.id);
-    return (
-      <MyImage
-        width={1000}
-        height={1000}
-        className="w-full h-[30vh] md:h-[50vh] object-cover rounded-lg"
-        src={src}
-        alt={"Image"}
-      />
-    );
-  };
   return (
     <div>
       <Carousel
@@ -41,12 +25,12 @@ const MyCarousel = ({ images }: Props) => {
         className="w-full rounded-lg overflow-hidden"
       >
         <CarouselContent className="gap-4">
-          {images?.length > 0 &&
-            images.map((src, index) => (
-              <CarouselItem key={index}>{renderImage(src)}</CarouselItem>
+          {data?.length > 0 &&
+            data.map((item, index) => (
+              <CarouselItem key={index}>{renderItem(item)}</CarouselItem>
             ))}
         </CarouselContent>
-        <CarouselDots className="mt-2" />
+        {showDots && <CarouselDots className="mt-2" />}
       </Carousel>
     </div>
   );

@@ -75,3 +75,5 @@ interface Pagination {
   currentPage: number;
   total: number;
 }
+
+type TimeFilter = "month" | "year";

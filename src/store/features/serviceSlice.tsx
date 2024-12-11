@@ -42,7 +42,9 @@ const serviceSlice = createSlice({
       state.expandedCategory =
         state.expandedCategory === action.payload ? null : action.payload;
     },
-
+    resetSelectedService: (state) => {
+      state.selectedService = null;
+    },
     selectOption: (
       state,
       action: PayloadAction<{
@@ -79,6 +81,7 @@ const serviceSlice = createSlice({
 
 export const {
   toggleCategory,
+  resetSelectedService,
   selectOption,
   setServices,
   setLoading,

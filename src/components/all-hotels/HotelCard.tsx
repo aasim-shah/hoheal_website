@@ -2,6 +2,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import MyImage from "../MyImage";
 import HotelStatsCard from "./HotelStatsCard";
+import { formatContractDate } from "@/utils/formatDateAndTime";
 
 const HotelCard = ({ hotel }: any) => {
   const {
@@ -14,11 +15,7 @@ const HotelCard = ({ hotel }: any) => {
     suites,
     periodOfContract,
   } = hotel;
-  const { from, to } = periodOfContract;
-  const contractDuration =
-    from && to
-      ? `${new Date(from).getFullYear()} - ${new Date(to).getFullYear()}`
-      : "-";
+  const contractDuration = formatContractDate(periodOfContract);
 
   const statsCardData: HotelStatsCard = {
     type: type ? `${type} stars` : "-",

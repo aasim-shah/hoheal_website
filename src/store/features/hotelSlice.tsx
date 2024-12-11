@@ -38,6 +38,9 @@ const hotelSlice: Slice = createSlice({
     setHotelId: (state, action) => {
       state.hotelId = action.payload;
     },
+    resetHotel: (state) => {
+      state.hotelId = null;
+    },
     changeStatus: (state, action) => {
       state.status = action.payload === "all" ? "" : action.payload;
     },
@@ -60,6 +63,7 @@ const hotelSlice: Slice = createSlice({
 export const {
   setHotels,
   setHotelId,
+  resetHotel,
   changeStatus,
   setLoading,
   setError,

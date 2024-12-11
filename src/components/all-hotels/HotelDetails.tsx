@@ -53,9 +53,19 @@ const HotelDetails = ({ id }: any) => {
     user,
   } = hotel || {};
 
+  const renderImage = (src: string) => (
+    <MyImage
+      width={1000}
+      height={1000}
+      className="w-full h-[30vh] md:h-[50vh] object-cover rounded-lg"
+      src={src}
+      alt={"Image"}
+    />
+  );
+
   return (
     <div>
-      <MyCarousel images={images} />
+      <MyCarousel data={images} renderItem={renderImage} showDots/>
       <div className="space-y-4 md:space-y-8 my-4">
         <div className="space-y-4">
           <H className="text-xl font-bold">Hotel Details</H>
