@@ -10,7 +10,7 @@ const SkeletonItem = ({
     <div className={cn(`relative`, `w-${w}`, `h-${h}`, className)}>
       <div
         className={cn(
-          "absolute top-0 left-0 w-full h-full bg-muted animate-pulse",
+          "absolute top-0 left-0 w-full h-full bg-primary/10 animate-pulse",
           roundedFull && "rounded-full"
         )}
       />

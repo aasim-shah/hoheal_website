@@ -9,7 +9,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useApi from "@/hooks/useApi";
 import { getCategories } from "@/lib/api/formData";
-import { selectOption, toggleCategory } from "@/store/features/serviceSlice";
+import {
+  resetServices,
+  selectOption,
+  toggleCategory,
+} from "@/store/features/serviceSlice";
 import { RootState } from "@/store/store";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -24,7 +28,7 @@ const CategoryDropdown = () => {
     (state: RootState) => state.services
   );
 
-  const [categories, setCategories] = useState<Category[] | []>([]);
+  const [categories, setCategories] = useState<Category[] | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -56,16 +60,25 @@ const CategoryDropdown = () => {
     );
   };
 
+  const handleReset = () => {
+    dispatch(resetServices());
+    // setValue("hotel", null);
+  };
+
+  const hasNoCategories = Array.isArray(categories) && categories.length === 0;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="flex items-center gap-2 w-full md:w-64 justify-between"
-          variant="signature"
+          className="flex items-center gap-2 w-full justify-between"
+          variant="outline"
           disabled={loading}
         >
           {loading ? (
             "Loading..."
+          ) : categories && categories.length === 0 ? (
+            "No categories found"
           ) : (
             <>
               <span className="truncate">
@@ -81,48 +94,58 @@ const CategoryDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-full md:w-64">
+        {selectedService && (
+          <Button
+            variant={"destructive"}
+            className="w-full capitalize my-2"
+            onClick={handleReset}
+          >
+            reset
+          </Button>
+        )}
         <DropdownMenuGroup>
-          {categories.map((category) => (
-            <div key={category._id}>
-              <DropdownMenuItem
-                className="flex justify-between items-center w-full md:w-64"
-                onClick={() => handleOptionSelect(category.title, category)}
-              >
-                {category.title}
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleToggleCategory(category._id);
-                  }}
-                  className="cursor-pointer h-full rounded-full bg-white text-gray-600 hover:text-signature transition duration-200"
-                  title="Toggle Subcategories"
+          {categories &&
+            categories.map((category) => (
+              <div key={category._id}>
+                <DropdownMenuItem
+                  className="flex justify-between items-center w-full md:w-64"
+                  onClick={() => handleOptionSelect(category.title, category)}
                 >
-                  {expandedCategory === category._id ? (
-                    <ChevronDown className="w-5 h-5" />
-                  ) : (
-                    <ChevronRight className="w-5 h-5" />
-                  )}
-                </span>
-              </DropdownMenuItem>
-
-              {expandedCategory === category._id &&
-                category.subCategories?.map((subCategory) => (
-                  <DropdownMenuItem
-                    key={subCategory._id}
-                    className="pl-6"
-                    onClick={() =>
-                      handleOptionSelect(
-                        subCategory.title,
-                        category,
-                        subCategory
-                      )
-                    }
+                  {category.title}
+                  <span
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleCategory(category._id);
+                    }}
+                    className="cursor-pointer h-full rounded-full bg-white text-gray-600 hover:text-signature transition duration-200"
+                    title="Toggle Subcategories"
                   >
-                    {subCategory.title}
-                  </DropdownMenuItem>
-                ))}
-            </div>
-          ))}
+                    {expandedCategory === category._id ? (
+                      <ChevronDown className="w-5 h-5" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5" />
+                    )}
+                  </span>
+                </DropdownMenuItem>
+
+                {expandedCategory === category._id &&
+                  category.subCategories?.map((subCategory) => (
+                    <DropdownMenuItem
+                      key={subCategory._id}
+                      className="pl-6"
+                      onClick={() =>
+                        handleOptionSelect(
+                          subCategory.title,
+                          category,
+                          subCategory
+                        )
+                      }
+                    >
+                      {subCategory.title}
+                    </DropdownMenuItem>
+                  ))}
+              </div>
+            ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

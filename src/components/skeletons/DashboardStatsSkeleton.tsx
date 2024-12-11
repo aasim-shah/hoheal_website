@@ -1,13 +1,14 @@
+import MyCard from "../MyCard";
 import SkeletonItem from "../SkeletonItem";
 
 const DashboardStatsSkeleton = () => {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {Array.from({ length: 4 }).map((_, index) => (
-        <div
+        <MyCard
           key={index}
           className="flex flex-col justify-center
-          h-28 gap-4 rounded-lg p-4 border border-muted"
+          h-28 gap-4 rounded-lg p-4"
         >
           <div className="flex justify-between items-center">
             <div className="space-y-2">
@@ -18,7 +19,7 @@ const DashboardStatsSkeleton = () => {
             <SkeletonItem h="6" w="6" roundedFull />
           </div>
           <SkeletonItem h="3" w="16" />
-        </div>
+        </MyCard>
       ))}
     </div>
   );

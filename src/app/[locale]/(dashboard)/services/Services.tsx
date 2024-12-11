@@ -72,13 +72,9 @@ const Services = () => {
   return (
     <div className="space-y-8">
       <TopBar addButtonTitle="service">
-        <div className="flex items-center gap-4 w-full">
-          <div className="w-1/2">
-            <HotelsCombobox />
-          </div>
-          <div className="w-1/2">
-            <ServiceDropdown />
-          </div>
+        <div className="flex items-center justify-between gap-4 w-full">
+          <HotelsCombobox />
+          <ServiceDropdown />
         </div>
       </TopBar>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">

@@ -43,14 +43,14 @@ const Hotels = ({ timeFilter }: { timeFilter: TimeFilter }) => {
   }
 
   return (
-    <div className="flex flex-col h-32 overflow-y-scroll gap-2 bg-secondary rounded-md p-4 shadow-md">
+    <div className="flex flex-col h-32 gap-2 bg-secondary rounded-md p-4 shadow-md">
       <div className="flex items-center justify-between">
         <Label className="font-semibold">Hotels</Label>
         <Link href="/all-hotels" className="underline">
           View all
         </Link>
       </div>
-      <div className="whitespace-nowrap">
+      <div className="whitespace-nowrap overflow-scroll">
         {hotels && hotels.length > 0 ? (
           <DataTable data={hotels} renderRow={renderHotelRow} />
         ) : (

@@ -7,10 +7,11 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import SkeletonItem from "../SkeletonItem";
+import MyCard from "../MyCard";
 
 const LineChartSkeleton = () => {
   return (
-    <Card className="shadow-lg rounded-md">
+    <MyCard>
       <CardHeader>
         <SkeletonItem h="6" w="40" />
         <SkeletonItem h="4" w="20" />
@@ -24,7 +25,7 @@ const LineChartSkeleton = () => {
         <SkeletonItem h="5" w="24" />
         <SkeletonItem h="4" w="40" />
       </CardFooter>
-    </Card>
+    </MyCard>
   );
 };
 

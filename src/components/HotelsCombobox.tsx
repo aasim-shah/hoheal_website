@@ -17,12 +17,11 @@ import {
 import useApi from "@/hooks/useApi";
 import { getAllHotels } from "@/lib/api/hotel";
 import { cn } from "@/lib/utils";
-import { setHotelId } from "@/store/features/hotelSlice";
+import { resetHotel, setHotelId } from "@/store/features/hotelSlice";
+import { resetServices } from "@/store/features/serviceSlice";
 import { RootState } from "@/store/store";
 import { Check, ChevronsUpDown } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import MyImage from "./MyImage";
 
@@ -33,7 +32,6 @@ export function HotelsCombobox() {
   const [open, setOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<any>({});
   const dispatch = useDispatch();
-  // const { setValue } = useFormContext();
   const { role } = useSelector((state: RootState) => state.auth);
 
   const handleSelect = (id: string) => {
@@ -41,7 +39,7 @@ export function HotelsCombobox() {
     const selected = hotels.find((hotel: any) => hotel._id === id);
     setSelectedHotel(selected);
     dispatch(setHotelId(id));
-    // setValue("hotel", id);
+    dispatch(resetServices());
   };
 
   useEffect(() => {
@@ -63,14 +61,20 @@ export function HotelsCombobox() {
     }
   }, [hotelId, hotels]);
 
+  const handleReset = () => {
+    setSelectedHotel(null);
+    dispatch(resetHotel(hotelId));
+    dispatch(resetServices());
+  };
+
   return (
     <>
       {role === "superAdmin" && (
-        <div className="lg:col-span-2">
+        <div className=" w-full">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger className="w-full" asChild>
               <Button
-                variant="outline"
+                variant="secondary"
                 role="combobox"
                 aria-expanded={open}
                 className=" justify-between"
@@ -85,8 +89,8 @@ export function HotelsCombobox() {
                       alt={selectedHotel.name}
                       width={40}
                       height={40}
-                      className="w-6 h-6 object-cover"
-                      containerClasses="w-full h-full rounded-full"
+                      className="w-full h-full object-cover"
+                      containerClasses="w-6 h-6 rounded-full"
                     />
                     <p className="font-semibold">{selectedHotel.name}</p>
                   </div>
@@ -104,6 +108,15 @@ export function HotelsCombobox() {
                     No hotel found.
                   </CommandEmpty>
                   <CommandGroup>
+                    {hotelId && (
+                      <Button
+                        variant={"destructive"}
+                        className="w-full capitalize my-2"
+                        onClick={handleReset}
+                      >
+                        reset
+                      </Button>
+                    )}
                     {hotels.map((hotel: any) => (
                       <CommandItem
                         key={hotel._id}
@@ -128,7 +141,7 @@ export function HotelsCombobox() {
                         <Check
                           className={cn(
                             "ml-auto",
-                            hotel._id === selectedHotel._id
+                            hotel._id === (selectedHotel?._id || null)
                               ? "opacity-100"
                               : "opacity-0"
                           )}

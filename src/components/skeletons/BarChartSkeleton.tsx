@@ -2,10 +2,11 @@ import { ResponsiveContainer } from "recharts";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import SkeletonItem from "../SkeletonItem";
+import MyCard from "../MyCard";
 
 const BarChartSkeleton = () => {
   return (
-    <Card className="shadow-lg rounded-md">
+    <MyCard>
       <CardHeader>
         <SkeletonItem h="6" w="40" />
         <SkeletonItem h="4" w="20" />
@@ -15,7 +16,7 @@ const BarChartSkeleton = () => {
           <SkeletonItem />
         </ResponsiveContainer>
       </CardContent>
-    </Card>
+    </MyCard>
   );
 };
 

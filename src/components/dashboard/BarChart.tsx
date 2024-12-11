@@ -29,6 +29,7 @@ import useApi from "@/hooks/useApi";
 import { useEffect, useState } from "react";
 import BarChartSkeleton from "../skeletons/BarChartSkeleton";
 import { toast } from "sonner";
+import MyCard from "../MyCard";
 
 interface BarChartData {
   service: string;
@@ -79,7 +80,7 @@ export function BarChart({
   }
 
   return (
-    <Card className="shadow-lg rounded-md">
+    <MyCard>
       <CardHeader>
         <CardTitle>Services Chart</CardTitle>
         <CardDescription className="capitalize">{timeFilter}</CardDescription>
@@ -124,6 +125,6 @@ export function BarChart({
         </ResponsiveContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm"></CardFooter>
-    </Card>
+    </MyCard>
   );
 }

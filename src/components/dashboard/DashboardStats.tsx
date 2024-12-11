@@ -45,7 +45,7 @@ const DashboardStats = ({
   useEffect(() => {
     execute(timeFilter, hotelId);
   }, [timeFilter, hotelId, execute]);
-  
+
   useEffect(() => {
     if (data?.body) {
       const { usersStats, hotelsStats, employeesStats, servicesStats } =

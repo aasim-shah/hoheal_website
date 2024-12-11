@@ -28,6 +28,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import LineChartSkeleton from "../skeletons/LineChartSkeleton";
+import MyCard from "../MyCard";
 
 interface LineChartData {
   x: number;
@@ -85,7 +86,7 @@ export function LineChart({
     console.log(error);
   }
   return (
-    <Card className="shadow-lg rounded-md">
+    <MyCard>
       <CardHeader>
         <CardTitle>Revenue Chart</CardTitle>
         <CardDescription className="capitalize">{timeFilter}</CardDescription>
@@ -156,6 +157,6 @@ export function LineChart({
           )}
         </ResponsiveContainer>
       </CardContent>
-    </Card>
+    </MyCard>
   );
 }

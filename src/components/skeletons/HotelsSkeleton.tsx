@@ -1,11 +1,12 @@
+import MyCard from "../MyCard";
 import SkeletonItem from "../SkeletonItem";
 import { Card } from "../ui/card";
 
 const HotelsSkeleton = () => {
   return (
-    <Card className="shadow-lg rounded-md">
+    <MyCard>
       <SkeletonItem w="full" h="32" />
-    </Card>
+    </MyCard>
   );
 };
 

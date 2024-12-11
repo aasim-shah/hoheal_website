@@ -8,7 +8,7 @@ const TopBar = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-col-reverse gap-4 md:gap-0 md:flex-row justify-between items-center">
+    <div className="flex flex-col-reverse gap-4  md:flex-row justify-between items-center">
       <>{children}</>
       {addButtonTitle && (
         <AddNewButton title={addButtonTitle} className="w-full md:w-auto" />

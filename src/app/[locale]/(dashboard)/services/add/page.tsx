@@ -5,13 +5,9 @@ import ServiceDropdown from "@/components/services/ServiceDropdown";
 const AddServicesPage = () => {
   return (
     <div className="space-y-8">
-      <div className="flex items-center gap-4 w-full">
-        <div className="w-1/2">
-          <HotelsCombobox />
-        </div>
-        <div className="w-1/2">
-          <ServiceDropdown />
-        </div>
+      <div className="grid sm:grid-cols-2 gap-4">
+        <HotelsCombobox />
+        <ServiceDropdown />
       </div>
       <ServicesForm />
     </div>

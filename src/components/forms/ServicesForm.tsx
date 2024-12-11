@@ -21,9 +21,10 @@ import RoomUpgradeForm from "./RoomUpgradeForm";
 import TechnicalServiceForm from "./TechnicalServiceForm";
 
 const ServicesForm = () => {
+  const { hotelId } = useSelector((state: RootState) => state.hotels);
   const { selectedService } = useSelector((state: RootState) => state.services);
   const { userProfile } = useSelector((state: RootState) => state.auth);
-  const hotelId = userProfile?.hotel?._id;
+  // const hotelId = userProfile?.hotel?._id;
 
   const { title, category, subCategory } = selectedService || {};
 
@@ -59,7 +60,6 @@ const ServicesForm = () => {
   });
 
   const defaultValues = {
-    hotel: "",
     title: "",
     description: "",
     roomType: "",
@@ -94,6 +94,7 @@ const ServicesForm = () => {
     try {
       const formData = new FormData();
       appendFormData(formData, values);
+      formData.append("hotel", hotelId || "");
       formData.append("category", category?._id || "");
       formData.append("subCategory", subCategory?._id || "");
       await execute(formData);
@@ -118,7 +119,7 @@ const ServicesForm = () => {
     }
   }, [data, error, reset, router]);
 
-  hotelId && setValue("hotel", hotelId);
+  // hotelId && setValue("hotel", hotelId);
 
   const renderSubCategoryForm = () => {
     if (!selectedService?.subCategory) {
