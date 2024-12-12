@@ -8,7 +8,7 @@ const MyCard = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("shadow-lg rounded-md bg-secondary", className)}>
+    <div className={cn("shadow-lg rounded-md bg-background", className)}>
       {children}
     </div>
   );

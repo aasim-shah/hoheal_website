@@ -1,4 +1,5 @@
 import { isLessChange } from "@/utils/reuseableMethods";
+import MyCard from "../MyCard";
 
 interface Props {
   title: string;
@@ -9,7 +10,7 @@ interface Props {
 
 const StatsCard = ({ title, icon: Icon, total, change }: Props) => {
   return (
-    <div className="flex flex-col h-28 justify-center gap-1 bg-secondary rounded-lg p-4 shadow-md">
+    <MyCard className="flex flex-col h-28 justify-center gap-1 rounded-lg p-4">
       <div className="flex justify-between items-center">
         <div>
           <p className="text-gray-500 text-sm">{title}</p>
@@ -20,7 +21,7 @@ const StatsCard = ({ title, icon: Icon, total, change }: Props) => {
         </div>
       </div>
       <p className={`text-sm ${isLessChange(change)}`}>{change}</p>
-    </div>
+    </MyCard>
   );
 };
 

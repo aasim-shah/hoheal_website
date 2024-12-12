@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import HotelsSkeleton from "../skeletons/HotelsSkeleton";
+import MyCard from "../MyCard";
 
 const Hotels = ({ timeFilter }: { timeFilter: TimeFilter }) => {
   const { execute, loading, error, data } = useApi(getDashboardHotels);
@@ -43,7 +44,7 @@ const Hotels = ({ timeFilter }: { timeFilter: TimeFilter }) => {
   }
 
   return (
-    <div className="flex flex-col h-32 gap-2 bg-secondary rounded-md p-4 shadow-md">
+    <MyCard className="flex flex-col h-32 gap-2 p-4 shadow-md">
       <div className="flex items-center justify-between">
         <Label className="font-semibold">Hotels</Label>
         <Link href="/all-hotels" className="underline">
@@ -59,7 +60,7 @@ const Hotels = ({ timeFilter }: { timeFilter: TimeFilter }) => {
           </div>
         )}
       </div>
-    </div>
+    </MyCard>
   );
 };
 

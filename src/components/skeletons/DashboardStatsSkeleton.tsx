@@ -12,13 +12,13 @@ const DashboardStatsSkeleton = () => {
         >
           <div className="flex justify-between items-center">
             <div className="space-y-2">
-              <SkeletonItem h="3" w="12" />
+              <SkeletonItem h="2" w="12" />
               <SkeletonItem h="4" w="10" />
             </div>
 
             <SkeletonItem h="6" w="6" roundedFull />
           </div>
-          <SkeletonItem h="3" w="16" />
+          <SkeletonItem h="2" w="16" />
         </MyCard>
       ))}
     </div>
