@@ -47,6 +47,7 @@ export default function ConfirmCheckIn({
       hotel: selectedItem.hotel,
     };
     execute(payload);
+    setIsOpen(false);
     console.log({ payload });
   };
 

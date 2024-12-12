@@ -11,6 +11,7 @@ const nextConfig = {
       "hoheal-server.hostdonor.com",
       "hoheal-server.hostdonor.com",
       "aeroin.net",
+      "sh367bt5.inc1.devtunnels.ms",
     ],
   },
 };
