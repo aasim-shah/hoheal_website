@@ -74,7 +74,7 @@ export function HotelsCombobox() {
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger className="w-full" asChild>
               <Button
-                variant="secondary"
+                variant="outline"
                 role="combobox"
                 aria-expanded={open}
                 className=" justify-between"

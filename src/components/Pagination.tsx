@@ -60,7 +60,7 @@ export default function Pagination({ pagination, page, changePage }: Props) {
           className={`cursor-pointer ${
             page === pageNumber
               ? "bg-signature-light text-white hover:bg-signature-light"
-              : "hover:bg-secondary transition-colors"
+              : "hover:bg-background transition-colors"
           }`}
           onClick={() => handlePageChange(pageNumber)}
         >

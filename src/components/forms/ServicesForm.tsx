@@ -19,6 +19,7 @@ import RestaurantForm from "./RestaurantForm";
 import RoomServiceForm from "./RoomServiceForm";
 import RoomUpgradeForm from "./RoomUpgradeForm";
 import TechnicalServiceForm from "./TechnicalServiceForm"; // okay
+import MyCard from "../MyCard";
 
 const ServicesForm = () => {
   const { hotelId } = useSelector((state: RootState) => state.hotels);
@@ -148,36 +149,38 @@ const ServicesForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div className="grid grid-cols-1 items-start lg:grid-cols-2 gap-4">
-          {renderSubCategoryForm()}
-        </div>
-
-        {selectedService && selectedService.subCategory && (
-          <div className="flex justify-end w-full">
-            <div className="flex justify-end md:w-1/2 w-full space-x-4">
-              <Button
-                className="w-full"
-                type="button"
-                variant="outline"
-                onClick={() => router.push("/services")}
-              >
-                Cancel
-              </Button>
-              <Button
-                className="w-full"
-                type="submit"
-                variant="signature"
-                disabled={loading}
-              >
-                {loading ? "Adding Service..." : "Add Service"}
-              </Button>
-            </div>
+    <MyCard className="p-4">
+      <Form {...form}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-1 items-start lg:grid-cols-2 gap-4">
+            {renderSubCategoryForm()}
           </div>
-        )}
-      </form>
-    </Form>
+
+          {selectedService && selectedService.subCategory && (
+            <div className="flex justify-end w-full">
+              <div className="flex justify-end md:w-1/2 w-full space-x-4">
+                <Button
+                  className="w-full"
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.push("/services")}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="w-full"
+                  type="submit"
+                  variant="signature"
+                  disabled={loading}
+                >
+                  {loading ? "Adding Service..." : "Add Service"}
+                </Button>
+              </div>
+            </div>
+          )}
+        </form>
+      </Form>{" "}
+    </MyCard>
   );
 };
 

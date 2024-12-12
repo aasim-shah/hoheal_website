@@ -53,7 +53,7 @@ export default function MyImage(props: Props) {
       )}
 
       <Image
-        key={image}
+        key={src}
         width={w as any}
         height={h as any}
         className={`w-full h-full object-cover ${classNames}`}

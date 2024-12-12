@@ -1,14 +1,18 @@
-"use client"
+"use client";
 
-import CustomerReviews from "@/components/CustomerReviews"
+import CustomerReviews from "@/components/CustomerReviews";
+import { BarChart } from "@/components/dashboard/BarChart";
+import { LineChart } from "@/components/dashboard/LineChart";
 
 const Feedback = () => {
   return (
-    <div className="grid grid-cols-12 gap-2">
-      <div className="col-span-11 md:col-span-7 shadow-md border rounded-lg p-4 "></div>
+    <div className="grid lg:grid-cols-3 gap-2">
+      <div className="lg:col-span-2 rounded-lg">
+        <LineChart timeFilter="month" />
+      </div>
       <CustomerReviews />
     </div>
-  )
-}
+  );
+};
 
-export default Feedback
+export default Feedback;

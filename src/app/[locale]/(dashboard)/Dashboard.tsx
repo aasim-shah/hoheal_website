@@ -6,6 +6,7 @@ import DashboardStats from "@/components/dashboard/DashboardStats";
 import Hotels from "@/components/dashboard/Hotels";
 import { LineChart } from "@/components/dashboard/LineChart";
 import { HotelsCombobox } from "@/components/HotelsCombobox";
+import MyCard from "@/components/MyCard";
 import MyImage from "@/components/MyImage";
 import {
   Select,
@@ -39,8 +40,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="flex justify-between gap-4 mb-4">
-        {/* <div className="flex justify-between gap-4 mb-4 bg-background p-4 rounded-md"> */}
+      {/* <div className="flex justify-between gap-4 mb-4"> */}
+        <MyCard className="flex justify-between gap-4 mb-4 p-4">
         {role === "superAdmin" && <HotelsCombobox />}
         {role === "hotelAdmin" && (
           <div className="flex items-center gap-4">
@@ -72,7 +73,7 @@ const Dashboard = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
-      </div>
+      </MyCard>
       <div className="space-y-4 h-full">
         <DashboardStats timeFilter={timeFilter} />
         {/* grid */}

@@ -1,4 +1,5 @@
 import AddNewButton from "./AddNewButton";
+import MyCard from "./MyCard";
 
 const TopBar = ({
   addButtonTitle,
@@ -8,12 +9,12 @@ const TopBar = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-col-reverse gap-4  md:flex-row justify-between items-center">
+    <MyCard className="flex flex-col-reverse gap-4 p-4 md:flex-row justify-between items-center">
       <>{children}</>
       {addButtonTitle && (
         <AddNewButton title={addButtonTitle} className="w-full md:w-auto" />
       )}
-    </div>
+    </MyCard>
   );
 };
 
