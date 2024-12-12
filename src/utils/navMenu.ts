@@ -25,7 +25,7 @@ const menus = {
       icon: FaClipboardList,
     },
     { title: "roleManagement", path: "/role-management", icon: FaUserShield },
-    { title: "categories", path: "/categories", icon: RiDashboard3Line },
+    // { title: "categories", path: "/categories", icon: RiDashboard3Line },
   ],
   hotelAdmin: [
     { title: "dashboard", path: "/", icon: RiDashboard3Line },
@@ -40,7 +40,7 @@ const menus = {
       icon: FaClipboardList,
     },
     { title: "roleManagement", path: "/role-management", icon: FaUserShield },
-    { title: "categories", path: "/categories", icon: RiDashboard3Line },
+    // { title: "categories", path: "/categories", icon: RiDashboard3Line },
   ],
   hotelManager: [
     { title: "dashboard", path: "/", icon: RiDashboard3Line },

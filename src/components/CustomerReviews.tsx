@@ -7,6 +7,7 @@ import { getReviews } from "@/lib/api/department";
 import { useEffect } from "react";
 import CustomerReviewCard from "./CustomerReviewCard";
 import CustomerReviewSkeleton from "./skeletons/CustomerReviewSkeleton";
+import MyCard from "./MyCard";
 
 export default function CustomerReviews() {
   const { data, loading, error, execute } = useApi(getReviews);
@@ -16,7 +17,7 @@ export default function CustomerReviews() {
   }, []);
 
   return (
-    <div className="h-full p-4 bg-secondary shadow-md rounded-lg space-y-2">
+    <MyCard className="h-full p-4 rounded-lg space-y-2">
       <H className="text-lg font-semibold">Customers Feedback</H>
       <Input type="text" placeholder="Search" className="bg-background" />
 
@@ -44,6 +45,6 @@ export default function CustomerReviews() {
             <CustomerReviewCard key={feedback._id} feedback={feedback} />
           ))}
       </div>
-    </div>
+    </MyCard>
   );
 }

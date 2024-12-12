@@ -40,6 +40,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="flex justify-between gap-4 mb-4">
+        {/* <div className="flex justify-between gap-4 mb-4 bg-background p-4 rounded-md"> */}
         {role === "superAdmin" && <HotelsCombobox />}
         {role === "hotelAdmin" && (
           <div className="flex items-center gap-4">

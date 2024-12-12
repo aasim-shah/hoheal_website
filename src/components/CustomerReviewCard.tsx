@@ -28,7 +28,7 @@ const CustomerReviewCard = ({ feedback }: Props) => {
     <Dialog>
       <DialogTrigger asChild>
         <div
-          className={`flex items-start gap-4 p-2 rounded-lg cursor-pointer hover:bg-background`}
+          className={`flex items-start gap-4 p-2 rounded-lg cursor-pointer hover:bg-secondary`}
         >
           <MyImage
             src={profilePicture}
