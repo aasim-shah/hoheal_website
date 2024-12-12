@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { format, formatDistanceToNow } from "date-fns";
 import StartNewChat from "./newChatModel";
+import MyImage from "@/components/MyImage";
 interface ChatsListProps {
   setChatId: (id: string) => void;
   chatId: string;
@@ -46,7 +47,7 @@ export default function ChatsList({ setChatId, chatId, role }: ChatsListProps) {
 
   return (
     <div
-      className={`col-span-11 md:col-span-3 h-[78vh]  shadow-sm border-2 dark:border-gray-800 border-gray-100 rounded-lg p-4 ${
+      className={`col-span-11 md:col-span-5 lg:col-span-3 h-[78vh]  shadow-sm border-2 dark:border-gray-800 border-gray-100 rounded-lg p-4 ${
         chatId === "" || chatId === null ? "block md:block" : "hidden md:block"
       }`}
     >
@@ -54,7 +55,7 @@ export default function ChatsList({ setChatId, chatId, role }: ChatsListProps) {
         <h2 className="text-lg font-semibold  flex items-center gap-2">
           Messages{" "}
           <span className="text-xs font-medium text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">
-            12
+            {chats.length}
           </span>
         </h2>
         <button
@@ -85,38 +86,48 @@ export default function ChatsList({ setChatId, chatId, role }: ChatsListProps) {
         />
       </div>
       <div className="space-y-2">
-        {chats.map((chat) => (
-          <div
-            key={chat.chatId}
-            onClick={() => setChatId(chat.chatId)}
-            className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer ${
-              chatId === chat.chatId
-                ? "bg-gray-100 dark:bg-gray-800"
-                : "hover:bg-gray-50 dark:hover:bg-gray-800"
-            }`}
-          >
-            {chat.chatPartnerImage && (
-              <Image
-                width={40}
-                height={40}
-                src={chat.chatPartnerImage}
-                alt={chat.chatPartnerImage}
-                className="w-10 h-10 rounded-full object-cover"
-              />
-            )}
-            <div className="flex-1">
-              <h3 className="text-sm font-medium ">{chat.chatPartnerName}</h3>
-              <p className="text-xs text-gray-400 truncate">
-                {chat.lastMessage}
-              </p>
+        {chats &&
+          chats.length > 0 &&
+          chats.map((chat) => (
+            <div
+              key={chat.chatId}
+              onClick={() => setChatId(chat.chatId)}
+              className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer ${
+                chatId === chat.chatId
+                  ? "bg-gray-100 dark:bg-gray-800"
+                  : "hover:bg-gray-50 dark:hover:bg-gray-800"
+              }`}
+            >
+              {chat.chatPartnerImage && (
+                // <Image
+                //   width={40}
+                //   height={40}
+                //   src={chat.chatPartnerImage}
+                //   alt={chat.chatPartnerImage}
+                //   className="w-10 h-10 rounded-full object-cover"
+                // />
+                <MyImage
+                  src={chat.chatPartnerImage}
+                  alt={chat.chatPartnerImage}
+                  width={40}
+                  height={40}
+                  containerClasses="w-10 h-10 rounded-full object-cover"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              )}
+              <div className="flex-1">
+                <h3 className="text-sm font-medium ">{chat.chatPartnerName}</h3>
+                <p className="text-xs text-gray-400 truncate">
+                  {chat.lastMessage}
+                </p>
+              </div>
+              <span className="text-xs mt-5 text-gray-400">
+                {formatDistanceToNow(new Date(chat.lastMessageTime), {
+                  addSuffix: true,
+                })}
+              </span>
             </div>
-            <span className="text-xs mt-5 text-gray-400">
-              {formatDistanceToNow(new Date(chat.lastMessageTime), {
-                addSuffix: true,
-              })}
-            </span>
-          </div>
-        ))}
+          ))}
       </div>
       <StartNewChat isOpen={isOpen} setIsOpen={setIsOpen} />{" "}
     </div>

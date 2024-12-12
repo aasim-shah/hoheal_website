@@ -70,7 +70,7 @@ export default function StartNewChat({ isOpen, setIsOpen }: ShowDetailsProps) {
                     <SelectContent className="">
                       {loading && <div>Loading staff...</div>}
                       {error && <div>Error fetching staff!</div>}
-                      {!loading && staffList.length > 0 ? (
+                      {!loading && staffList?.length > 0 ? (
                         staffList.map((staff: any) => (
                           <SelectItem key={staff._id} value={staff._id}>
                             {staff.user?.name}

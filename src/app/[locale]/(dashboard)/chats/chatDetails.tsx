@@ -10,6 +10,10 @@ import { FaRegPaperPlane } from "react-icons/fa6";
 
 import { GrAttachment } from "react-icons/gr";
 import StartNewChat from "./newChatModel";
+import { useSelector } from "react-redux";
+import { baseUrl } from "@/constants";
+import { Root } from "postcss";
+import { RootState } from "@/store/store";
 
 interface User {
   _id: string;
@@ -52,6 +56,10 @@ export default function ChatDetail({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const { role, token, userProfile } = useSelector(
+    (state: RootState) => state.auth
+  );
+
   const [chatDetails, setChatDetails] = useState<ChatDetails>({
     chatPartnerName: "",
     chatPartnerRole: "",
@@ -68,8 +76,9 @@ export default function ChatDetail({
   }, [messages]);
 
   useEffect(() => {
-    const serverURL = "http://192.168.18.121:8000";
-    initSocket(serverURL);
+    const serverURL = baseUrl || "http://192.168.18.121:8000";
+    console.log({ token, serverURL });
+    initSocket(serverURL, token);
   }, []);
 
   const { data, loading, error, execute } = useApi(getChatDetails);
@@ -132,6 +141,9 @@ export default function ChatDetail({
 
       setInputMessage("");
       setSelectedImages([]);
+      // setMessages((prev) => [...prev, response.body]);
+
+      console.log("Response from sendNewMessage:", response);
     } catch (error) {
       console.error("Failed to send message:", error);
     }
@@ -145,7 +157,7 @@ export default function ChatDetail({
     <div
       className={`md:block ${
         chatId && chatId !== "" ? "block" : "hidden md:hidden"
-      } md:col-span-9 col-span-11 w-full  flex flex-col`}
+      } md:col-span-7 lg:col-span-9 col-span-11 w-full  flex flex-col`}
     >
       {!data && error && (
         <div className="w-full  flex justify-center items-center">

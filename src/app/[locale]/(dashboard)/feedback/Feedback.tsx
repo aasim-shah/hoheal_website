@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import CustomerReviews from "@/components/CustomerReviews"
+import CustomerReviews from "@/components/CustomerReviews";
 
 const Feedback = () => {
   return (
@@ -8,7 +8,7 @@ const Feedback = () => {
       <div className="col-span-11 md:col-span-7 shadow-md border rounded-lg p-4 "></div>
       <CustomerReviews />
     </div>
-  )
-}
+  );
+};
 
-export default Feedback
+export default Feedback;
