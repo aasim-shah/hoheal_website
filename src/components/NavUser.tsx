@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { resetServices } from "@/store/features/serviceSlice";
 import { resetHotels } from "@/store/features/hotelSlice";
+import { useEffect } from "react";
 
 export function NavUser() {
   const auth = useSelector((state: RootState) => state.auth);
@@ -52,9 +53,18 @@ export function NavUser() {
     dispatch(resetHotels(auth));
     localStorage.removeItem("token");
   };
+
+  useEffect(() => {
+    if (auth) {
+      if (!auth.userProfile) {
+        handleLogoutClick();
+      }
+    }
+  }, [auth]);
+
   return (
     <>
-      {auth?.userProfile && (
+      {email && (
         <Dialog>
           <SidebarMenu>
             <SidebarMenuItem>

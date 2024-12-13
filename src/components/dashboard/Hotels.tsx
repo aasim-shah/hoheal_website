@@ -51,7 +51,7 @@ const Hotels = ({ timeFilter }: { timeFilter: TimeFilter }) => {
           View all
         </Link>
       </div>
-      <div className="whitespace-nowrap overflow-scroll">
+      <div className="whitespace-nowrap overflow-scroll border p-1">
         {hotels && hotels.length > 0 ? (
           <DataTable data={hotels} renderRow={renderHotelRow} />
         ) : (

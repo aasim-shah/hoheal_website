@@ -4,6 +4,7 @@ import { baseUrl } from "@/constants";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
+import MyCard from "./MyCard";
 
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   containerClasses?: string;
@@ -47,9 +48,9 @@ export default function MyImage(props: Props) {
   return (
     <div className={cn("overflow-hidden", containerClasses)}>
       {isLoading && (
-        <div className="w-full h-full flex justify-center items-center bg-secondary rounded-md">
+        <MyCard className="w-full h-full flex justify-center items-center border-b">
           <div className="w-5 h-5 border-4 border-t-transparent border-signature-light border-solid rounded-full animate-spin"></div>
-        </div>
+        </MyCard>
       )}
 
       <Image

@@ -25,55 +25,62 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const handleTokenCheck = () => {
       const storedToken =
         typeof window !== "undefined" && localStorage.getItem("token");
-
+    
+      const currentLocale = pathname.split("/")[1]; // Extract locale from pathname
+    
       if (!token && !storedToken) {
-        router.push("/login");
+        router.push(`/${currentLocale}/login`);
         return;
       }
       if (!token && storedToken) {
         try {
           const decodedToken: any = jwtDecode(storedToken);
           const isTokenExpired = decodedToken.exp * 1000 < Date.now();
-
+    
           if (isTokenExpired) {
-            router.push("/login");
+            router.push(`/${currentLocale}/login`);
           } else {
             dispatch(setToken(storedToken));
             if (decodedToken.role) {
               dispatch(setRole(decodedToken.role));
             } else {
-              router.push("/login");
+              router.push(`/${currentLocale}/login`);
             }
           }
         } catch (error) {
           console.error("Token decoding failed:", error);
-          router.push("/login");
+          router.push(`/${currentLocale}/login`);
         }
       } else if (token && !role) {
         const decodedToken: any = jwtDecode(token);
         if (decodedToken.role) {
           dispatch(setRole(decodedToken.role));
         } else {
-          router.push("/login");
+          router.push(`/${currentLocale}/login`);
         }
       }
     };
+    
 
     const handleNavigation = () => {
       if (!role) return;
-
+    
       const menu = getNavMenuByRole(role);
       const allowedPaths = menu.map((item) => item.path);
       const firstPath = allowedPaths[0];
-
+    
+      // Extract locale from pathname (e.g., /en/dashboard)
+      const currentLocale = pathname.split("/")[1];
+    
       if (!allowedPaths.includes(pathname)) {
-        router.push(firstPath);
+        router.push(`/${currentLocale}${firstPath}`);
       } else if (token && pathname.includes("login")) {
-        router.push(firstPath || "/");
+        router.push(`/${currentLocale}${firstPath || "/"}`);
       } else if (!token && allowedPaths.includes(pathname)) {
-        router.push("/login");
+        router.push(`/${currentLocale}/login`);
       }
     };
+    
 
     (async () => {
       await handleTokenCheck();

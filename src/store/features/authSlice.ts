@@ -8,7 +8,7 @@ interface AuthState {
 const initialState: AuthState = {
   token: null,
   role: null,
-  userProfile: null,
+  userProfile: {},
 };
 
 const authSlice: Slice = createSlice({

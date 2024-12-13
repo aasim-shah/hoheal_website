@@ -48,7 +48,7 @@ const HotelCard = ({ hotel }: any) => {
       <div className="flex flex-col justify-between h-full">
         <div>
           <CardTitle className="text-lg font-semibold">{name}</CardTitle>
-          <CardDescription className="text-xs text-muted-foreground">
+          <CardDescription className="text-xs text-muted-foreground line-clamp-2">
             {description}
           </CardDescription>
         </div>

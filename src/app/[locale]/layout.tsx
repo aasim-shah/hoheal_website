@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import Providers from "./Providers";
+import { baseUrl } from "@/constants";
+import axios from "axios";
+import Error from "@/components/Error";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -128,13 +131,33 @@ export default async function RootLayout({
     notFound();
   }
 
+  let serverIsOnline = false;
+  const checkServer = async () => {
+    try {
+      await axios.get(baseUrl as string).then((response) => {
+        if (response.status === 200) {
+          serverIsOnline = true;
+        }
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  await checkServer();
+  const language = locale || "en";
+
   return (
-    <html lang={locale} dir="">
+    <html lang={language}>
       <body
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden`}
       >
-        <Providers>
-          <main className="">{children}</main>
+        <Providers language={language}>
+          {serverIsOnline ? (
+            <main>{children}</main>
+          ) : (
+            <Error message="Server is offline" icon={false} />
+          )}
         </Providers>
       </body>
     </html>

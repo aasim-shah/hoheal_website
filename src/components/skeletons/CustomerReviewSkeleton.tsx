@@ -4,10 +4,10 @@ import SkeletonItem from "../SkeletonItem";
 const CustomerReviewSkeleton = () => {
   return (
     <div
-      className={`flex items-start gap-4 p-2 rounded-lg border border-muted bg-secondary`}
+    className={`flex items-start gap-4 p-2 rounded-lg cursor-pointer hover:bg-secondary`}
     >
       <SkeletonItem h="10" w="10" roundedFull />
-      <div className="flex-1 flex flex-col gap-3">
+      <div className="flex-1 flex flex-col">
         <div className="flex justify-between items-end">
           <SkeletonItem h="4" w="20" />
           <SkeletonItem h="2" w="10" />

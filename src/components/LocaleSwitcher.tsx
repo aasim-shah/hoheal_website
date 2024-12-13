@@ -19,10 +19,13 @@ export default function LocaleSwitcher() {
   const pathname = usePathname();
 
   function handleLocaleChange(nextLocale: string) {
-    startTransition(() => {
-      router.replace({ pathname }, { locale: nextLocale as Locale });
-    });
+    if (nextLocale !== locale) {
+      startTransition(() => {
+        router.push({ pathname }, { locale: nextLocale as Locale });
+      });
+    }
   }
+  
 
   return (
     <div className="w-24">

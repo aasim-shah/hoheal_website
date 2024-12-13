@@ -58,7 +58,7 @@ const RoomUpgradeForm = ({ control }: { control: any }) => {
         valueKey="_id"
         labelKey="title"
       />
-      <RoomServicesCommonFields control={control} />
+      {/* <RoomServicesCommonFields control={control} /> */}
       <ImageFields control={control} />
     </>
   );

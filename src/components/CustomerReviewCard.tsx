@@ -28,14 +28,14 @@ const CustomerReviewCard = ({ feedback }: Props) => {
     <Dialog>
       <DialogTrigger asChild>
         <div
-          className={`flex items-start gap-4 p-2 rounded-lg cursor-pointer hover:bg-secondary`}
+          className={`flex items-start gap-4 p-2 bg-secondary rounded-lg cursor-pointer hover:bg-secondary/80`}
         >
           <MyImage
             src={profilePicture}
             width={40}
             height={40}
             alt={name}
-            className="rounded-full object-cover"
+            className="w-full h-full object-cover"
             containerClasses="w-10 h-10 rounded-full"
           />
           <div className="flex-1 text-sm text-muted-foreground flex flex-col">

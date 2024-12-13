@@ -9,25 +9,31 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 
-const Providers = async ({ children }: { children: React.ReactNode }) => {
+const Providers = async ({
+  language,
+  children,
+}: {
+  language: string;
+  children: React.ReactNode;
+}) => {
   const messages = await getMessages();
   return (
-    <ThemeProvider>
-      <TopLoader />
-      <StoreProvider>
-        <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider locale={language} messages={messages}>
+      <ThemeProvider>
+        <TopLoader />
+        <StoreProvider>
           <ReactQueryClientProvider>
             <TooltipProvider>
               <AuthGuard>
-                <FetchData/>
+                <FetchData />
                 {children}
               </AuthGuard>
               <Toaster />
             </TooltipProvider>
           </ReactQueryClientProvider>
-        </NextIntlClientProvider>
-      </StoreProvider>
-    </ThemeProvider>
+        </StoreProvider>
+      </ThemeProvider>
+    </NextIntlClientProvider>
   );
 };
 
